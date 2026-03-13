@@ -1,0 +1,48 @@
+.purple-border-start {
+  border-left: 4px solid var(--purple);
+}
+
+.orange-border-start {
+  border-left: 4px solid var(--orange);
+}
+
+.btn-start {
+  padding: 10px;
+  min-width: 180px;
+  border-radius: 6px;
+  border: none;
+  background: var(--purple-orange-gradient);
+  color: white;
+  font-weight: 700;
+  background-size: 400% 400%;
+  animation: gradientMove 6s ease infinite;
+}
+
+.btn-start {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.btn-start:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.form-select {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var(--orange) !important;
+}
