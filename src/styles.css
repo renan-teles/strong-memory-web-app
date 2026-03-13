@@ -1,1 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+:root {
+  --purple: #9c04fc;
+  --orange: #fc9f28;
+  --purple-orange-gradient: linear-gradient(to right, #9c04fc, #ffab40);
+}
+
+.text-purple {
+  color: var(--purple) !important;
+}
+
+.text-orange {
+  color: var(--orange) !important;
+}
+
+.bg-white {
+  background-color: white !important;
+}
+
+.radial-gradient-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  filter: blur(120px);
+  background-blend-mode: screen;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 1) 25%,
+      transparent 60%
+    ),
+    radial-gradient(circle at 10% 50%, rgba(156, 4, 252, 0.25) 0%, transparent 60%),
+    radial-gradient(circle at 90% 50%, rgba(255, 171, 64, 0.25) 0%, transparent 60%);
+}

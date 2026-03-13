@@ -1,0 +1,12 @@
+.active-route {
+  background: var(--purple-orange-gradient);
+  border-radius: 5px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  border-bottom: 1px solid !important;
+}
+
+.nav-link:hover {
+  color: var(--purple);
+  border-bottom: 1px solid var(--orange);
+}

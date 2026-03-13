@@ -1,0 +1,22 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HowToPlayPage } from './how-to-play.page';
+
+describe('HowToPlayPage', () => {
+  let component: HowToPlayPage;
+  let fixture: ComponentFixture<HowToPlayPage>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HowToPlayPage],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(HowToPlayPage);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
