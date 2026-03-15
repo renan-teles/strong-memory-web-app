@@ -1,0 +1,8 @@
+.page-link {
+  color: var(--purple) !important;
+}
+
+.active-link-pagination {
+  color: white !important;
+  background: var(--purple-orange-gradient) !important;
+}

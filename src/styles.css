@@ -1,11 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* Vars */
 :root {
   --purple: #9c04fc;
   --orange: #fc9f28;
   --purple-orange-gradient: linear-gradient(to right, #9c04fc, #ffab40);
 }
 
+/* General */
 html,
 body {
   height: 100%;
@@ -14,8 +16,7 @@ body {
 
 body {
   min-height: 100vh;
-  filter: blur(0);
-
+  /* filter: blur(0); */
   background:
     radial-gradient(
       circle at 50% 50%,
@@ -23,10 +24,11 @@ body {
       rgba(255, 255, 255, 1) 25%,
       transparent 60%
     ),
-    radial-gradient(circle at 10% 50%, rgba(156, 4, 252, 0.12) 0%, transparent 60%),
-    radial-gradient(circle at 90% 50%, rgba(255, 171, 64, 0.12) 0%, transparent 60%);
+    radial-gradient(circle at 10% 50%, rgba(156, 4, 252, 0.09) 0%, transparent 60%),
+    radial-gradient(circle at 90% 50%, rgba(255, 171, 64, 0.09) 0%, transparent 60%);
 }
 
+/* Colors and Backgrounds */
 .text-purple {
   color: var(--purple) !important;
 }
@@ -39,6 +41,78 @@ body {
   background-color: white !important;
 }
 
+/* Bordes */
+.purple-border-start {
+  border-left: 4px solid var(--purple);
+}
+
+.orange-border-start {
+  border-left: 4px solid var(--orange);
+}
+
+/* Form Elments*/
+.form-select {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var(--orange) !important;
+}
+
+.form-control {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var(--orange) !important;
+}
+
+/* Buttons */
+.btn-scale {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.btn-scale:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-gradient-move-purple-orange {
+  padding: 10px;
+  min-width: 180px;
+  border-radius: 6px;
+  border: none;
+  background: var(--purple-orange-gradient);
+  color: white;
+  font-weight: 700;
+  background-size: 400% 400%;
+  animation: gradientMove 6s ease infinite;
+}
+
+.btn-gradient-purple-orange {
+  padding: 9px;
+  border-radius: 6px;
+  border: none;
+  background: var(--purple-orange-gradient);
+  color: white;
+  font-weight: 700;
+}
+
+/* Animations */
+.page-content-animation {
+  animation: fadeIn 0.7s ease;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -48,8 +122,4 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.page-content {
-  animation: fadeIn 0.7s ease;
 }
