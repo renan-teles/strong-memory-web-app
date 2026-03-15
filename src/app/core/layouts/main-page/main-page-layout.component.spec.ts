@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HowToPlayPage } from './how-to-play.page';
+import { MainPageLayoutComponent } from './main-page-layout.component';
 
-describe('HowToPlayPage', () => {
-  let component: HowToPlayPage;
-  let fixture: ComponentFixture<HowToPlayPage>;
+describe('MainPageLayoutComponent', () => {
+  let component: MainPageLayoutComponent;
+  let fixture: ComponentFixture<MainPageLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HowToPlayPage],
+      imports: [MainPageLayoutComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HowToPlayPage);
+    fixture = TestBed.createComponent(MainPageLayoutComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

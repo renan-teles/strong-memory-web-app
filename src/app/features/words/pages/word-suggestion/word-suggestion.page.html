@@ -1,2 +1,45 @@
-<h1>Word Suggestion Page</h1>
+<main class="row row-cols-1 gap-3 page-content-animation">
+  <section class="col">
+    <div class="purple-border-start">
+      <h3 class="ms-2">Sugestão de Palavras</h3>
+    </div>
+    <hr class="text-orange" />
 
+    <p>
+      Você pode nos ajudar a tornar nossa aplicação cada vez mais completa sugerindo novas palavras
+      que ainda não estejam cadastradas em nosso sistema. Para isso, basta enviar uma palavra
+      acompanhada de sua respectiva dificuldade (por exemplo: fácil, média ou difícil). Suas
+      sugestões são muito importantes, pois contribuem diretamente para o enriquecimento do conteúdo
+      da plataforma, permitindo que outros usuários tenham acesso a um vocabulário cada vez mais
+      amplo e diversificado. Dessa forma, colaborativamente, conseguimos melhorar a qualidade da
+      aplicação e oferecer uma experiência de aprendizado mais rica e eficiente para todos.
+    </p>
+  </section>
+
+  <section class="col">
+    <form class="row row-cols-1 row-cols-md-2">
+      <div class="col">
+        <label class="form-label" for="word-suggestion-input">Sugestão de Palavra:</label>
+        <input
+          id="word-suggestion-input"
+          class="form-control"
+          placeholder="Digite sua sugestão de palavra..."
+          type="text"
+        />
+      </div>
+
+      <div class="col mt-4 mt-md-0">
+        <app-difficulty-select
+          [showLabel]="true"
+          [labelContent]="'Sugestão de Dificuldade:'"
+        ></app-difficulty-select>
+      </div>
+
+      <div class="col"></div>
+
+      <div class="col text-end mt-4">
+        <button type="submit" class="btn-gradient-purple-orange btn-scale">Sugerir</button>
+      </div>
+    </form>
+  </section>
+</main>

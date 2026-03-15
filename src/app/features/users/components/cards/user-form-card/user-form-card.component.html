@@ -1,0 +1,18 @@
+<section class="card shadow-sm rounded bg-white p-4">
+  <div class="text-center">
+    <app-strong-memory-brand></app-strong-memory-brand>
+  </div>
+
+  <div class="text-center mt-2">
+    <span class="fs-5">
+      @if (isRegisterRole) {
+        Cadastro de Jogador
+      } @else {
+        Login de Jogador
+      }
+    </span>
+  </div>
+  <hr />
+
+  <app-user-form [isRegisterRole]="isRegisterRole"></app-user-form>
+</section>

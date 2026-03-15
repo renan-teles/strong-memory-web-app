@@ -1,0 +1,46 @@
+<form class="row row-cols-1 gap-3">
+  @if (isRegisterRole) {
+    <div class="col">
+      <label for="input-username" class="form-label">Username:</label>
+      <input
+        id="input-username"
+        placeholder="Digite seu username..."
+        class="form-control"
+        type="text"
+      />
+    </div>
+  }
+
+  <div class="col">
+    <label for="input-email" class="form-label">Email:</label>
+    <input id="input-email" placeholder="Digite seu email..." class="form-control" type="email" />
+  </div>
+
+  <div class="col">
+    <label for="input-password" class="form-label">Senha:</label>
+    <input
+      id="input-password"
+      placeholder="Digite sua senha..."
+      class="form-control"
+      type="password"
+    />
+  </div>
+
+  <div class="col text-end">
+    <button class="btn-scale btn-gradient-purple-orange">
+      @if (isRegisterRole) {
+        Me Cadastrar
+      } @else {
+        Entrar
+      }
+    </button>
+  </div>
+
+  <div class="col text-start">
+    @if (isRegisterRole) {
+      <a routerLink="/player/login" class="text-purple">Já tem conta? Entre com ela aqui.</a>
+    } @else {
+      <a routerLink="/player/register" class="text-purple">Não tem conta? Crie sua conta aqui.</a>
+    }
+  </div>
+</form>
