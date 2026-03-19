@@ -9,6 +9,4 @@ import { BackToTopBtnComponent } from '../../../shared/components/back-to-top-bt
   templateUrl: './main-page-layout.component.html',
   styleUrl: './main-page-layout.component.css',
 })
-export class MainPageLayoutComponent {
-
-}
+export class MainPageLayoutComponent {}

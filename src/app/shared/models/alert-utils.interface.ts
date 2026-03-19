@@ -1,0 +1,3 @@
+interface IAlertUtils{
+    closeAlert(): void;
+}
