@@ -84,6 +84,7 @@ body {
   color: white;
   font-weight: 700;
   background-size: 400% 400%;
+  cursor: pointer;
   animation: gradientMove 6s ease infinite;
 }
 
@@ -93,6 +94,7 @@ body {
   border: none;
   background: var(--purple-orange-gradient);
   color: white;
+  cursor: pointer;
   font-weight: 700;
 }
 

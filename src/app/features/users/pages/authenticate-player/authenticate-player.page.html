@@ -1,3 +1,7 @@
+@if (alert(); as alert) {
+  <app-alert [alertState]="alert" (closed)="closeAlert()" />
+}
+
 <main class="container-fluid container-md vh-100">
   <div class="h-100 row row-cols-1 row-cols-lg-2 justify-content-center align-items-center">
     <section class="col d-none d-lg-block px-5 page-content-animation">
@@ -17,7 +21,10 @@
     </section>
 
     <section class="col d-flex justify-content-center page-content-animation">
-      <app-user-form-card [isRegisterRole]="false"></app-user-form-card>
+      <app-user-form-card
+        (userData)="loginPlayer($event)"
+        [isRegisterRole]="false"
+      ></app-user-form-card>
     </section>
   </div>
 </main>

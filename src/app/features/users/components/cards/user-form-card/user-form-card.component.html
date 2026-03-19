@@ -14,5 +14,8 @@
   </div>
   <hr />
 
-  <app-user-form [isRegisterRole]="isRegisterRole"></app-user-form>
+  <app-user-form
+    (userData)="submittedFormData($event)"
+    [isRegisterRole]="isRegisterRole"
+  ></app-user-form>
 </section>

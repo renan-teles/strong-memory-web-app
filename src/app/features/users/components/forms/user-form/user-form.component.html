@@ -1,46 +1,103 @@
-<form class="row row-cols-1 gap-3">
+<form [formGroup]="form" (submit)="onSubmit()" class="row row-cols-1 gap-3">
   @if (isRegisterRole) {
     <div class="col">
       <label for="input-username" class="form-label">Username:</label>
       <input
+        formControlName="username"
         id="input-username"
         placeholder="Digite seu username..."
         class="form-control"
         type="text"
+        [class.is-invalid]="getInput('username')?.invalid && getInput('username')?.touched"
+        [class.is-valid]="getInput('username')?.valid && getInput('username')?.touched"
       />
+      @if (getInput('username')?.touched && getInput('username')?.errors) {
+        <small class="text-danger">
+          @if (getInput('username')?.hasError('required')) {
+            Username é obrigatório!
+          }
+        </small>
+      }
     </div>
   }
 
   <div class="col">
     <label for="input-email" class="form-label">Email:</label>
-    <input id="input-email" placeholder="Digite seu email..." class="form-control" type="email" />
+    <input
+      id="input-email"
+      formControlName="email"
+      placeholder="Digite seu email..."
+      class="form-control"
+      type="email"
+      [class.is-invalid]="getInput('email')?.invalid && getInput('email')?.touched"
+      [class.is-valid]="getInput('email')?.valid && getInput('email')?.touched"
+    />
+    @if (getInput('email')?.touched && getInput('email')?.errors) {
+      <small class="text-danger">
+        @if (getInput('email')?.hasError('required')) {
+          Email é obrigatório!
+        }
+        @if (getInput('email')?.hasError('email')) {
+          Email é inválido!
+        }
+      </small>
+    }
   </div>
 
   <div class="col">
     <label for="input-password" class="form-label">Senha:</label>
     <input
+      formControlName="password"
       id="input-password"
       placeholder="Digite sua senha..."
       class="form-control"
       type="password"
+      [class.is-invalid]="getInput('password')?.invalid && getInput('password')?.touched"
+      [class.is-valid]="getInput('password')?.valid && getInput('password')?.touched"
     />
+    @if (getInput('password')?.touched && getInput('password')?.errors) {
+      <small class="text-danger">
+        @if (getInput('password')?.hasError('required')) {
+          Senha é obrigatória!
+        }
+        @if (getInput('password')?.hasError('minlength')) {
+          Senha deve conter no mínimo 7 caracteres!
+        }
+      </small>
+    }
   </div>
 
   <div class="col text-end">
-    <button class="btn-scale btn-gradient-purple-orange">
-      @if (isRegisterRole) {
-        Me Cadastrar
+    <button [disabled]="registerState().isRegistering" class="btn-scale btn-gradient-purple-orange">
+      @if (registerState().isRegistering) {
+        <div class="spinner-border spinner-border-sm text-light me-1" role="status">
+          <span class="visually-hidden"></span>
+        </div>
+        Cadastrando...
+      } @else if (loginState().isAuthenticating) {
+        <div class="spinner-border spinner-border-sm text-light me-1" role="status">
+          <span class="visually-hidden"></span>
+        </div>
+        Entrando...
       } @else {
-        Entrar
+        @if (isRegisterRole) {
+          Me Cadastrar
+        } @else {
+          Entrar
+        }
       }
     </button>
   </div>
 
   <div class="col text-start">
-    @if (isRegisterRole) {
-      <a routerLink="/player/login" class="text-purple">Já tem conta? Entre com ela aqui.</a>
-    } @else {
-      <a routerLink="/player/register" class="text-purple">Não tem conta? Crie sua conta aqui.</a>
+    @if(!(registerState().isRegistering || loginState().isAuthenticating)) {
+
+      @if (isRegisterRole) {
+        <a routerLink="/player/login" class="text-purple">Já tem conta? Entre com ela aqui.</a>
+      } @else {
+        <a routerLink="/player/register" class="text-purple">Não tem conta? Crie sua conta aqui.</a>
+      }
+      
     }
   </div>
 </form>

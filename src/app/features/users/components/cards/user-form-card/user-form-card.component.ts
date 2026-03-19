@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 import { UserFormComponent } from '../../forms/user-form/user-form.component';
 import { StrongMemoryBrandComponent } from '../../../../../shared/components/strong-memory-brand/strong-memory-brand.component';
+import { IUserFormData } from '../../../models/user-form-data.interface';
 
 @Component({
   selector: 'app-user-form-card',
@@ -10,4 +11,9 @@ import { StrongMemoryBrandComponent } from '../../../../../shared/components/str
 })
 export class UserFormCardComponent {
   @Input({ required: true }) isRegisterRole: boolean = true;
+  @Output() userData = new EventEmitter<IUserFormData>();
+
+  submittedFormData(data: IUserFormData) {
+    this.userData.emit(data);
+  }
 }
