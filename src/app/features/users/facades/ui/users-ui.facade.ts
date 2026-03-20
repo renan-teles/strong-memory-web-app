@@ -3,13 +3,17 @@ import { UsersFacade } from '../users.facade';
 import { IUserFormData } from '../../models/user-form-data.interface';
 import { Router } from '@angular/router';
 import { AlertService } from '../../../../core/services/alerts/alert.service';
-import { IRegisterState } from '../../../../shared/models/register-state.interface';
-import { ILoginState } from '../../../../shared/models/login-state.interface';
+import { IRegisterState } from '../../models/register-state.interface';
+import { ILoginState } from '../../models/login-state.interface';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ICreatedUser } from '../../models/created-user.interface';
 import { IApiResponse } from '../../../../shared/models/api-response.interface';
 import { IAuthUser } from '../../models/auth-user-interface';
+import { IUserScoreRecord } from '../../models/user-score-record.interface';
+import { IUserScoreRecordState } from '../../models/user-score-record-state.interface';
+import { IUpdatePasswordFormData } from '../../models/update-password-form-data.interface';
+import { IUpdatePasswordState } from '../../models/update-password-state.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +31,16 @@ export class UsersUiFacade {
   readonly loginState = signal<ILoginState>({
     isAuthenticating: false,
     loginSuccess: false,
+  });
+
+  readonly userScoreRecordState = signal<IUserScoreRecordState>({
+    isGetting: false,
+    scores: [],
+  });
+
+  readonly updatePasswordState = signal<IUpdatePasswordState>({
+    isUpdatting: false,
+    updateSuccess: false,
   });
 
   registerPlayer(data: IUserFormData): void {
@@ -105,7 +119,77 @@ export class UsersUiFacade {
       .subscribe();
   }
 
-  private setErrorAlert <T> (errorBody: IApiResponse<T>): void {
+  getPlayerSocreRecords(): void {
+    this.userScoreRecordState.update((s) => ({
+      ...s,
+      isGetting: true,
+    }));
+
+    this.usersFacade
+      .getPlayerSocreRecords()
+      .pipe(
+        tap((response: IApiResponse<IUserScoreRecord[]>) => {
+          this.userScoreRecordState.update((s) => ({
+            ...s,
+            scores: response.data!,
+          }));
+        }),
+        finalize(() => {
+          this.userScoreRecordState.update((s) => ({
+            ...s,
+            isGetting: false,
+          }));
+        }),
+      )
+      .subscribe();
+  }
+
+  updatePlayerPassword(data: IUpdatePasswordFormData): void {
+    this.updatePasswordState.update((s) => ({
+      ...s,
+      isUpdatting: true,
+    }));
+
+    this.usersFacade
+      .updatePlayerPassword(data)
+      .pipe(
+        tap(() => {
+          this.updatePasswordState.update((s) => ({
+            ...s,
+            updateSuccess: true,
+          }));
+
+          this.alert.success('Senha atualizada com sucesso.');
+          this.alert.timeoutToClear();
+        }),
+        catchError(() => {
+          this.updatePasswordState.update((s) => ({
+            ...s,
+            updateSuccess: false,
+          }));
+          this.alert.error('Erro ao atualizar senha.');
+          this.alert.timeoutToClear();
+          return EMPTY;
+        }),
+        finalize(() => {
+          this.updatePasswordState.update((s) => ({
+            ...s,
+            isUpdatting: false,
+          }));
+        }),
+      )
+      .subscribe();
+  }
+
+  resetUpdatePasswordState(): void {
+    this.updatePasswordState.update((s) => ({
+      ...s,
+      updateSuccess: false,
+      isUpdatting: false,
+    }));
+  }
+
+  private setErrorAlert<T>(errorBody: IApiResponse<T>): void {
     this.alert.error(errorBody.message);
     this.alert.timeoutToClear();
   }

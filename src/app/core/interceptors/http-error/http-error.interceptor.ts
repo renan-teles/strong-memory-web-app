@@ -8,7 +8,8 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      let message = '';
+      let message = 'Erro inesperado.';
+      let setError = true;
 
       switch (error.status) {
         case 400:
@@ -22,9 +23,13 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
         case 0:
           message = 'Erro de conexão com o servidor.';
           break;
+
+        default:
+          setError = false;
+          break;
       }
 
-      if (message) {
+      if (setError) {
         alert.error(message);
         alert.timeoutToClear();
       }
