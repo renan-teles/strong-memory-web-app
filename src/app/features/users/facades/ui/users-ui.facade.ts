@@ -3,7 +3,7 @@ import { UsersFacade } from '../users.facade';
 import { IUserFormData } from '../../models/user-form-data.interface';
 import { Router } from '@angular/router';
 import { AlertService } from '../../../../core/services/alerts/alert.service';
-import { IRegisterState } from '../../models/register-state.interface';
+import { IRegisterState } from '../../../../shared/models/register-state.interface';
 import { ILoginState } from '../../models/login-state.interface';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -13,15 +13,15 @@ import { IAuthUser } from '../../models/auth-user-interface';
 import { IUserScoreRecord } from '../../models/user-score-record.interface';
 import { IUserScoreRecordState } from '../../models/user-score-record-state.interface';
 import { IUpdatePasswordFormData } from '../../models/update-password-form-data.interface';
-import { IUpdatePasswordState } from '../../models/update-password-state.interface';
+import { IUpdateState } from '../../../../shared/models/update-state.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersUiFacade {
   private readonly usersFacade = inject(UsersFacade);
-  private readonly router = inject(Router);
   private readonly alert = inject(AlertService);
+  private readonly router = inject(Router);
 
   readonly registerState = signal<IRegisterState>({
     isRegistering: false,
@@ -38,7 +38,7 @@ export class UsersUiFacade {
     scores: [],
   });
 
-  readonly updatePasswordState = signal<IUpdatePasswordState>({
+  readonly updatePasswordState = signal<IUpdateState>({
     isUpdatting: false,
     updateSuccess: false,
   });

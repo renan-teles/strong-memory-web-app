@@ -47,7 +47,7 @@ export const routes: Routes = [
       {
         path: 'words/suggestion',
         loadComponent: () =>
-          import('./features/words/pages/word-suggestion/word-suggestion.page').then(
+          import('./features/word-suggestions/pages/suggestions/word-suggestion.page').then(
             (m) => m.WordSuggestionPage,
           ),
         canActivate: [authGuard, roleGuard],

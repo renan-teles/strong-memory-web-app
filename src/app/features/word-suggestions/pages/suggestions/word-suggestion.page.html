@@ -1,3 +1,7 @@
+@if (alert(); as alert) {
+  <app-alert [alertState]="alert" (closed)="closeAlert()" />
+}
+
 <main class="row row-cols-1 gap-3 page-content-animation">
   <section class="col">
     <div class="purple-border-start">
@@ -17,29 +21,8 @@
   </section>
 
   <section class="col">
-    <form class="row row-cols-1 row-cols-md-2">
-      <div class="col">
-        <label class="form-label" for="word-suggestion-input">Sugestão de Palavra:</label>
-        <input
-          id="word-suggestion-input"
-          class="form-control"
-          placeholder="Digite sua sugestão de palavra..."
-          type="text"
-        />
-      </div>
-
-      <div class="col mt-4 mt-md-0">
-        <app-difficulty-select
-          [showLabel]="true"
-          [labelContent]="'Sugestão de Dificuldade:'"
-        ></app-difficulty-select>
-      </div>
-
-      <div class="col"></div>
-
-      <div class="col text-end mt-4">
-        <button type="submit" class="btn-gradient-purple-orange btn-scale">Sugerir</button>
-      </div>
-    </form>
+    <app-word-suggestions-form
+      (suggestionsData)="registerSuggestion($event)"
+    ></app-word-suggestions-form>
   </section>
 </main>
