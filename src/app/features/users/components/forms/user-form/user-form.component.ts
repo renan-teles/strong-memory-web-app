@@ -4,10 +4,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { IUserFormData } from '../../../models/user-form-data.interface';
 import { UsersUiFacade } from '../../../facades/ui/users-ui.facade';
+import { SpinnerBorderComponent } from '../../../../../shared/components/spinner-border/spinner-border.component';
 
 @Component({
   selector: 'app-user-form',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, SpinnerBorderComponent],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.css',
 })
@@ -21,7 +22,7 @@ export class UserFormComponent implements OnInit {
   registerState = this.ui.registerState;
   loginState = this.ui.loginState;
 
-  form = this.fb.group({
+  form = this.fb.nonNullable.group({
     username: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(7)]],

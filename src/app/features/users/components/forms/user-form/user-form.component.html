@@ -8,8 +8,6 @@
         placeholder="Digite seu username..."
         class="form-control"
         type="text"
-        [class.is-invalid]="getInput('username')?.invalid && getInput('username')?.touched"
-        [class.is-valid]="getInput('username')?.valid && getInput('username')?.touched"
       />
       @if (getInput('username')?.touched && getInput('username')?.errors) {
         <small class="text-danger">
@@ -29,8 +27,6 @@
       placeholder="Digite seu email..."
       class="form-control"
       type="email"
-      [class.is-invalid]="getInput('email')?.invalid && getInput('email')?.touched"
-      [class.is-valid]="getInput('email')?.valid && getInput('email')?.touched"
     />
     @if (getInput('email')?.touched && getInput('email')?.errors) {
       <small class="text-danger">
@@ -52,8 +48,6 @@
       placeholder="Digite sua senha..."
       class="form-control"
       type="password"
-      [class.is-invalid]="getInput('password')?.invalid && getInput('password')?.touched"
-      [class.is-valid]="getInput('password')?.valid && getInput('password')?.touched"
     />
     @if (getInput('password')?.touched && getInput('password')?.errors) {
       <small class="text-danger">
@@ -70,15 +64,9 @@
   <div class="col text-end">
     <button [disabled]="registerState().isRegistering" class="btn-scale btn-gradient-purple-orange">
       @if (registerState().isRegistering) {
-        <div class="spinner-border spinner-border-sm text-light me-1" role="status">
-          <span class="visually-hidden"></span>
-        </div>
-        Cadastrando...
+        <app-spinner-border [text]="'Cadastrando...'"></app-spinner-border>
       } @else if (loginState().isAuthenticating) {
-        <div class="spinner-border spinner-border-sm text-light me-1" role="status">
-          <span class="visually-hidden"></span>
-        </div>
-        Entrando...
+        <app-spinner-border [text]="'Entrando...'"></app-spinner-border>
       } @else {
         @if (isRegisterRole) {
           Me Cadastrar
@@ -90,14 +78,12 @@
   </div>
 
   <div class="col text-start">
-    @if(!(registerState().isRegistering || loginState().isAuthenticating)) {
-
+    @if (!(registerState().isRegistering || loginState().isAuthenticating)) {
       @if (isRegisterRole) {
         <a routerLink="/player/login" class="text-purple">Já tem conta? Entre com ela aqui.</a>
       } @else {
         <a routerLink="/player/register" class="text-purple">Não tem conta? Crie sua conta aqui.</a>
       }
-      
     }
   </div>
 </form>
