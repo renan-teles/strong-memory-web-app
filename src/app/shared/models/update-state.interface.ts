@@ -1,4 +1,4 @@
-export interface IUpdatePasswordState {
+export interface IUpdateState {
   isUpdatting: boolean;
   updateSuccess: boolean;
 }

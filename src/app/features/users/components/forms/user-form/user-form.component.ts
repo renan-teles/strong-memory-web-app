@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { IUserFormData } from '../../../models/user-form-data.interface';
 import { UsersUiFacade } from '../../../facades/ui/users-ui.facade';
 import { SpinnerBorderComponent } from '../../../../../shared/components/spinner-border/spinner-border.component';
+import { IFormUtils } from '../../../../../shared/models/form-utils.interface';
 
 @Component({
   selector: 'app-user-form',
@@ -12,7 +13,7 @@ import { SpinnerBorderComponent } from '../../../../../shared/components/spinner
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.css',
 })
-export class UserFormComponent implements OnInit {
+export class UserFormComponent implements OnInit, IFormUtils<IUserFormData> {
   @Input({ required: true }) isRegisterRole: boolean = true;
   @Output() userData = new EventEmitter<IUserFormData>();
 

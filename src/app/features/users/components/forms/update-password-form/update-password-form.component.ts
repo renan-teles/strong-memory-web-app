@@ -1,24 +1,11 @@
 import { Component, effect, EventEmitter, inject, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IUpdatePasswordFormData } from '../../../models/update-password-form-data.interface';
 import { UsersUiFacade } from '../../../facades/ui/users-ui.facade';
 import { SpinnerBorderComponent } from '../../../../../shared/components/spinner-border/spinner-border.component';
 import { IUpdatePasswordFormInputs } from '../../../models/update-password-form-inputs.interface';
-
-export function passwordMatchValidator(control: AbstractControl) {
-  const parent = control.parent;
-
-  if (!parent) return null;
-
-  const newPassword = parent.get('newPassword')?.value;
-  const confirmNewPassword = control.value;
-
-  if (newPassword && confirmNewPassword && newPassword !== confirmNewPassword) {
-    return { passwordMismatch: true };
-  }
-
-  return null;
-}
+import { IFormUtils } from '../../../../../shared/models/form-utils.interface';
+import { passwordMatchValidator } from '../../../../../shared/validators/password-math.validator';
 
 @Component({
   selector: 'app-update-password-form',
@@ -26,7 +13,7 @@ export function passwordMatchValidator(control: AbstractControl) {
   templateUrl: './update-password-form.component.html',
   styleUrl: './update-password-form.component.css',
 })
-export class UpdatePasswordFormComponent implements OnInit {
+export class UpdatePasswordFormComponent implements OnInit, IFormUtils<IUpdatePasswordFormInputs> {
   @Output() passwordData = new EventEmitter<IUpdatePasswordFormData>();
 
   private readonly fb = inject(FormBuilder);
