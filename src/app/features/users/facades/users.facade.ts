@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { IUserFormData } from '../models/user-form-data.interface';
+import { IUserData } from '../models/user-data.interface';
 import { Observable, tap } from 'rxjs';
 import { IApiResponse } from '../../../shared/models/api-response.interface';
 import { ICreatedUser } from '../models/created-user.interface';
@@ -7,20 +7,20 @@ import { AuthStorageService } from '../../../core/services/auth-storage/auth-sto
 import { UsersApiService } from '../services/user-api/users-api.service';
 import { IAuthUser } from '../models/auth-user-interface';
 import { IUserScoreRecord } from '../models/user-score-record.interface';
-import { IUpdatePasswordFormData } from '../models/update-password-form-data.interface';
+import { IUpdatePasswordData } from '../models/update-password-data.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersFacade {
-  private readonly api = inject(UsersApiService);
-  private readonly authStorage = inject(AuthStorageService);
+  private readonly api: UsersApiService = inject(UsersApiService);
+  private readonly authStorage: AuthStorageService = inject(AuthStorageService);
 
-  registerPlayer(data: IUserFormData): Observable<IApiResponse<ICreatedUser>> {
+  registerPlayer(data: IUserData): Observable<IApiResponse<ICreatedUser>> {
     return this.api.registerPlayer(data);
   }
 
-  loginPlayer(data: IUserFormData): Observable<IApiResponse<IAuthUser>> {
+  loginPlayer(data: IUserData): Observable<IApiResponse<IAuthUser>> {
     return this.api.loginPlayer(data).pipe(
       tap((response) => {
         const token = response.data!.token;
@@ -38,7 +38,7 @@ export class UsersFacade {
     return this.api.getPlayerSocreRecords(this.getUserId());
   }
 
-  updatePlayerPassword(data: IUpdatePasswordFormData): Observable<void> {
+  updatePlayerPassword(data: IUpdatePasswordData): Observable<void> {
     return this.api.updatePlayerPassword(this.getUserId(), data);
   }
 

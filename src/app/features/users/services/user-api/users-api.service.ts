@@ -1,27 +1,31 @@
 import { Injectable } from '@angular/core';
-import { IUserFormData } from '../../models/user-form-data.interface';
+import { IUserData } from '../../models/user-data.interface';
 import { ICreatedUser } from '../../models/created-user.interface';
 import { IApiResponse } from '../../../../shared/models/api-response.interface';
 import { Observable } from 'rxjs';
 import { IAuthUser } from '../../models/auth-user-interface';
 import { IUserScoreRecord } from '../../models/user-score-record.interface';
-import { ApiService } from '../../../../core/services/api/api.service';
-import { IUpdatePasswordFormData } from '../../models/update-password-form-data.interface';
+import { IUpdatePasswordData } from '../../models/update-password-data.interface';
 import { HttpContext, HttpContextToken } from '@angular/common/http';
+import { AbstractApiService } from '../../../../core/services/api/abstract-api.service';
 
 export const SKIP_AUTH = new HttpContextToken(() => false);
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsersApiService extends ApiService {
-  registerPlayer(data: IUserFormData): Observable<IApiResponse<ICreatedUser>> {
+export class UsersApiService extends AbstractApiService {
+  constructor() {
+    super();
+  }
+
+  registerPlayer(data: IUserData): Observable<IApiResponse<ICreatedUser>> {
     return this.http.post<IApiResponse<ICreatedUser>>(`${this.BASE_URL}/player/register`, data, {
       context: new HttpContext().set(SKIP_AUTH, true),
     });
   }
 
-  loginPlayer(data: IUserFormData): Observable<IApiResponse<IAuthUser>> {
+  loginPlayer(data: IUserData): Observable<IApiResponse<IAuthUser>> {
     return this.http.post<IApiResponse<IAuthUser>>(
       `${this.BASE_URL}/player/auth`,
       {
@@ -40,7 +44,7 @@ export class UsersApiService extends ApiService {
     );
   }
 
-  updatePlayerPassword(userId: string, data: IUpdatePasswordFormData): Observable<void> {
+  updatePlayerPassword(userId: string, data: IUpdatePasswordData): Observable<void> {
     return this.http.put<void>(`${this.BASE_URL}/player/update-password/${userId}`, data);
   }
 }

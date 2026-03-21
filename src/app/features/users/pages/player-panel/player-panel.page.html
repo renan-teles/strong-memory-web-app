@@ -18,9 +18,9 @@
       </div>
 
       <div class="col rounded">
-        @if (scoreRecords().isGetting) {
+        @if (isFindingScores()) {
           <app-spinner-border [text]="'Carregando suas maiores pontuações...'"></app-spinner-border>
-        } @else if (scoreRecords().scores === []) {
+        } @else if (!findScoresSuccess()) {
           <p class="text-danger">Falha ao buscar maiores pontuações.</p>
         } @else {
           <table class="table">
@@ -31,7 +31,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (score of scoreRecords().scores; track score.id) {
+              @for (score of userScores(); track score.id) {
                 <tr>
                   <td>{{ score.difficulty | translateDifficulty }}</td>
                   <td>{{ score.score }}</td>
@@ -82,7 +82,7 @@
         <h5 class="ms-2">Minha Senha</h5>
       </div>
       <app-update-password-form
-        (passwordData)="updatePlayerPassword($event)"
+        (passwordData)="updateUserPassword($event)"
       ></app-update-password-form>
     </section>
 

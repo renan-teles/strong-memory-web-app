@@ -30,8 +30,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       if (setError) {
-        alert.error(message);
-        alert.timeoutToClear();
+        alert.error(message).startTimeoutToClear();
       }
 
       return throwError(() => error);

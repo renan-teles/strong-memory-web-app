@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IAlertState } from '../../models/alert-state.interface';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-alert',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './alert.component.html',
   styleUrl: './alert.component.css',
+  standalone: true,
 })
 export class AlertComponent {
   @Input({ required: true }) alertState!: IAlertState;

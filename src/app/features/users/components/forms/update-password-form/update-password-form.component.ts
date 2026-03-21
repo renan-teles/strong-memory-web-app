@@ -1,11 +1,20 @@
-import { Component, effect, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  effect,
+  EffectRef,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+  Signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IUpdatePasswordFormData } from '../../../models/update-password-form-data.interface';
-import { UsersUiFacade } from '../../../facades/ui/users-ui.facade';
+import { IUpdatePasswordData } from '../../../models/update-password-data.interface';
 import { SpinnerBorderComponent } from '../../../../../shared/components/spinner-border/spinner-border.component';
 import { IUpdatePasswordFormInputs } from '../../../models/update-password-form-inputs.interface';
 import { IFormUtils } from '../../../../../shared/models/form-utils.interface';
 import { passwordMatchValidator } from '../../../../../shared/validators/password-math.validator';
+import { CrudPlayerUiFacade } from '../../../facades/ui/crud/player/crud-player-ui.facade';
 
 @Component({
   selector: 'app-update-password-form',
@@ -14,20 +23,20 @@ import { passwordMatchValidator } from '../../../../../shared/validators/passwor
   styleUrl: './update-password-form.component.css',
 })
 export class UpdatePasswordFormComponent implements OnInit, IFormUtils<IUpdatePasswordFormInputs> {
-  @Output() passwordData = new EventEmitter<IUpdatePasswordFormData>();
+  @Output() passwordData = new EventEmitter<IUpdatePasswordData>();
 
-  private readonly fb = inject(FormBuilder);
-  private readonly ui = inject(UsersUiFacade);
+  private readonly fb: FormBuilder = inject(FormBuilder);
+  private readonly crudFacade: CrudPlayerUiFacade = inject(CrudPlayerUiFacade);
 
-  private resetFormEffect = effect(() => {
-    const state = this.updatePassword();
-    if (state.updateSuccess && !state.isUpdatting) {
+  private resetFormEffect: EffectRef = effect(() => {
+    if (this.updatePasswordSuccess() && !this.isUpdatingPassword()) {
       this.form.reset();
-      this.ui.resetUpdatePasswordState();
+      this.crudFacade.resetUpdatePasswordState();
     }
   });
 
-  updatePassword = this.ui.updatePasswordState;
+  isUpdatingPassword: Signal<boolean> = this.crudFacade.isUpdatingPassword;
+  updatePasswordSuccess: Signal<boolean> = this.crudFacade.updatePasswordSuccess;
 
   form = this.fb.nonNullable.group({
     currentPassword: ['', [Validators.required, Validators.minLength(7)]],
@@ -44,7 +53,7 @@ export class UpdatePasswordFormComponent implements OnInit, IFormUtils<IUpdatePa
     });
   }
 
-  getInput(name: keyof IUpdatePasswordFormInputs) {
+  getInput(name: keyof IUpdatePasswordFormInputs): any {
     return this.form.get(name);
   }
 
@@ -54,11 +63,9 @@ export class UpdatePasswordFormComponent implements OnInit, IFormUtils<IUpdatePa
       return;
     }
 
-    const data: IUpdatePasswordFormData = {
+    this.passwordData.emit({
       currentPassword: this.form.value.currentPassword!,
       newPassword: this.form.value.newPassword!,
-    };
-
-    this.passwordData.emit(data);
+    });
   }
 }

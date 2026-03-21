@@ -1,4 +1,4 @@
-export interface IWordSuggestionFormData {
+export interface IWordSuggestionData {
   suggestedWord: string;
   suggestedDifficulty: string;
 }
