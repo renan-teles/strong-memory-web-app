@@ -27,24 +27,17 @@
       <option value="normal">Normal</option>
       <option value="hard">Difícil</option>
     </select>
-    @if (getInput('suggestedDifficulty')?.touched && getInput('suggestedDifficulty')?.errors) {
-      <small class="text-danger">
-        @if (getInput('suggestedDifficulty')?.hasError('required')) {
-          Sugestão de dificuldade é obrigatória!
-        }
-      </small>
-    }
   </div>
 
   <div class="col"></div>
 
   <div class="col text-end mt-4">
     <button
-      [disabled]="registerState().isRegistering"
+      [disabled]="isRegisteringWord()"
       type="submit"
       class="btn-gradient-purple-orange btn-scale"
     >
-      @if (registerState().isRegistering) {
+      @if (isRegisteringWord()) {
         <app-spinner-border [text]="'sugerindo...'"></app-spinner-border>
       } @else {
         Sugerir

@@ -1,5 +1,5 @@
-import { IUpdatePasswordFormData } from "./update-password-form-data.interface";
+import { IUpdatePasswordData } from './update-password-data.interface';
 
-export interface IUpdatePasswordFormInputs extends IUpdatePasswordFormData {
+export interface IUpdatePasswordFormInputs extends IUpdatePasswordData {
   confirmNewPassword: string;
 }

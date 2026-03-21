@@ -1,4 +1,4 @@
 export interface IUpdateState {
-  isUpdatting: boolean;
+  isUpdating: boolean;
   updateSuccess: boolean;
 }

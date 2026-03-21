@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UsersUiFacade } from './users-ui.facade';
+import { AuthUsersUiFacade } from './auth-users-ui.facade';
 
-describe('UsersUiFacade', () => {
-  let service: UsersUiFacade;
+describe('AuthUsersUiFacade', () => {
+  let service: AuthUsersUiFacade;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(UsersUiFacade);
+    service = TestBed.inject(AuthUsersUiFacade);
   });
 
   it('should be created', () => {

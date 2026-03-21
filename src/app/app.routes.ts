@@ -38,7 +38,7 @@ export const routes: Routes = [
       {
         path: 'words/registered',
         loadComponent: () =>
-          import('./features/words/pages/registered-words/registered-words.page').then(
+          import('./features/words/pages/registered/registered-words.page').then(
             (m) => m.RegisteredWordsPage,
           ),
         canActivate: [authGuard, roleGuard],

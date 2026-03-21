@@ -1,10 +1,10 @@
 import { Component, inject, Signal } from '@angular/core';
 import { UserFormCardComponent } from '../../components/cards/user-form-card/user-form-card.component';
 import { IAlertState } from '../../../../shared/models/alert-state.interface';
-import { UsersUiFacade } from '../../facades/ui/users-ui.facade';
 import { AlertService } from '../../../../core/services/alerts/alert.service';
-import { IUserFormData } from '../../models/user-form-data.interface';
+import { IUserData } from '../../models/user-data.interface';
 import { AlertComponent } from '../../../../shared/components/alert/alert.component';
+import { AuthUsersUiFacade } from '../../facades/ui/auth/auth-users-ui.facade';
 
 @Component({
   selector: 'app-authenticate-player',
@@ -13,9 +13,9 @@ import { AlertComponent } from '../../../../shared/components/alert/alert.compon
   styleUrl: './authenticate-player.page.css',
 })
 export class AuthenticatePlayerPage implements IAlertUtils {
-  private readonly ui = inject(UsersUiFacade);
+  private readonly facade: AuthUsersUiFacade = inject(AuthUsersUiFacade);
 
-  private readonly alertService = inject(AlertService);
+  private readonly alertService: AlertService = inject(AlertService);
   alert: Signal<IAlertState | null> = this.alertService.alert;
 
   ngOnDestroy(): void {
@@ -26,7 +26,7 @@ export class AuthenticatePlayerPage implements IAlertUtils {
     this.alertService.clear();
   }
 
-  loginPlayer(data: IUserFormData): void {
-    this.ui.loginPlayer(data);
+  loginPlayer(data: IUserData): void {
+    this.facade.authPlayer(data);
   }
 }

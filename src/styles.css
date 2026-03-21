@@ -16,7 +16,7 @@ body {
 
 body {
   min-height: 100vh;
-  /* filter: blur(0); */
+  /* filter: blur(0);  */
   background:
     radial-gradient(
       circle at 50% 50%,

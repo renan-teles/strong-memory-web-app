@@ -1,8 +1,8 @@
-import { Component, effect, EventEmitter, inject, Output } from '@angular/core';
+import { Component, effect, EffectRef, EventEmitter, inject, Output, Signal } from '@angular/core';
 import { IFormUtils } from '../../../../../shared/models/form-utils.interface';
-import { IWordSuggestionFormData } from '../../../models/word-suggestion-form-data.interface';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { WordSuggestionsUiFacade } from '../../../facades/ui/word-suggestions-ui.facade.ts';
+import { IWordSuggestionData } from '../../../models/word-suggestion-data.interface';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CrudWordSuggestionsUiFacade } from '../../../facades/ui/crud/crud-word-suggestions-ui.facade.ts';
 import { SpinnerBorderComponent } from '../../../../../shared/components/spinner-border/spinner-border.component';
 
 @Component({
@@ -11,28 +11,28 @@ import { SpinnerBorderComponent } from '../../../../../shared/components/spinner
   templateUrl: './word-suggestions-form.component.html',
   styleUrl: './word-suggestions-form.component.css',
 })
-export class WordSuggestionsFormComponent implements IFormUtils<IWordSuggestionFormData> {
-  @Output() suggestionsData = new EventEmitter<IWordSuggestionFormData>();
+export class WordSuggestionsFormComponent implements IFormUtils<IWordSuggestionData> {
+  @Output() suggestionsData = new EventEmitter<IWordSuggestionData>();
 
-  private readonly ui = inject(WordSuggestionsUiFacade);
-  private readonly fb = inject(FormBuilder);
+  private readonly facade: CrudWordSuggestionsUiFacade = inject(CrudWordSuggestionsUiFacade);
+  private readonly fb: FormBuilder = inject(FormBuilder);
 
-  private resetFormEffect = effect(() => {
-    const state = this.registerState();
-    if (state.registerSuccess && !state.isRegistering) {
+  isRegisteringWord: Signal<boolean> = this.facade.isRegistering;
+  registerSuccess: Signal<boolean> = this.facade.registerSuccess;
+
+  private resetFormEffect: EffectRef = effect(() => {
+    if (this.registerSuccess() && !this.isRegisteringWord()) {
       this.form.reset();
-      this.ui.resetRegisterState();
+      this.facade.resetRegisterState();
     }
   });
 
-  registerState = this.ui.registerState;
-
-  form = this.fb.nonNullable.group({
+  form: FormGroup = this.fb.nonNullable.group({
     suggestedWord: ['', [Validators.required, Validators.minLength(2)]],
     suggestedDifficulty: ['easy', [Validators.required]],
   });
 
-  getInput(name: keyof IWordSuggestionFormData) {
+  getInput(name: keyof IWordSuggestionData): any {
     return this.form.get(name);
   }
 
@@ -42,11 +42,9 @@ export class WordSuggestionsFormComponent implements IFormUtils<IWordSuggestionF
       return;
     }
 
-    const data: IWordSuggestionFormData = {
+    this.suggestionsData.emit({
       suggestedDifficulty: this.form.value.suggestedDifficulty!,
       suggestedWord: this.form.value.suggestedWord!,
-    };
-
-    this.suggestionsData.emit(data);
+    });
   }
 }

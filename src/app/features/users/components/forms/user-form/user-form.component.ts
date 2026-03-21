@@ -1,29 +1,30 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnInit, Output, Signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { IUserFormData } from '../../../models/user-form-data.interface';
-import { UsersUiFacade } from '../../../facades/ui/users-ui.facade';
+import { IUserData } from '../../../models/user-data.interface';
 import { SpinnerBorderComponent } from '../../../../../shared/components/spinner-border/spinner-border.component';
 import { IFormUtils } from '../../../../../shared/models/form-utils.interface';
+import { CrudPlayerUiFacade } from '../../../facades/ui/crud/player/crud-player-ui.facade';
+import { AuthUsersUiFacade } from '../../../facades/ui/auth/auth-users-ui.facade';
 
 @Component({
   selector: 'app-user-form',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, SpinnerBorderComponent],
+  imports: [RouterLink, ReactiveFormsModule, SpinnerBorderComponent],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.css',
 })
-export class UserFormComponent implements OnInit, IFormUtils<IUserFormData> {
+export class UserFormComponent implements OnInit, IFormUtils<IUserData> {
   @Input({ required: true }) isRegisterRole: boolean = true;
-  @Output() userData = new EventEmitter<IUserFormData>();
+  @Output() userData = new EventEmitter<IUserData>();
 
-  private readonly ui = inject(UsersUiFacade);
-  private readonly fb = inject(FormBuilder);
+  private readonly crudFacade: CrudPlayerUiFacade = inject(CrudPlayerUiFacade);
+  private readonly authFacade: AuthUsersUiFacade = inject(AuthUsersUiFacade);
+  private readonly fb: FormBuilder = inject(FormBuilder);
 
-  registerState = this.ui.registerState;
-  loginState = this.ui.loginState;
+  isRegisteringUser: Signal<boolean> = this.crudFacade.isRegistering;
+  isAuthenticatingUser: Signal<boolean> = this.authFacade.isAuthenticating;
 
-  form = this.fb.nonNullable.group({
+  form: FormGroup = this.fb.nonNullable.group({
     username: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(7)]],
@@ -39,7 +40,7 @@ export class UserFormComponent implements OnInit, IFormUtils<IUserFormData> {
     this.form.get('username')?.updateValueAndValidity();
   }
 
-  getInput(name: keyof IUserFormData) {
+  getInput(name: keyof IUserData): any {
     return this.form.get(name);
   }
 
@@ -49,7 +50,7 @@ export class UserFormComponent implements OnInit, IFormUtils<IUserFormData> {
       return;
     }
 
-    const data: IUserFormData = {
+    const data: IUserData = {
       username: this.isRegisterRole ? (this.form.value.username ?? '') : undefined,
       email: this.form.value.email!,
       password: this.form.value.password!,

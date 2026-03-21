@@ -62,10 +62,10 @@
   </div>
 
   <div class="col text-end">
-    <button [disabled]="registerState().isRegistering" class="btn-scale btn-gradient-purple-orange">
-      @if (registerState().isRegistering) {
+    <button [disabled]="isRegisteringUser()" class="btn-scale btn-gradient-purple-orange">
+      @if (isRegisteringUser()) {
         <app-spinner-border [text]="'Cadastrando...'"></app-spinner-border>
-      } @else if (loginState().isAuthenticating) {
+      } @else if (isAuthenticatingUser()) {
         <app-spinner-border [text]="'Entrando...'"></app-spinner-border>
       } @else {
         @if (isRegisterRole) {
@@ -78,7 +78,7 @@
   </div>
 
   <div class="col text-start">
-    @if (!(registerState().isRegistering || loginState().isAuthenticating)) {
+    @if (!(isRegisteringUser() || isAuthenticatingUser())) {
       @if (isRegisterRole) {
         <a routerLink="/player/login" class="text-purple">Já tem conta? Entre com ela aqui.</a>
       } @else {
