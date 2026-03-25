@@ -8,9 +8,9 @@
     </div>
 
     <div class="col">
-      <app-select-word-difficulty-form
-        (selectedDifficulty)="findWordsByDiffitulty($event)"
-      ></app-select-word-difficulty-form>
+      <app-filter-word-difficulty-form
+        (selectedDifficulty)="loadWordsByDiffitulty($event)"
+      ></app-filter-word-difficulty-form>
     </div>
   </section>
 
@@ -20,14 +20,17 @@
 
   <section class="row row-cols-1 gap-3">
     <div class="col">
-      @if (isFindingWords()) {
-        <app-spinner-border [text]="'Carregando palavras...'"></app-spinner-border>
+      @if (isLoadingWords()) {
+        <app-spinner-border
+          [text]="'Carregando palavras...'"
+          [classText]="'text-purple'"
+        ></app-spinner-border>
       } @else if (!words() || words().length === 0) {
         <p>Nenhuma palavra encontrada.</p>
-      } @else if (!findWordsSuccess()) {
-        <p class="text-danger">Falha ao buscar palavras.</p>
+      } @else if (!loadWordsSuccess()) {
+        <p class="text-danger"><i class="bi-x-circle-fill"></i>Falha ao buscar palavras.</p>
       } @else {
-        <div class="row row-cols-2 page-content-animation">
+        <div class="row row-cols-1 row-cols-md-2 page-content-animation">
           @for (word of words(); track word.id) {
             <div class="col">
               <p class="fs-4">{{ word.word | titlecase }}</p>
@@ -37,7 +40,7 @@
       }
     </div>
 
-    @if (findWordsSuccess()) {
+    @if (loadWordsSuccess()) {
       <div class="col-12">
         <hr class="text-orange" />
       </div>
@@ -50,7 +53,7 @@
                 type="button"
                 class="page-link"
                 [disabled]="paginationState().first"
-                (click)="findWordsByDiffitulty(selectedDifficulty, paginationState().number - 1)"
+                (click)="loadWordsByDiffitulty(selectedDifficulty, paginationState().number - 1)"
               >
                 &laquo;
               </button>
@@ -63,7 +66,7 @@
                   class="page-link"
                   [disabled]="page === paginationState().number"
                   [class.active-link-pagination]="page === paginationState().number"
-                  (click)="findWordsByDiffitulty(selectedDifficulty, page)"
+                  (click)="loadWordsByDiffitulty(selectedDifficulty, page)"
                 >
                   {{ page + 1 }}
                 </button>
@@ -75,7 +78,7 @@
                 type="button"
                 class="page-link"
                 [disabled]="paginationState().last"
-                (click)="findWordsByDiffitulty(selectedDifficulty, paginationState().number + 1)"
+                (click)="loadWordsByDiffitulty(selectedDifficulty, paginationState().number + 1)"
               >
                 &raquo;
               </button>

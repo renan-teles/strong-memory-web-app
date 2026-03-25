@@ -1,0 +1,21 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+  <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+    <select formControlName="difficulty" id="select-difficulty" class="form-select">
+      @for (diff of difficults; track $index) {
+        <option [value]="diff.difficulty">{{ diff.translation | titlecase }}</option>
+      }
+    </select>
+
+    <button
+      [disabled]="isLoadingWords()"
+      type="submit"
+      class="btn-scale btn-gradient-purple-orange"
+    >
+      @if (isLoadingWords()) {
+        <app-spinner-border [text]="''"></app-spinner-border>
+      } @else {
+        <i class="bi-search ccd dme-2"></i>
+      }
+    </button>
+  </div>
+</form>

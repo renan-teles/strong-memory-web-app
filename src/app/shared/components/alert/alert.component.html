@@ -1,7 +1,13 @@
 <div class="container-md alert-container">
-  <div class="alert alert-dismissible text-center" role="alert" [class]="componentClass">
-    <i class="me-2" [class]="icon"></i>
-    {{ message }}
-    <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
-  </div>
+  @if (alert()) {
+    <div
+      class="alert alert-dismissible text-center show pag-content-animation"
+      role="alert"
+      [class]="alert()!.alertClass"
+    >
+      <i class="me-2" [class]="alert()!.icon"></i>
+      {{ alert()!.message }}
+      <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+    </div>
+  }
 </div>

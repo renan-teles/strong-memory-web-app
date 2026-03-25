@@ -15,22 +15,22 @@ export class AuthUsersUiFacade extends AbstractUsersUiFacade {
 
   private readonly _loginState = signal<ILoginState>({
     isAuthenticating: false,
-    loginSuccess: false,
+    success: false,
   });
 
   readonly isAuthenticating: Signal<boolean> = computed(() => {
     return this._loginState().isAuthenticating;
   });
 
-  readonly loginSuccess: Signal<boolean> = computed(() => {
-    return this._loginState().loginSuccess;
+  readonly success: Signal<boolean> = computed(() => {
+    return this._loginState().success;
   });
 
   authPlayer(data: IUserData): void {
     this._loginState.update((s) => ({
       ...s,
       isAuthenticating: true,
-      loginSuccess: false,
+      success: false,
     }));
 
     this.facade
@@ -39,7 +39,7 @@ export class AuthUsersUiFacade extends AbstractUsersUiFacade {
         tap(() => {
           this._loginState.update((s) => ({
             ...s,
-            loginSuccess: true,
+            success: true,
           }));
           this.redirectTo('/game/start');
         }),
@@ -47,9 +47,10 @@ export class AuthUsersUiFacade extends AbstractUsersUiFacade {
         catchError((error: HttpErrorResponse) => {
           this._loginState.update((s) => ({
             ...s,
-            loginSuccess: false,
+            success: false,
           }));
-          this.alert.error(error.error.message).startTimeoutToClear();
+
+          this.alert.error(error.error.message);
           return EMPTY;
         }),
 

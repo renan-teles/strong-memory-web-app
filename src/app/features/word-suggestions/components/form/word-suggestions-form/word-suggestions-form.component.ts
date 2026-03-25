@@ -4,10 +4,13 @@ import { IWordSuggestionData } from '../../../models/word-suggestion-data.interf
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CrudWordSuggestionsUiFacade } from '../../../facades/ui/crud/crud-word-suggestions-ui.facade.ts';
 import { SpinnerBorderComponent } from '../../../../../shared/components/spinner-border/spinner-border.component';
+import { WordDifficultService } from '../../../../../core/services/word-difficult/word-difficult.service';
+import { IWordDifficultyData } from '../../../../../shared/models/word-difficulty-data.interface';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-word-suggestions-form',
-  imports: [ReactiveFormsModule, SpinnerBorderComponent],
+  imports: [ReactiveFormsModule, SpinnerBorderComponent, TitleCasePipe],
   templateUrl: './word-suggestions-form.component.html',
   styleUrl: './word-suggestions-form.component.css',
 })
@@ -16,9 +19,7 @@ export class WordSuggestionsFormComponent implements IFormUtils<IWordSuggestionD
 
   private readonly facade: CrudWordSuggestionsUiFacade = inject(CrudWordSuggestionsUiFacade);
   private readonly fb: FormBuilder = inject(FormBuilder);
-
-  isRegisteringWord: Signal<boolean> = this.facade.isRegistering;
-  registerSuccess: Signal<boolean> = this.facade.registerSuccess;
+  private readonly difficultyService = inject(WordDifficultService);
 
   private resetFormEffect: EffectRef = effect(() => {
     if (this.registerSuccess() && !this.isRegisteringWord()) {
@@ -26,6 +27,13 @@ export class WordSuggestionsFormComponent implements IFormUtils<IWordSuggestionD
       this.facade.resetRegisterState();
     }
   });
+
+  isRegisteringWord: Signal<boolean> = this.facade.isRegistering;
+  registerSuccess: Signal<boolean> = this.facade.registerSuccess;
+
+  get difficults(): IWordDifficultyData[] {
+    return this.difficultyService.difficults;
+  }
 
   form: FormGroup = this.fb.nonNullable.group({
     suggestedWord: ['', [Validators.required, Validators.minLength(2)]],

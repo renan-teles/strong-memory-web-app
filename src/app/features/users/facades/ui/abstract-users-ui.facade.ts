@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { UsersFacade } from '../users.facade';
-import { AlertService } from '../../../../core/services/alerts/alert.service';
+import { AlertService } from '../../../../core/services/alert/alert.service';
 import { Router } from '@angular/router';
 
 export abstract class AbstractUsersUiFacade {

@@ -38,7 +38,7 @@ export class UsersApiService extends AbstractApiService {
     );
   }
 
-  getPlayerSocreRecords(userId: string): Observable<IApiResponse<IUserScoreRecord[]>> {
+  loadPlayerSocreRecords(userId: string): Observable<IApiResponse<IUserScoreRecord[]>> {
     return this.http.get<IApiResponse<IUserScoreRecord[]>>(
       `${this.BASE_URL}/score-record/get-all-by-user-id/${userId}`,
     );

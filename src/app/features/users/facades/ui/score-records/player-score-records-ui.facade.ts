@@ -3,7 +3,7 @@ import { AbstractUsersUiFacade } from '../abstract-users-ui.facade';
 import { IApiResponse } from '../../../../../shared/models/api-response.interface';
 import { IUserScoreRecord } from '../../../models/user-score-record.interface';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
-import { IFindState } from '../../../../../shared/models/find.interface';
+import { ILoadDataState } from '../../../../../shared/models/load-data-state.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,53 +13,53 @@ export class PlayerScoreRecordsUiFacade extends AbstractUsersUiFacade {
     super();
   }
 
-  readonly _findScoreRecordState = signal<IFindState<IUserScoreRecord[]>>({
-    isFinding: false,
+  readonly _loadScoreRecordState = signal<ILoadDataState<IUserScoreRecord[]>>({
+    isLoading: false,
     values: [],
-    findSuccess: false,
+    success: false,
   });
 
   readonly scores: Signal<IUserScoreRecord[]> = computed(() => {
-    return this._findScoreRecordState().values;
+    return this._loadScoreRecordState().values;
   });
 
-  readonly isFinding: Signal<boolean> = computed(() => {
-    return this._findScoreRecordState().isFinding;
+  readonly isLoading: Signal<boolean> = computed(() => {
+    return this._loadScoreRecordState().isLoading;
   });
 
-  readonly findSuccess: Signal<boolean> = computed(() => {
-    return this._findScoreRecordState().findSuccess;
+  readonly loadSuccess: Signal<boolean> = computed(() => {
+    return this._loadScoreRecordState().success;
   });
 
-  getSocreRecords(): void {
-    this._findScoreRecordState.update((s) => ({
+  loadSocreRecords(): void {
+    this._loadScoreRecordState.update((s) => ({
       ...s,
-      isFinding: true,
-      findSuccess: false,
+      isLoading: true,
+      success: false,
       values: [],
     }));
 
     this.facade
-      .getPlayerSocreRecords()
+      .loadPlayerSocreRecords()
       .pipe(
         tap((response: IApiResponse<IUserScoreRecord[]>) => {
-          this._findScoreRecordState.update((s) => ({
+          this._loadScoreRecordState.update((s) => ({
             ...s,
             values: response.data!,
-            findSuccess: true,
+            success: true,
           }));
         }),
         catchError(() => {
-          this._findScoreRecordState.update((s) => ({
+          this._loadScoreRecordState.update((s) => ({
             ...s,
-            findSuccess: false,
+            success: false,
           }));
           return EMPTY;
         }),
         finalize(() => {
-          this._findScoreRecordState.update((s) => ({
+          this._loadScoreRecordState.update((s) => ({
             ...s,
-            isFinding: false,
+            isLoading: false,
           }));
         }),
       )

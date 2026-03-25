@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
-import { DifficultySelectComponent } from '../../components/forms/selects/difficulty-select/difficulty-select.component';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { SelectDifficultyFormComponent } from '../../components/forms/select-difficulty-form/select-difficulty-form.component';
+import { IWordDifficultyFormData } from '../../../../shared/models/word-difficulty-form-data.interface';
 
 @Component({
   selector: 'app-start-game',
-  imports: [DifficultySelectComponent],
+  imports: [SelectDifficultyFormComponent],
   templateUrl: './start-game.page.html',
   styleUrl: './start-game.page.css',
 })
-export class StartGamePage {}
+export class StartGamePage {
+  private readonly router: Router = inject(Router);
 
+  redirectToPlayGame(data: IWordDifficultyFormData): void {
+    this.router.navigate([`/game/play`], {
+      queryParams: { difficulty: data.difficulty },
+    });
+  }
+}

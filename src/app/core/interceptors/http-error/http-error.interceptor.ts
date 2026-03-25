@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
-import { AlertService } from '../../services/alerts/alert.service';
+import { AlertService } from '../../services/alert/alert.service';
 import { inject } from '@angular/core';
 
 export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
@@ -10,6 +10,8 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       let message = 'Erro inesperado.';
       let setError = true;
+
+      console.log(error);
 
       switch (error.status) {
         case 400:
@@ -29,10 +31,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
           break;
       }
 
-      if (setError) {
-        alert.error(message).startTimeoutToClear();
-      }
-
+      if (setError) alert.error(message);
       return throwError(() => error);
     }),
   );

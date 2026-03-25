@@ -1,4 +1,4 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, EMPTY } from 'rxjs';
@@ -25,8 +25,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   return next(authReq).pipe(
-    catchError((error) => {
-      if (error.status === 401 || error.status === 403) {
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
         authStorage.clearAll();
         router.navigate(['/player/login']);
       }

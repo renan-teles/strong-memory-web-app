@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, Signal, signal } from '@angular/core';
-import { AlertService } from '../../../../../core/services/alerts/alert.service';
+import { AlertService } from '../../../../../core/services/alert/alert.service';
 import { IWordSuggestionData } from '../../../models/word-suggestion-data.interface';
 import { WordSuggestionsFacade } from '../../word-suggestions.facade.ts';
 import { IRegisterState } from '../../../../../shared/models/register-state.interface';
@@ -16,7 +16,7 @@ export class CrudWordSuggestionsUiFacade {
 
   private readonly _registerState = signal<IRegisterState>({
     isRegistering: false,
-    registerSuccess: false,
+    success: false,
   });
 
   readonly isRegistering: Signal<boolean> = computed(() => {
@@ -24,14 +24,14 @@ export class CrudWordSuggestionsUiFacade {
   });
 
   readonly registerSuccess: Signal<boolean> = computed(() => {
-    return this._registerState().registerSuccess;
+    return this._registerState().success;
   });
 
   register(data: IWordSuggestionData): void {
     this._registerState.update((s) => ({
       ...s,
       isRegistering: true,
-      registerSuccess: false,
+      success: false,
     }));
 
     this.facade
@@ -40,17 +40,17 @@ export class CrudWordSuggestionsUiFacade {
         tap((response: IApiResponse<IWordSuggestionData>) => {
           this._registerState.update((s) => ({
             ...s,
-            registerSuccess: true,
+            success: true,
           }));
-          this.alert.success(response.message).startTimeoutToClear();
+          this.alert.success(response.message);
         }),
 
         catchError((error: HttpErrorResponse) => {
           this._registerState.update((s) => ({
             ...s,
-            registerSuccess: false,
+            success: false,
           }));
-          this.alert.error(error.error.message).startTimeoutToClear();
+          this.alert.error(error.error.message);
           return EMPTY;
         }),
 
@@ -68,7 +68,7 @@ export class CrudWordSuggestionsUiFacade {
     this._registerState.update((s) => ({
       ...s,
       isRegistering: false,
-      registerSuccess: false,
+      success: false,
     }));
   }
 }

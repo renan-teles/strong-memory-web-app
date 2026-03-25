@@ -1,9 +1,8 @@
+import { AlertClass } from '../types/alert-class.type';
+import { IconStatus } from '../types/icon-status.type';
+
 export interface IAlertState {
-  alertClass: 'alert-success' | 'alert-danger' | 'alert-info' | 'alert-warning';
-  alertIcon:
-    | 'bi-x-circle-fill'
-    | 'bi-check-circle-fill'
-    | 'bi-exclamation-triangle-fill'
-    | 'bi-info-circle-fill';
+  alertClass: AlertClass;
+  icon: IconStatus;
   message: string;
 }

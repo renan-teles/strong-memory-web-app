@@ -10,13 +10,13 @@
 /* General */
 html,
 body {
-  height: 100%;
-  margin: 0;
+  height: 100vh !important;
+  margin: 0 !important;
 }
 
-body {
+/* Colors and Backgrounds */
+.radial-gradient-background {
   min-height: 100vh;
-  /* filter: blur(0);  */
   background:
     radial-gradient(
       circle at 50% 50%,
@@ -28,7 +28,6 @@ body {
     radial-gradient(circle at 90% 50%, rgba(255, 171, 64, 0.09) 0%, transparent 60%);
 }
 
-/* Colors and Backgrounds */
 .text-purple {
   color: var(--purple) !important;
 }
@@ -51,16 +50,85 @@ body {
 }
 
 /* Form Elments*/
+/* Inputs */
 .form-select {
   outline: none !important;
   box-shadow: none !important;
   border-color: var(--orange) !important;
 }
 
-.form-control {
+.app-input,
+.game-app-input {
+  min-width: 100%;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--orange);
+  box-sizing: border-box;
+}
+
+.game-app-input,
+.game-app-input-success,
+.game-app-input-error {
+  text-transform: uppercase;
+  text-align: center;
+  color: black;
+}
+
+.app-input:focus,
+.game-app-input:focus,
+.form-select:hover {
   outline: none !important;
-  box-shadow: none !important;
-  border-color: var(--orange) !important;
+  border: 1px solid var(--orange) !important;
+  box-shadow: 0 0 3px var(--orange) !important;
+}
+
+.app-input-success,
+.game-app-input-success {
+  min-width: 100%;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #198754 !important;
+  box-sizing: border-box;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23198754' viewBox='0 0 16 16'%3e%3cpath d='M16 2L6 12 0 6l2-2 4 4 8-8z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+.app-input-success:focus,
+.game-app-input-success:focus {
+  outline: none !important;
+  border-color: #198754 !important;
+  box-shadow: 0 0 5px rgba(25, 135, 84, 0.5) !important;
+}
+
+.app-input-success:disabled,
+.app-input-error:disabled,
+.game-app-input:disabled,
+.game-app-input-error:disabled,
+.game-app-input-success:disabled {
+  background-color: white !important;
+}
+
+.app-input-error,
+.game-app-input-error {
+  min-width: 100%;
+  padding: 5px 10px;
+  padding-right: 35px;
+  border-radius: 5px;
+  border: 1px solid #dc3545 !important;
+  box-sizing: border-box;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='0 0 16 16'%3e%3cpath d='M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm3.536 9.95l-1.414 1.414L8 9.414l-2.121 2.95-1.414-1.414L6.586 8 4.465 5.879l1.414-1.414L8 6.586l2.121-2.121 1.414 1.414L9.414 8l2.122 2.95z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+.app-input-error:focus,
+.game-app-input-error:focus {
+  outline: none !important;
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 5px rgba(220, 53, 69, 0.5) !important;
 }
 
 /* Buttons */
@@ -89,6 +157,7 @@ body {
 }
 
 .btn-gradient-purple-orange {
+  text-decoration: none;
   padding: 9px;
   border-radius: 6px;
   border: none;

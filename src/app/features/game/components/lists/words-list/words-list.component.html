@@ -1,0 +1,21 @@
+<section>
+  <div class="col-12">
+    <h5>Lista de Palavras:</h5>
+  </div>
+
+  <section class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @for (w of words(); track w.id; let i = $index) {
+      <div class="col">
+        <input
+          class="game-app-input"
+          type="text"
+          [value]="w.word"
+          disabled
+          appWordComparator
+          [compare]="compare()"
+          [isEquals]="isEqualsWords(i)"
+        />
+      </div>
+    }
+  </section>
+</section>

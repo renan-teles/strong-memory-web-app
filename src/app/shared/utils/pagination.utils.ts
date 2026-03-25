@@ -7,16 +7,16 @@ export function createPaginationStateSignal<T>() {
 
 export function clearPaginationStateSignal<T>(
   state: WritableSignal<IPaginationState<T>>,
-  isFinding: boolean = false,
+  isLoading: boolean = false,
 ) {
-  state.set(getInitialPaginationState<T>(isFinding));
+  state.set(getInitialPaginationState<T>(isLoading));
 }
 
 export function generatePages(total: number): number[] {
   return Array.from({ length: total }, (_, i) => i);
 }
 
-function getInitialPaginationState<T>(isFinding: boolean = false): IPaginationState<T> {
+function getInitialPaginationState<T>(isLoading: boolean = false): IPaginationState<T> {
   return {
     content: [],
     totalElements: 0,
@@ -27,7 +27,7 @@ function getInitialPaginationState<T>(isFinding: boolean = false): IPaginationSt
     last: true,
     numberOfElements: 0,
     empty: true,
-    isFinding,
-    findSuccess: false,
+    isLoading,
+    success: false,
   };
 }

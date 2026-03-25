@@ -1,1 +1,26 @@
-<h1>Play Game Page</h1>
+@if (loadingWords()) {
+  <app-loading-random-words></app-loading-random-words>
+} @else if (!loadingWordsSuccess()) {
+  <app-error-game
+    [errorTitle]="'Erro ao Carregar Palavras. Pedimos Desculpas.'"
+    [errorMessage]="'Falha ao carregar palavras.'"
+  ></app-error-game>
+} @else {
+  @switch (gameState()) {
+    @case ('show-game') {
+      <app-words-game-card (gameState)="setState($event)"></app-words-game-card>
+    }
+    @case ('end') {
+      <app-end-game></app-end-game>
+    }
+    @case ('no-time-left') {
+      <app-no-time-left (gameState)="setState($event)"></app-no-time-left>
+    }
+    @case ('error') {
+      <app-error-game
+        [errorTitle]="'Erro na Execução. Pedimos Desculpas.'"
+        [errorMessage]="'Falha na execução do mini-game.'"
+      ></app-error-game>
+    }
+  }
+}
