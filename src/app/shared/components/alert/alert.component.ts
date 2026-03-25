@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { IAlertState } from '../../models/alert-state.interface';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
   selector: 'app-alert',
@@ -9,20 +10,10 @@ import { IAlertState } from '../../models/alert-state.interface';
   standalone: true,
 })
 export class AlertComponent {
-  @Input({ required: true }) alertState!: IAlertState;
-  @Output() closed = new EventEmitter<void>();
-
-  componentClass!: string;
-  icon!: string;
-  message!: string;
-
-  ngOnInit(): void {
-    this.componentClass = this.alertState.alertClass;
-    this.icon = this.alertState.alertIcon;
-    this.message = this.alertState.message;
-  }
+  private readonly service: AlertService = inject(AlertService);
+  alert: Signal<IAlertState | null> = this.service.alert;
 
   close(): void {
-    this.closed.emit();
+    this.service.clear();
   }
 }

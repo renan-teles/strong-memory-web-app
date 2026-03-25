@@ -30,8 +30,8 @@ export const routes: Routes = [
         path: 'game/play',
         loadComponent: () =>
           import('./features/game/pages/play-game/play-game.page').then((m) => m.PlayGamePage),
-        canActivate: [authGuard, roleGuard],
-        data: { roles: ['ROLE_PLAYER'] },
+        // canActivate: [authGuard, roleGuard],
+        // data: { roles: ['ROLE_PLAYER'] },
       },
 
       /* Words Routes */

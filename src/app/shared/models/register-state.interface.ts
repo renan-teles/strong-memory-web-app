@@ -1,4 +1,4 @@
 export interface IRegisterState {
   isRegistering: boolean;
-  registerSuccess: boolean;
+  success: boolean;
 }

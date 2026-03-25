@@ -12,7 +12,7 @@ export abstract class AbstractCrudUsersUiFacade extends AbstractUsersUiFacade {
 
   protected readonly _registerState = signal<IRegisterState>({
     isRegistering: false,
-    registerSuccess: false,
+    success: false,
   });
 
   readonly isRegistering: Signal<boolean> = computed(() => {
@@ -20,12 +20,12 @@ export abstract class AbstractCrudUsersUiFacade extends AbstractUsersUiFacade {
   });
 
   readonly registerSuccess: Signal<boolean> = computed(() => {
-    return this._registerState().registerSuccess;
+    return this._registerState().success;
   });
 
   protected readonly _updatePasswordState = signal<IUpdateState>({
     isUpdating: false,
-    updateSuccess: false,
+    success: false,
   });
 
   readonly isUpdatingPassword: Signal<boolean> = computed(() => {
@@ -33,7 +33,7 @@ export abstract class AbstractCrudUsersUiFacade extends AbstractUsersUiFacade {
   });
 
   readonly updatePasswordSuccess: Signal<boolean> = computed(() => {
-    return this._updatePasswordState().updateSuccess;
+    return this._updatePasswordState().success;
   });
 
   abstract register(data: IUserData): void;
@@ -42,7 +42,7 @@ export abstract class AbstractCrudUsersUiFacade extends AbstractUsersUiFacade {
   resetUpdatePasswordState(): void {
     this._updatePasswordState.update((s) => ({
       ...s,
-      updateSuccess: false,
+      success: false,
       isUpdatting: false,
     }));
   }

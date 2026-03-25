@@ -4,7 +4,7 @@
     <input
       formControlName="suggestedWord"
       id="word-suggestion-input"
-      class="form-control"
+      class="app-input"
       placeholder="Digite sua sugestão de palavra..."
       type="text"
     />
@@ -23,9 +23,9 @@
   <div class="col mt-4 mt-md-0">
     <label class="form-label" for="select-difficulty">Seleciona a Dificuldade: </label>
     <select formControlName="suggestedDifficulty" id="select-difficulty" class="form-select">
-      <option value="easy" selected>Fácil</option>
-      <option value="normal">Normal</option>
-      <option value="hard">Difícil</option>
+      @for (diff of difficults; track $index) {
+        <option [value]="diff.difficulty">{{ diff.translation | titlecase }}</option>
+      }
     </select>
   </div>
 

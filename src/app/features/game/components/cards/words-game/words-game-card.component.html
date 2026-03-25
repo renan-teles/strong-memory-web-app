@@ -1,0 +1,56 @@
+<main class="col card bg-white rounded shadow-sm p-3 p-lg-4 gap-4 page-content-animation">
+  <section class="row row-cols-3 align-items-center">
+    <div class="col text-start">
+      <h5>{{ currentDifficulty.translation }}</h5>
+    </div>
+
+    <div class="col text-center">
+      <h5>Pontuação: {{ score() }}</h5>
+    </div>
+
+    <div class="col text-end">
+      @if (isCorrect()) {
+        <button (click)="reloadGame()" type="button" class="btn text-danger">
+          <i class="bi-arrow-repeat me-2"></i>Reiniciar
+        </button>
+      }
+    </div>
+  </section>
+
+  @if (!showResult()) {
+    <app-timebar (finished)="onTimerFinished()" [initialTime]="time()"></app-timebar>
+  }
+
+  @if (!answer() || showResult()) {
+    <app-words-list></app-words-list>
+  }
+
+  @if (answer() || showResult()) {
+    <section>
+      <div class="col-12">
+        <h5>
+          @if (showResult()) {
+            Palavras Digitadas:
+          } @else {
+            Digite as Palavras da Lista:
+          }
+        </h5>
+      </div>
+      <app-typing-words-form (submitWords)="checkCorrect($event)"></app-typing-words-form>
+    </section>
+  }
+
+  @if (isCorrect() && showResult()) {
+    <section class="text-end">
+      <p>
+        <strong>Próximo em {{ timeToNextRound() }}s</strong>
+      </p>
+    </section>
+  }
+
+  @if (!isCorrect() && showResult()) {
+    <section class="col-12 text-end mt-3">
+      <button class="btn-gradient-purple-orange" (click)="resetGame()">Reiniciar</button>
+    </section>
+  }
+</main>

@@ -35,17 +35,9 @@
         acordo com a dificuldade selecionada.
       </p>
 
-      <form class="row row-cols-1 gap-4">
-        <div class="col">
-          <app-difficulty-select [showLabel]="true"></app-difficulty-select>
-        </div>
-
-        <div class="col text-center">
-          <button type="submit" class="btn-scale btn-gradient-move-purple-orange">
-            <i class="bi-play-fill me-2"></i>Iniciar
-          </button>
-        </div>
-      </form>
+      <app-select-difficulty-form
+        (selectedDifficulty)="redirectToPlayGame($event)"
+      ></app-select-difficulty-form>
     </div>
   </section>
 </main>

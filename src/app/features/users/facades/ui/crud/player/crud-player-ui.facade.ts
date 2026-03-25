@@ -19,7 +19,7 @@ export class CrudPlayerUiFacade extends AbstractCrudUsersUiFacade {
     this._registerState.update((s) => ({
       ...s,
       isRegistering: true,
-      registerSuccess: false,
+      success: false,
     }));
 
     this.facade
@@ -28,22 +28,25 @@ export class CrudPlayerUiFacade extends AbstractCrudUsersUiFacade {
         tap((response: IApiResponse<ICreatedUser>) => {
           this._registerState.update((s) => ({
             ...s,
-            registerSuccess: true,
+            success: true,
           }));
-          this.alert.success(response.message).startTimeoutToClear();
+
+          this.alert.success(response.message);
           this.redirectTo('/player/login');
         }),
 
         catchError((error: HttpErrorResponse) => {
           this._registerState.update((s) => ({
             ...s,
-            registerSuccess: false,
+            success: false,
           }));
-          this.alert.error(error.error.message).startTimeoutToClear();
+          this.alert.error(error.error.message);
           return EMPTY;
         }),
 
         finalize(() => {
+          console.log('Finalizando registro');
+
           this._registerState.update((s) => ({
             ...s,
             isRegistering: false,
@@ -65,17 +68,17 @@ export class CrudPlayerUiFacade extends AbstractCrudUsersUiFacade {
         tap(() => {
           this._updatePasswordState.update((s) => ({
             ...s,
-            updateSuccess: true,
+            success: true,
           }));
 
-          this.alert.success('Senha atualizada com sucesso.').startTimeoutToClear();
+          this.alert.success('Senha atualizada com sucesso.');
         }),
         catchError(() => {
           this._updatePasswordState.update((s) => ({
             ...s,
-            updateSuccess: false,
+            success: false,
           }));
-          this.alert.error('Erro ao atualizar senha.').startTimeoutToClear();
+          this.alert.error('Erro ao atualizar senha.');
           return EMPTY;
         }),
         finalize(() => {

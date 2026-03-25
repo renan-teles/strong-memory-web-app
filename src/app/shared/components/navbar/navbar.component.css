@@ -10,3 +10,7 @@
   color: var(--purple);
   border-bottom: 1px solid var(--orange);
 }
+
+.nav-link {
+  border-bottom: 2px solid white;
+}

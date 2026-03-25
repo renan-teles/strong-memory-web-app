@@ -1,4 +1,4 @@
 export interface ILoginState {
   isAuthenticating: boolean;
-  loginSuccess: boolean;
+  success: boolean;
 }

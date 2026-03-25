@@ -6,7 +6,7 @@
         formControlName="username"
         id="input-username"
         placeholder="Digite seu username..."
-        class="form-control"
+        class="app-input"
         type="text"
       />
       @if (getInput('username')?.touched && getInput('username')?.errors) {
@@ -25,7 +25,7 @@
       id="input-email"
       formControlName="email"
       placeholder="Digite seu email..."
-      class="form-control"
+      class="app-input"
       type="email"
     />
     @if (getInput('email')?.touched && getInput('email')?.errors) {
@@ -46,7 +46,7 @@
       formControlName="password"
       id="input-password"
       placeholder="Digite sua senha..."
-      class="form-control"
+      class="app-input"
       type="password"
     />
     @if (getInput('password')?.touched && getInput('password')?.errors) {

@@ -22,7 +22,7 @@ export class UsersFacade {
 
   loginPlayer(data: IUserData): Observable<IApiResponse<IAuthUser>> {
     return this.api.loginPlayer(data).pipe(
-      tap((response) => {
+      tap((response: IApiResponse<IAuthUser>) => {
         const token = response.data!.token;
         const userId = response.data!.userId;
         const role = response.data!.role;
@@ -34,8 +34,8 @@ export class UsersFacade {
     );
   }
 
-  getPlayerSocreRecords(): Observable<IApiResponse<IUserScoreRecord[]>> {
-    return this.api.getPlayerSocreRecords(this.getUserId());
+  loadPlayerSocreRecords(): Observable<IApiResponse<IUserScoreRecord[]>> {
+    return this.api.loadPlayerSocreRecords(this.getUserId());
   }
 
   updatePlayerPassword(data: IUpdatePasswordData): Observable<void> {

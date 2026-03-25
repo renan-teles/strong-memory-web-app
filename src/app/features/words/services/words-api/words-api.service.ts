@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AbstractApiService } from '../../../../core/services/api/abstract-api.service';
-import { IWordDifficultyData } from '../../models/word-difficulty-data.interface';
 import { IApiResponse } from '../../../../shared/models/api-response.interface';
 import { IPagePagination } from '../../../../shared/models/page-pagination.interface';
 import { IPaginationResponse } from '../../../../shared/models/pagination-response.interface';
 import { IWordData } from '../../models/word-data.interface';
 import { Observable } from 'rxjs';
+import { IWordDifficultyFormData } from '../../../../shared/models/word-difficulty-form-data.interface';
+import { IWordDifficultyData } from '../../../../shared/models/word-difficulty-data.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,8 @@ export class WordsApiService extends AbstractApiService {
     super();
   }
 
-  findByDifficulty(
-    data: IWordDifficultyData,
+  loadByDifficulty(
+    data: IWordDifficultyFormData,
     pagination: IPagePagination,
   ): Observable<IApiResponse<IPaginationResponse<IWordData>>> {
     return this.http.get<IApiResponse<IPaginationResponse<IWordData>>>(
@@ -30,5 +31,14 @@ export class WordsApiService extends AbstractApiService {
         },
       },
     );
+  }
+
+  loadRandomWords(difficulty: IWordDifficultyData): Observable<IApiResponse<IWordData[]>> {
+    return this.http.get<IApiResponse<IWordData[]>>(`${this.BASE_URL}/word/get-random-words`, {
+      params: {
+        difficulty: difficulty.difficulty,
+        quantity: difficulty.maxQuantityWords,
+      },
+    });
   }
 }

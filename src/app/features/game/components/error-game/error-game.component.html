@@ -1,0 +1,16 @@
+<div class="card p-5 shadow">
+  <div class="col-12">
+    <h4 class="text-danger">:( {{ errorTitle }}</h4>
+    <hr />
+  </div>
+
+  <div class="alert text-bg-danger d-flex justify-content-between align-items-center">
+    <span>
+      <i class="bi-x-circle-fill me-2"></i>
+      {{ errorMessage }}
+    </span>
+    <a class="btn text-light" routerLink="/game/start">
+      <i class="bi-arrow-left me-2"></i>Voltar
+    </a>
+  </div>
+</div>
