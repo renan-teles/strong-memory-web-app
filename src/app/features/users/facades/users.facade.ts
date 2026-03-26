@@ -20,16 +20,22 @@ export class UsersFacade {
     return this.api.registerPlayer(data);
   }
 
+  registerAdministrator(data: IUserData): Observable<IApiResponse<ICreatedUser>> {
+    return this.api.registerAdministrator(data);
+  }
+
   loginPlayer(data: IUserData): Observable<IApiResponse<IAuthUser>> {
     return this.api.loginPlayer(data).pipe(
       tap((response: IApiResponse<IAuthUser>) => {
-        const token = response.data!.token;
-        const userId = response.data!.userId;
-        const role = response.data!.role;
+        this.saveUserInfos(response.data!);
+      }),
+    );
+  }
 
-        this.authStorage.saveToken(token);
-        this.authStorage.saveUserId(`${userId}`);
-        this.authStorage.saveUserRole(role);
+  loginAdministrator(data: IUserData): Observable<IApiResponse<IAuthUser>> {
+    return this.api.loginAdministrator(data).pipe(
+      tap((response: IApiResponse<IAuthUser>) => {
+        this.saveUserInfos(response.data!);
       }),
     );
   }
@@ -44,5 +50,15 @@ export class UsersFacade {
 
   private getUserId(): string {
     return this.authStorage.getUserId() ?? '-1';
+  }
+
+  private saveUserInfos(data: IAuthUser): void {
+    const token = data.token;
+    const userId = data.userId;
+    const role = data.role;
+
+    this.authStorage.saveToken(token);
+    this.authStorage.saveUserId(`${userId}`);
+    this.authStorage.saveUserRole(role);
   }
 }

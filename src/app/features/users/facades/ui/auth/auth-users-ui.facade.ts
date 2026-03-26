@@ -63,4 +63,42 @@ export class AuthUsersUiFacade extends AbstractUsersUiFacade {
       )
       .subscribe();
   }
+
+  authAdministrator(data: IUserData): void {
+    this._loginState.update((s) => ({
+      ...s,
+      isAuthenticating: true,
+      success: false,
+    }));
+
+    this.facade
+      .loginAdministrator(data)
+      .pipe(
+        tap(() => {
+          this._loginState.update((s) => ({
+            ...s,
+            success: true,
+          }));
+          this.redirectTo('/words/registered');
+        }),
+
+        catchError((error: HttpErrorResponse) => {
+          this._loginState.update((s) => ({
+            ...s,
+            success: false,
+          }));
+
+          this.alert.error(error.error.message);
+          return EMPTY;
+        }),
+
+        finalize(() => {
+          this._loginState.update((s) => ({
+            ...s,
+            isAuthenticating: false,
+          }));
+        }),
+      )
+      .subscribe();
+  }
 }

@@ -1,16 +1,16 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { UserFormCardComponent } from '../../components/cards/user-form-card/user-form-card.component';
-import { AlertService } from '../../../../core/services/alert/alert.service';
 import { IUserData } from '../../models/user-data.interface';
 import { AuthUsersUiFacade } from '../../facades/ui/auth/auth-users-ui.facade';
+import { AlertService } from '../../../../core/services/alert/alert.service';
 
 @Component({
-  selector: 'app-authenticate-player',
+  selector: 'app-authenticate-administrator.page',
   imports: [UserFormCardComponent],
-  templateUrl: './authenticate-player.page.html',
-  styleUrl: './authenticate-player.page.css',
+  templateUrl: './authenticate-administrator.page.html',
+  styleUrl: './authenticate-administrator.page.css',
 })
-export class AuthenticatePlayerPage implements IAlertUtils, OnDestroy {
+export class AuthenticateAdministratorPage implements IAlertUtils, OnDestroy {
   private readonly facade: AuthUsersUiFacade = inject(AuthUsersUiFacade);
   private readonly alertService: AlertService = inject(AlertService);
 
@@ -22,7 +22,7 @@ export class AuthenticatePlayerPage implements IAlertUtils, OnDestroy {
     this.alertService.clear();
   }
 
-  loginPlayer(data: IUserData): void {
-    this.facade.authPlayer(data);
+  loginAdministrator(data: IUserData): void {
+    this.facade.authAdministrator(data);
   }
 }

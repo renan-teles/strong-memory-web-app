@@ -78,12 +78,15 @@
   </div>
 
   <div class="col text-start">
-    @if (!(isRegisteringUser() || isAuthenticatingUser())) {
-      @if (isRegisterRole) {
-        <a routerLink="/player/login" class="text-purple">Já tem conta? Entre com ela aqui.</a>
-      } @else {
-        <a routerLink="/player/register" class="text-purple">Não tem conta? Crie sua conta aqui.</a>
-      }
+    @if (link()) {
+      <a routerLink="{{ link()!.redirectPath }}" class="text-purple">{{ link()!.text }}</a>
+    }
+  </div>
+  <div class="col text-start">
+    @if (linkInversorRole()) {
+      <a routerLink="{{ linkInversorRole()!.redirectPath }}" class="text-purple">{{
+        linkInversorRole()!.text
+      }}</a>
     }
   </div>
 </form>

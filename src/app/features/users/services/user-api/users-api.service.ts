@@ -20,22 +20,19 @@ export class UsersApiService extends AbstractApiService {
   }
 
   registerPlayer(data: IUserData): Observable<IApiResponse<ICreatedUser>> {
-    return this.http.post<IApiResponse<ICreatedUser>>(`${this.BASE_URL}/player/register`, data, {
-      context: new HttpContext().set(SKIP_AUTH, true),
-    });
+    return this.registerUser(data, 'player');
+  }
+
+  registerAdministrator(data: IUserData): Observable<IApiResponse<ICreatedUser>> {
+    return this.registerUser(data, 'administrator');
   }
 
   loginPlayer(data: IUserData): Observable<IApiResponse<IAuthUser>> {
-    return this.http.post<IApiResponse<IAuthUser>>(
-      `${this.BASE_URL}/player/auth`,
-      {
-        email: data.email,
-        password: data.password,
-      },
-      {
-        context: new HttpContext().set(SKIP_AUTH, true),
-      },
-    );
+    return this.loginUser(data, 'player');
+  }
+
+  loginAdministrator(data: IUserData): Observable<IApiResponse<IAuthUser>> {
+    return this.loginUser(data, 'administrator');
   }
 
   loadPlayerSocreRecords(userId: string): Observable<IApiResponse<IUserScoreRecord[]>> {
@@ -46,5 +43,34 @@ export class UsersApiService extends AbstractApiService {
 
   updatePlayerPassword(userId: string, data: IUpdatePasswordData): Observable<void> {
     return this.http.put<void>(`${this.BASE_URL}/player/update-password/${userId}`, data);
+  }
+
+  private registerUser(
+    data: IUserData,
+    pathUser: 'player' | 'administrator',
+  ): Observable<IApiResponse<ICreatedUser>> {
+    return this.http.post<IApiResponse<ICreatedUser>>(
+      `${this.BASE_URL}/${pathUser}/register`,
+      data,
+      {
+        context: new HttpContext().set(SKIP_AUTH, true),
+      },
+    );
+  }
+
+  private loginUser(
+    data: IUserData,
+    pathUser: 'player' | 'administrator',
+  ): Observable<IApiResponse<IAuthUser>> {
+    return this.http.post<IApiResponse<IAuthUser>>(
+      `${this.BASE_URL}/${pathUser}/auth`,
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        context: new HttpContext().set(SKIP_AUTH, true),
+      },
+    );
   }
 }

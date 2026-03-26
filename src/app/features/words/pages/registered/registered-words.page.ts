@@ -8,6 +8,7 @@ import { IPaginationState } from '../../../../shared/models/pagination-state.int
 import { ReactiveFormsModule } from '@angular/forms';
 import { FilterWordDifficultyFormComponent } from '../../components/forms/filtert-word-difficulty-form/filter-word-difficulty-form.component';
 import { IWordDifficultyFormData } from '../../../../shared/models/word-difficulty-form-data.interface';
+import { AuthStorageService } from '../../../../core/services/auth-storage/auth-storage.service';
 
 @Component({
   selector: 'app-registered-words',
@@ -23,6 +24,7 @@ import { IWordDifficultyFormData } from '../../../../shared/models/word-difficul
 })
 export class RegisteredWordsPage implements OnInit {
   private readonly facade: LoadWordsPaginationUiFacade = inject(LoadWordsPaginationUiFacade);
+  private readonly authStorage: AuthStorageService = inject(AuthStorageService);
 
   paginationState: Signal<IPaginationState<IWordData>> = this.facade.paginationState;
   pages: Signal<number[]> = this.facade.pages;
@@ -34,6 +36,10 @@ export class RegisteredWordsPage implements OnInit {
 
   ngOnInit(): void {
     this.loadWordsByDiffitulty(this.selectedDifficulty);
+  }
+
+  get isAdministratorRole(): boolean {
+    return !this.authStorage.isPlayer();
   }
 
   loadWordsByDiffitulty(data: IWordDifficultyFormData, page: number = 0): void {

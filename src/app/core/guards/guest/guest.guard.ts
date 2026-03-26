@@ -7,8 +7,18 @@ export const guestGuard: CanActivateFn = (route, state) => {
   const authStorage = inject(AuthStorageService);
 
   if (authStorage.isAuthenticated()) {
-    router.navigate(['/game/start']);
+    switch (authStorage.getUserRole()) {
+      case 'ROLE_PLAYER':
+        router.createUrlTree(['/game/start']);
+        break;
+
+      case 'ROLE_ADMINISTRATOR':
+        router.createUrlTree(['/words/registered']);
+        break;
+    }
+
     return false;
   }
+
   return true;
 };

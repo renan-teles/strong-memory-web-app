@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, Signal, signal } from '@angular/core';
 import { IApiResponse } from '../../../../../../shared/models/api-response.interface';
 import { IUserData } from '../../../../models/user-data.interface';
 import { ICreatedUser } from '../../../../models/created-user.interface';
@@ -6,6 +6,7 @@ import { catchError, EMPTY, finalize, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IUpdatePasswordData } from '../../../../models/update-password-data.interface';
 import { AbstractCrudUsersUiFacade } from '../abstract-crud-users-ui.facade';
+import { IUpdateState } from '../../../../../../shared/models/update-state.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,20 @@ export class CrudPlayerUiFacade extends AbstractCrudUsersUiFacade {
     super();
   }
 
-  register(data: IUserData): void {
+  protected readonly _updatePasswordState = signal<IUpdateState>({
+    isUpdating: false,
+    success: false,
+  });
+
+  readonly isUpdatingPassword: Signal<boolean> = computed(() => {
+    return this._updatePasswordState().isUpdating;
+  });
+
+  readonly updatePasswordSuccess: Signal<boolean> = computed(() => {
+    return this._updatePasswordState().success;
+  });
+
+  override register(data: IUserData): void {
     this._registerState.update((s) => ({
       ...s,
       isRegistering: true,
@@ -89,5 +103,13 @@ export class CrudPlayerUiFacade extends AbstractCrudUsersUiFacade {
         }),
       )
       .subscribe();
+  }
+
+  resetUpdatePasswordState(): void {
+    this._updatePasswordState.update((s) => ({
+      ...s,
+      success: false,
+      isUpdatting: false,
+    }));
   }
 }
