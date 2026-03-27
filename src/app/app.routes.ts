@@ -57,6 +57,15 @@ export const routes: Routes = [
         canActivate: [authGuard, roleGuard],
         data: { roles: ['ROLE_PLAYER'] },
       },
+      {
+        path: 'words/view-suggestions',
+        loadComponent: () =>
+          import('./features/word-suggestions/pages/view-suggestions/view-word-suggestions.page').then(
+            (m) => m.ViewWordSuggestionsPage,
+          ),
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['ROLE_ADMINISTRATOR'] },
+      },
 
       /* Player Routes */
       {
@@ -104,5 +113,5 @@ export const routes: Routes = [
     component: NotFoundPage,
   },
   // { path: '', redirectTo: 'not-found', pathMatch: 'full' },
-  { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
+  // { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];

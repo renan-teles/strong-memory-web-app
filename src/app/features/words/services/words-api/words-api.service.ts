@@ -16,6 +16,18 @@ export class WordsApiService extends AbstractApiService {
     super();
   }
 
+  register(data: IWordData): Observable<IApiResponse<IWordData>> {
+    return this.http.post<IApiResponse<IWordData>>(`${this.BASE_URL}/word/register`, data);
+  }
+
+  delete(wordId: number): Observable<void> {
+    return this.http.delete<void>(`${this.BASE_URL}/word/delete/${wordId}`);
+  }
+
+  update(wordId: number, data: IWordData): Observable<void> {
+    return this.http.put<void>(`${this.BASE_URL}/word/update/${wordId}`, data);
+  }
+
   loadByDifficulty(
     data: IWordDifficultyFormData,
     pagination: IPagePagination,

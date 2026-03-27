@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy } from '@angular/core';
-import { CrudWordSuggestionsUiFacade } from '../../facades/ui/crud/crud-word-suggestions-ui.facade.ts.js';
+import { CrudWordSuggestionsUiFacade } from '../../facades/ui/crud/crud-word-suggestions-ui.facade.js';
 import { AlertService } from '../../../../core/services/alert/alert.service.js';
 import { WordSuggestionsFormComponent } from '../../components/form/word-suggestions-form/word-suggestions-form.component';
 import { IWordSuggestionData } from '../../models/word-suggestion-data.interface.js';

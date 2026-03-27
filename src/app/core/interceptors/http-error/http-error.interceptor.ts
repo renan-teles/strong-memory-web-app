@@ -11,8 +11,6 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
       let message = 'Erro inesperado.';
       let setError = true;
 
-      console.log(error);
-
       switch (error.status) {
         case 400:
           message = 'Dados inválidos.';

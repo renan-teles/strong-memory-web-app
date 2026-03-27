@@ -31,12 +31,11 @@ export class NavbarLinkService {
       accessRole: 'ROLE_PLAYER',
       path: '/player/panel',
     },
-
-    // {
-    //   text: 'Sugestão de Palavras',
-    //   accessRole: 'ROLE_PLAYER',
-    //   path: 'words/view-suggestions/',
-    // },
+    {
+      text: 'Sugestão de Palavras',
+      accessRole: 'ROLE_ADMINISTRATOR',
+      path: '/words/view-suggestions/',
+    },
   ];
 
   getPlayerLinks(): INavbarLink[] {

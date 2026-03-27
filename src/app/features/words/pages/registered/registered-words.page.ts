@@ -6,9 +6,10 @@ import { LoadWordsPaginationUiFacade } from '../../facades/ui/load-words-paginat
 import { IWordData } from '../../models/word-data.interface';
 import { IPaginationState } from '../../../../shared/models/pagination-state.interface';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FilterWordDifficultyFormComponent } from '../../components/forms/filtert-word-difficulty-form/filter-word-difficulty-form.component';
+import { FilterWordDifficultyFormComponent } from '../../components/forms/filter-word-difficulty-form/filter-word-difficulty-form.component';
 import { IWordDifficultyFormData } from '../../../../shared/models/word-difficulty-form-data.interface';
 import { AuthStorageService } from '../../../../core/services/auth-storage/auth-storage.service';
+import { CrudWordsUiFacade } from '../../facades/ui/crud/crud-words-ui.facade';
 
 @Component({
   selector: 'app-registered-words',
@@ -24,6 +25,7 @@ import { AuthStorageService } from '../../../../core/services/auth-storage/auth-
 })
 export class RegisteredWordsPage implements OnInit {
   private readonly facade: LoadWordsPaginationUiFacade = inject(LoadWordsPaginationUiFacade);
+  private readonly crudFacade: CrudWordsUiFacade = inject(CrudWordsUiFacade);
   private readonly authStorage: AuthStorageService = inject(AuthStorageService);
 
   paginationState: Signal<IPaginationState<IWordData>> = this.facade.paginationState;
@@ -50,5 +52,17 @@ export class RegisteredWordsPage implements OnInit {
     }
 
     this.facade.loadByDifficulty(this.selectedDifficulty, page);
+  }
+
+  registerWord(): void {
+    this.crudFacade.register();
+  }
+
+  updateWord(wordId: number): void {
+    this.crudFacade.update(wordId);
+  }
+
+  deleteWord(wordId: number): void {
+    this.crudFacade.delete(wordId);
   }
 }

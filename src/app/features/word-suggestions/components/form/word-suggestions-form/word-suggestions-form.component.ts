@@ -2,7 +2,7 @@ import { Component, effect, EffectRef, EventEmitter, inject, Output, Signal } fr
 import { IFormUtils } from '../../../../../shared/models/form-utils.interface';
 import { IWordSuggestionData } from '../../../models/word-suggestion-data.interface';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CrudWordSuggestionsUiFacade } from '../../../facades/ui/crud/crud-word-suggestions-ui.facade.ts';
+import { CrudWordSuggestionsUiFacade } from '../../../facades/ui/crud/crud-word-suggestions-ui.facade';
 import { SpinnerBorderComponent } from '../../../../../shared/components/spinner-border/spinner-border.component';
 import { WordDifficultService } from '../../../../../core/services/word-difficult/word-difficult.service';
 import { IWordDifficultyData } from '../../../../../shared/models/word-difficulty-data.interface';
