@@ -1,0 +1,37 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+  <div class="row gap-3">
+    <div class="col">
+      <label for="input-start-date" class="form-label">Data Inicial:</label>
+      <input
+        formControlName="startDate"
+        id="input-start-date"
+        type="text"
+        class="app-input"
+        type="date"
+      />
+      @if (getInput('startDate')?.touched && getInput('startDate')?.errors) {
+        <small class="text-danger">
+          @if (getInput('startDate')?.hasError('required')) {
+            Data inicial é obrigatória!
+          }
+        </small>
+      }
+    </div>
+    <div class="col">
+      <label for="input-end-date" type="date" class="form-label">Data Final:</label>
+      <input formControlName="endDate" type="text" class="app-input" type="date" />
+      @if (getInput('endDate')?.touched && getInput('endDate')?.errors) {
+        <small class="text-danger">
+          @if (getInput('endDate')?.hasError('required')) {
+            Data final é obrigatória!
+          }
+        </small>
+      }
+    </div>
+    <div class="col-12 text-end">
+      <button [disabled]="isLoadingSuggestions()" type="submit" class="btn-gradient-purple-orange">
+        Filtrar
+      </button>
+    </div>
+  </div>
+</form>

@@ -21,6 +21,8 @@
     <section class="col d-flex justify-content-center page-content-animation">
       <app-user-form-card
         (userData)="registerPlayer($event)"
+        [title]="'Cadastro de Jogador'"
+        [formRole]="'register-player'"
         [isRegisterRole]="true"
       ></app-user-form-card>
     </section>

@@ -1,0 +1,12 @@
+<main class="container-fluid container-md vh-100">
+  <div class="h-100 d-flex justify-content-center align-items-center">
+    <section class="col-12 col-md-9 col-lg-7 d-flex justify-content-center page-content-animation">
+      <app-user-form-card
+        (userData)="loginAdministrator($event)"
+        [formRole]="'auth-administrator'"
+        [title]="'Login de Administrador'"
+        [isRegisterRole]="false"
+      ></app-user-form-card>
+    </section>
+  </div>
+</main>

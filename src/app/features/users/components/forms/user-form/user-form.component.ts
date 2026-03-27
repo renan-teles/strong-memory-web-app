@@ -1,4 +1,13 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output, Signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+  Signal,
+} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { IUserData } from '../../../models/user-data.interface';
@@ -6,6 +15,9 @@ import { SpinnerBorderComponent } from '../../../../../shared/components/spinner
 import { IFormUtils } from '../../../../../shared/models/form-utils.interface';
 import { CrudPlayerUiFacade } from '../../../facades/ui/crud/player/crud-player-ui.facade';
 import { AuthUsersUiFacade } from '../../../facades/ui/auth/auth-users-ui.facade';
+import { IRedirectFormLink } from '../../../models/redirect-form-link.interface';
+import { UserFormRole } from '../../../types/user-form-role.type';
+import { CrudAdministratorUiFacade } from '../../../facades/ui/crud/administrator/crud-administrator-ui.facade';
 
 @Component({
   selector: 'app-user-form',
@@ -14,14 +26,78 @@ import { AuthUsersUiFacade } from '../../../facades/ui/auth/auth-users-ui.facade
   styleUrl: './user-form.component.css',
 })
 export class UserFormComponent implements OnInit, IFormUtils<IUserData> {
+  @Input({ required: true }) formRole: UserFormRole = 'register-player';
   @Input({ required: true }) isRegisterRole: boolean = true;
+
   @Output() userData = new EventEmitter<IUserData>();
 
-  private readonly crudFacade: CrudPlayerUiFacade = inject(CrudPlayerUiFacade);
+  private readonly crudPlayerFacade: CrudPlayerUiFacade = inject(CrudPlayerUiFacade);
+  private readonly crudAdmFacade: CrudAdministratorUiFacade = inject(CrudAdministratorUiFacade);
   private readonly authFacade: AuthUsersUiFacade = inject(AuthUsersUiFacade);
   private readonly fb: FormBuilder = inject(FormBuilder);
 
-  isRegisteringUser: Signal<boolean> = this.crudFacade.isRegistering;
+  readonly showLinks: Signal<boolean> = computed(
+    () => !(this.isRegisteringUser() || this.isAuthenticatingUser()),
+  );
+
+  link: Signal<IRedirectFormLink | null> = computed(() => {
+    if (!this.showLinks()) return null;
+
+    switch (this.formRole) {
+      case 'auth-administrator':
+        return {
+          text: 'Não tem conta de administrador? Crie sua conta aqui.',
+          redirectPath: '/administrator/register',
+        };
+
+      case 'auth-player':
+        return { text: 'Não tem conta? Crie sua conta aqui.', redirectPath: '/player/register' };
+
+      case 'register-administrator':
+        return {
+          text: 'Já tem conta de administrador? Entre com ela aqui.',
+          redirectPath: '/administrator/login',
+        };
+
+      case 'register-player':
+        return { text: 'Já tem conta? Entre com ela aqui.', redirectPath: '/player/login' };
+
+      default:
+        return null;
+    }
+  });
+
+  linkInversorRole: Signal<IRedirectFormLink | null> = computed(() => {
+    if (!this.showLinks()) return null;
+
+    switch (this.formRole) {
+      case 'auth-administrator':
+        return {
+          text: 'Entrar como jogador.',
+          redirectPath: '/player/login',
+        };
+
+      case 'auth-player':
+        return { text: 'Entrar como administrador', redirectPath: '/administrator/login' };
+
+      case 'register-administrator':
+        return {
+          text: 'Me registrar como jogador',
+          redirectPath: '/player/register',
+        };
+
+      case 'register-player':
+        return { text: 'Me registrar como administrador', redirectPath: '/administrator/register' };
+
+      default:
+        return null;
+    }
+  });
+
+  isRegisteringUser: Signal<boolean> = computed(
+    () => this.crudPlayerFacade.isRegistering() || this.crudAdmFacade.isRegistering(),
+  );
+
   isAuthenticatingUser: Signal<boolean> = this.authFacade.isAuthenticating;
 
   form: FormGroup = this.fb.nonNullable.group({

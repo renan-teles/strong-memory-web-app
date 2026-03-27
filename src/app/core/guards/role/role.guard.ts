@@ -8,12 +8,16 @@ export const roleGuard: CanActivateFn = (route, state) => {
 
   const userRole = authStorage.getUserRole();
 
-  const allowedRoles = route.data?.['roles'] as Array<string>;
+  if (!userRole) {
+    router.createUrlTree(['/not-authorized']);
+    return false;
+  }
 
+  const allowedRoles = route.data?.['roles'] as Array<string>;
   if (allowedRoles.includes(userRole!)) {
     return true;
   }
 
-  router.navigate(['/player/login']);
+  router.createUrlTree(['/not-authozied']);
   return false;
 };

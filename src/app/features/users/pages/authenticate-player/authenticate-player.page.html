@@ -19,6 +19,8 @@
     <section class="col d-flex justify-content-center page-content-animation">
       <app-user-form-card
         (userData)="loginPlayer($event)"
+        [title]="'Login de Jogador'"
+        [formRole]="'auth-player'"
         [isRegisterRole]="false"
       ></app-user-form-card>
     </section>

@@ -30,11 +30,26 @@
         id="navbarNav"
       >
         <ul class="navbar-nav gap-3">
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active-route" routerLink="/game/start">Jogar</a>
-          </li>
+          @for (l of links; track $index) {
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active-route" routerLink="{{ l.path }}">{{
+                l.text
+              }}</a>
+            </li>
+          }
 
-          <li class="nav-item">
+          <li class="nav-item text-end mt-2 mt-lg-0">
+            <button (click)="onLogout()" type="button" class="btn btn-outline-danger">
+              <i class="bi-arrow-bar-left me-1"></i>Sair
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- <li class="nav-item">
             <a class="nav-link" routerLinkActive="active-route" routerLink="/words/registered"
               >Palavras</a
             >
@@ -54,15 +69,4 @@
             <a class="nav-link" routerLinkActive="active-route" routerLink="/player/panel"
               >Meu Painel</a
             >
-          </li>
-
-          <li class="nav-item text-end mt-2 mt-lg-0">
-            <button (click)="onLogout()" type="button" class="btn btn-outline-danger">
-              <i class="bi-arrow-bar-left me-1"></i>Sair
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</nav>
+          </li> -->

@@ -5,17 +5,14 @@
 
   <div class="text-center mt-2">
     <span class="fs-5">
-      @if (isRegisterRole) {
-        Cadastro de Jogador
-      } @else {
-        Login de Jogador
-      }
+      {{ title }}
     </span>
   </div>
   <hr />
 
   <app-user-form
     (userData)="submittedFormData($event)"
+    [formRole]="formRole"
     [isRegisterRole]="isRegisterRole"
   ></app-user-form>
 </section>

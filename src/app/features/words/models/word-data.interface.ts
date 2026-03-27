@@ -1,5 +1,5 @@
 export interface IWordData {
-  id: number;
+  id?: number;
   word: string;
   difficulty?: string;
 }

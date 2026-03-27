@@ -1,0 +1,15 @@
+<div>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ title }}</h5>
+    <button class="btn ms-auto" (click)="activeModal.dismiss()" style="border: none">
+      <i class="bi-x-circle-fill"></i>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <app-word-suggestions-modal-form
+      (submittedData)="confirm($event)"
+      [wordSuggestion]="suggestionWord"
+    ></app-word-suggestions-modal-form>
+  </div>
+</div>

@@ -11,6 +11,14 @@
       <app-filter-word-difficulty-form
         (selectedDifficulty)="loadWordsByDiffitulty($event)"
       ></app-filter-word-difficulty-form>
+
+      @if (isAdministratorRole) {
+        <div class="col text-end mt-3">
+          <button (click)="registerWord()" class="btn-gradient-purple-orange">
+            <i class="bi-plus-circle"></i>
+          </button>
+        </div>
+      }
     </div>
   </section>
 
@@ -31,9 +39,24 @@
         <p class="text-danger"><i class="bi-x-circle-fill"></i>Falha ao buscar palavras.</p>
       } @else {
         <div class="row row-cols-1 row-cols-md-2 page-content-animation">
-          @for (word of words(); track word.id) {
+          @for (word of words(); track word.id!; let i = $index) {
             <div class="col">
-              <p class="fs-4">{{ word.word | titlecase }}</p>
+              <div class="row">
+                <div class="col">
+                  <p class="fs-4">{{ word.word | titlecase }}</p>
+                </div>
+
+                @if (isAdministratorRole) {
+                  <div class="col text-end gap-3">
+                    <button (click)="deleteWord(word.id!)" class="btn btn-sm btn-danger me-2">
+                      <i class="bi-trash"></i>
+                    </button>
+                    <button (click)="updateWord(word.id!)" class="btn btn-sm btn-secondary">
+                      <i class="bi-pencil-fill"></i>
+                    </button>
+                  </div>
+                }
+              </div>
             </div>
           }
         </div>

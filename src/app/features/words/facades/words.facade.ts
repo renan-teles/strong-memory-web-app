@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { IApiResponse } from '../../../shared/models/api-response.interface';
 import { IPaginationResponse } from '../../../shared/models/pagination-response.interface';
 import { IWordData } from '../models/word-data.interface';
-import { IPagePagination } from '../../../shared/models/page-pagination.interface';
 import { IWordDifficultyFormData } from '../../../shared/models/word-difficulty-form-data.interface';
 import { IWordDifficultyData } from '../../../shared/models/word-difficulty-data.interface';
 
@@ -18,15 +17,26 @@ export class WordsFacade {
     data: IWordDifficultyFormData,
     page: number,
   ): Observable<IApiResponse<IPaginationResponse<IWordData>>> {
-    const pagination: IPagePagination = {
+    return this.api.loadByDifficulty(data, {
       page,
       size: 10,
       sortBy: 'word',
-    };
-    return this.api.loadByDifficulty(data, pagination);
+    });
   }
 
   loadRandomWords(data: IWordDifficultyData) {
     return this.api.loadRandomWords(data);
+  }
+
+  register(data: IWordData): Observable<IApiResponse<IWordData>> {
+    return this.api.register(data);
+  }
+
+  delete(wordId: number): Observable<void> {
+    return this.api.delete(wordId);
+  }
+
+  update(wordId: number, data: IWordData): Observable<void> {
+    return this.api.update(wordId, data);
   }
 }
