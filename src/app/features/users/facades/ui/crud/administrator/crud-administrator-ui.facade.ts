@@ -4,7 +4,6 @@ import { IUserData } from '../../../../models/user-data.interface';
 import { IApiResponse } from '../../../../../../shared/models/api-response.interface';
 import { ICreatedUser } from '../../../../models/created-user.interface';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -27,15 +26,14 @@ export class CrudAdministratorUiFacade extends AbstractCrudUsersUiFacade {
           }));
 
           this.alert.success(response.message);
-          this.redirectTo('/administrator/login');
+          this.router.navigate(['/auth/administrator/login']);
         }),
 
-        catchError((error: HttpErrorResponse) => {
+        catchError(() => {
           this._registerState.update((s) => ({
             ...s,
             success: false,
           }));
-          this.alert.error(error.error.message);
           return EMPTY;
         }),
 

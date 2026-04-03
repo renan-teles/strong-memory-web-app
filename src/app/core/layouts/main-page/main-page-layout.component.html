@@ -3,8 +3,17 @@
 <div class="py-5">
   <div class="my-4">
     <div class="container-fluid container-md">
-      <router-outlet></router-outlet>
-      <app-back-to-top-btn></app-back-to-top-btn>
+      @if (isLoadingDifficulties()) {
+        <app-loading-content></app-loading-content>
+      } @else if (loadingDifficultiesSuccess()) {
+        <router-outlet></router-outlet>
+        <app-back-to-top-btn></app-back-to-top-btn>
+      } @else {
+        <app-error
+          [errorTitle]="'Erro ao carregar aplicação. Pedimos Desculpas.'"
+          [errorMessage]="'Falha ao carregar dados iniciais da aplicação.'"
+        ></app-error>
+      }
     </div>
   </div>
 </div>

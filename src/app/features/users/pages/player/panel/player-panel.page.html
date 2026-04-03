@@ -1,0 +1,107 @@
+<main class="col card bg-white rounded shadow-sm p-3 p-lg-4 page-content-animation">
+  <div>
+    <div class="purple-border-start">
+      <h3 class="ms-2">Meu Painel</h3>
+    </div>
+  </div>
+
+  <hr class="text-orange" />
+
+  <div class="row row-cols-1 gap-4">
+    <section class="col">
+      <div class="orange-border-start">
+        <h5 class="ms-2">Maiores Pontuações</h5>
+      </div>
+
+      <div class="col rounded">
+        @if (isLoadingScores()) {
+          <app-spinner-border
+            [text]="'Carregando suas maiores pontuações...'"
+            [classText]="'text-orange'"
+          ></app-spinner-border>
+        } @else if (!loadScoresSuccess()) {
+          <p class="text-danger">Falha ao buscar maiores pontuações.</p>
+        } @else {
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Dificuldade</th>
+                <th scope="col">Pontuação</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (score of userScores(); track score.id) {
+                <tr>
+                  <td>{{ score.difficulty | translatedifficulty | titlecase }}</td>
+                  <td>{{ score.score }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    </section>
+
+    <!--
+    <section class="col">
+      <div class="orange-border-start">
+        <h5 class="ms-2">Meus Dados</h5>
+      </div>
+
+      <form class="mt-3 row row-cols-1 gap-3">
+        <div class="col">
+          <label for="input-username" class="form-label">Username:</label>
+          <input
+            id="input-username"
+            placeholder="Digite seu username..."
+            class="form-control"
+            type="text"
+          />
+        </div>
+        <div class="col">
+          <label for="input-email" class="form-label">Email:</label>
+          <input
+            id="input-email"
+            placeholder="Digite seu email..."
+            class="form-control"
+            type="email"
+          />
+        </div>
+        <div class="col text-end">
+          <button type="submit" class="btn btn-success">
+            <i class="bi-floppy-fill me-2"></i>Atualizar Dados
+          </button>
+        </div>
+      </form>
+    </section>
+    -->
+
+    <section class="col">
+      <div class="orange-border-start">
+        <h5 class="ms-2">Minha Senha</h5>
+      </div>
+      <app-update-password-form
+        (passwordData)="updateUserPassword($event)"
+      ></app-update-password-form>
+    </section>
+
+    <!--
+    <section class="col">
+      <div class="red-border-start">
+        <h5 class="ms-2">Deletar Conta</h5>
+      </div>
+
+      <p>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum ad possimus, dolor ipsam
+        perspiciatis inventore libero deleniti consequuntur, nobis explicabo voluptatum! Nulla esse
+        provident quisquam incidunt. Nostrum laborum totam temporibus reprehenderit aspernatur nam
+        repudiandae voluptatum architecto voluptatem, dolores aliquid natus.
+      </p>
+
+      <div>
+        <button class="btn btn-danger"><i class="bi-trash me-2"></i>Deletar Conta</button>
+      </div>
+    </section>
+    -->
+  </div>
+</main>

@@ -1,8 +1,8 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IFormUtils } from '../../../../../shared/models/form-utils.interface';
 import { IWordDifficultyFormData } from '../../../../../shared/models/word-difficulty-form-data.interface';
-import { WordDifficultService } from '../../../../../core/services/word-difficult/word-difficult.service';
+import { WordDifficultyService } from '../../../../../core/services/word-difficulty/word-difficulty.service';
 import { IWordDifficultyData } from '../../../../../shared/models/word-difficulty-data.interface';
 import { TitleCasePipe } from '@angular/common';
 
@@ -16,11 +16,9 @@ export class SelectDifficultyFormComponent implements IFormUtils<IWordDifficulty
   @Output() selectedDifficulty = new EventEmitter<IWordDifficultyFormData>();
 
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly difficultyService: WordDifficultService = inject(WordDifficultService);
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
 
-  get difficults(): IWordDifficultyData[] {
-    return this.difficultyService.difficults;
-  }
+  difficulties: Signal<IWordDifficultyData[]> = this.difficultyService.difficulties;
 
   form: FormGroup = this.fb.nonNullable.group({
     difficulty: ['easy', [Validators.required]],

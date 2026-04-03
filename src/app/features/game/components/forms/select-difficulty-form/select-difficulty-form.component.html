@@ -2,7 +2,7 @@
   <div class="col">
     <label for="select-difficulty">Selecione a Dificuldade:</label>
     <select formControlName="difficulty" id="select-difficulty" class="form-select">
-      @for (diff of difficults; track $index) {
+      @for (diff of difficulties(); track $index) {
         <option [value]="diff.difficulty">{{ diff.translation | titlecase }}</option>
       }
     </select>

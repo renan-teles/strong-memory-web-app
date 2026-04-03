@@ -44,6 +44,7 @@ export class TypingWordsFormComponent implements OnInit, IWordsComparator {
   }
 
   isEqualsWords(index: number): boolean {
+    if (!this.compare()) return false;
     return this.service.compareCurrentWordsAndUserWordsByIndex(index);
   }
 

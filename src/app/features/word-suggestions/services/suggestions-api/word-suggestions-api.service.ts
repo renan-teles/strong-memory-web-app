@@ -24,10 +24,14 @@ export class WordSuggestionsApiService extends AbstractApiService {
       data,
       {
         params: {
-          user_id: userId,
+          userId: userId,
         },
       },
     );
+  }
+
+  delete(suggestionId: number): Observable<void> {
+    return this.http.delete<void>(`${this.BASE_URL}/word-suggestion/delete/${suggestionId}`);
   }
 
   loadAll(
@@ -39,31 +43,27 @@ export class WordSuggestionsApiService extends AbstractApiService {
         params: {
           page: pagination.page,
           size: pagination.size,
-          sort_by: pagination.sortBy ?? 'id',
+          sortBy: pagination.sortBy,
         },
       },
     );
   }
 
-  loadAllByPeriod(
+  loadByPeriod(
     filter: IFilterWordSuggestionFormData,
     pagination: IPagePagination,
   ): Observable<IApiResponse<IPaginationResponse<IWordSuggestionData>>> {
     return this.http.get<IApiResponse<IPaginationResponse<IWordSuggestionData>>>(
-      `${this.BASE_URL}/word-suggestion/get-all-by-period`,
+      `${this.BASE_URL}/word-suggestion/get-by-period`,
       {
         params: {
-          start_date: filter.startDate,
-          end_date: filter.endDate,
+          startDate: filter.startDate,
+          endDate: filter.endDate,
           page: pagination.page,
           size: pagination.size,
-          sort_by: pagination.sortBy ?? 'id',
+          sortBy: pagination.sortBy,
         },
       },
     );
-  }
-
-  delete(suggestionId: number): Observable<void> {
-    return this.http.delete<void>(`${this.BASE_URL}/word-suggestion/delete/${suggestionId}`);
   }
 }

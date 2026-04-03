@@ -1,5 +1,7 @@
+import { UserRole } from '../../features/users/domain/enum/user-role.enum';
+
 export interface INavbarLink {
   text: string;
-  accessRole: 'ROLE_PLAYER' | 'ROLE_ADMINISTRATOR' | 'ALL';
+  accessRole: UserRole.PLAYER | UserRole.ADM | 'ALL';
   path: string;
 }

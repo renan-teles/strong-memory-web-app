@@ -4,5 +4,5 @@ export interface ToastMessage {
   title: string;
   messages: string[];
   classname: string;
-  icon: IconStatus;
+  icon: IconStatus | 'bi-star-fill';
 }

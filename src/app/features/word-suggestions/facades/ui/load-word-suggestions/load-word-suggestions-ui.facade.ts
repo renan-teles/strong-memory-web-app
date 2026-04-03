@@ -15,7 +15,7 @@ import { IFilterWordSuggestionFormData } from '../../../models/filter-word-sugge
 @Injectable({
   providedIn: 'root',
 })
-export class LoadWordSuggestionsFacade {
+export class LoadWordSuggestionsUiFacade {
   private readonly facade: WordSuggestionsFacade = inject(WordSuggestionsFacade);
 
   private readonly _paginationState: WritableSignal<IPaginationState<IWordSuggestionData>> =
@@ -24,21 +24,18 @@ export class LoadWordSuggestionsFacade {
   paginationState: Signal<IPaginationState<IWordSuggestionData>> =
     this._paginationState.asReadonly();
 
-  readonly pages: Signal<number[]> = computed(() => {
-    return generatePages(this._paginationState().totalPages);
-  });
+  readonly pages: Signal<number[]> = computed(() =>
+    generatePages(this._paginationState().totalPages),
+  );
+  readonly wordsSuggestions: Signal<IWordSuggestionData[]> = computed(
+    () => this._paginationState().content,
+  );
+  readonly isLoading: Signal<boolean> = computed(() => this._paginationState().isLoading);
+  readonly success: Signal<boolean> = computed(() => this._paginationState().success);
 
-  readonly wordsSuggestions: Signal<IWordSuggestionData[]> = computed(() => {
-    return this._paginationState().content;
-  });
-
-  readonly isLoading: Signal<boolean> = computed(() => {
-    return this._paginationState().isLoading;
-  });
-
-  readonly success: Signal<boolean> = computed(() => {
-    return this._paginationState().success;
-  });
+  findWordById(suggestionId: number): IWordSuggestionData | undefined {
+    return this.wordsSuggestions().find((s) => s.id! === suggestionId);
+  }
 
   loadAll(page: number = 0): void {
     clearPaginationStateSignal(this._paginationState, true);

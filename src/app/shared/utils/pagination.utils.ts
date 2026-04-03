@@ -16,6 +16,10 @@ export function generatePages(total: number): number[] {
   return Array.from({ length: total }, (_, i) => i);
 }
 
+export function isValidPage(currentPage: number, totalPages: number) {
+  return currentPage >= 0 && currentPage <= totalPages;
+}
+
 function getInitialPaginationState<T>(isLoading: boolean = false): IPaginationState<T> {
   return {
     content: [],

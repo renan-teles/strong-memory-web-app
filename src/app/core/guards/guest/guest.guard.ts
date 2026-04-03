@@ -1,24 +1,23 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthStorageService } from '../../services/auth-storage/auth-storage.service';
+import { UserRole } from '../../../features/users/domain/enum/user-role.enum';
 
 export const guestGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authStorage = inject(AuthStorageService);
 
-  if (authStorage.isAuthenticated()) {
-    switch (authStorage.getUserRole()) {
-      case 'ROLE_PLAYER':
-        router.createUrlTree(['/game/start']);
-        break;
+  if (!authStorage.isAuthenticated()) return true;
 
-      case 'ROLE_ADMINISTRATOR':
-        router.createUrlTree(['/words/registered']);
-        break;
-    }
+  switch (authStorage.getUserRole()) {
+    case UserRole.PLAYER:
+      router.navigate(['/app/game/start']);
+      break;
 
-    return false;
+    case UserRole.ADM:
+      router.navigate(['/app/words/list']);
+      break;
   }
 
-  return true;
+  return false;
 };

@@ -18,6 +18,10 @@ export class WordSuggestionsFacade {
     return this.api.register(this.authStorage.getUserId() ?? '-1', data);
   }
 
+  delete(suggestionId: number): Observable<void> {
+    return this.api.delete(suggestionId);
+  }
+
   loadAll(page: number): Observable<IApiResponse<IPaginationResponse<IWordSuggestionData>>> {
     return this.api.loadAll({
       page,
@@ -31,14 +35,10 @@ export class WordSuggestionsFacade {
     page: number = 0,
   ): Observable<IApiResponse<IPaginationResponse<IWordSuggestionData>>> {
     console.log(filter);
-    return this.api.loadAllByPeriod(filter, {
+    return this.api.loadByPeriod(filter, {
       page,
       size: 10,
       sortBy: 'suggestedWord',
     });
-  }
-
-  delete(suggestionId: number): Observable<void> {
-    return this.api.delete(suggestionId);
   }
 }

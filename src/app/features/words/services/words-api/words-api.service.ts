@@ -7,6 +7,7 @@ import { IWordData } from '../../models/word-data.interface';
 import { Observable } from 'rxjs';
 import { IWordDifficultyFormData } from '../../../../shared/models/word-difficulty-form-data.interface';
 import { IWordDifficultyData } from '../../../../shared/models/word-difficulty-data.interface';
+import { IUpdateWordData } from '../../models/update-word-data.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class WordsApiService extends AbstractApiService {
     return this.http.delete<void>(`${this.BASE_URL}/word/delete/${wordId}`);
   }
 
-  update(wordId: number, data: IWordData): Observable<void> {
+  update(wordId: number, data: IUpdateWordData): Observable<void> {
     return this.http.put<void>(`${this.BASE_URL}/word/update/${wordId}`, data);
   }
 
@@ -33,20 +34,20 @@ export class WordsApiService extends AbstractApiService {
     pagination: IPagePagination,
   ): Observable<IApiResponse<IPaginationResponse<IWordData>>> {
     return this.http.get<IApiResponse<IPaginationResponse<IWordData>>>(
-      `${this.BASE_URL}/word/get-all-by-difficulty`,
+      `${this.BASE_URL}/word/get-by-difficulty`,
       {
         params: {
           difficulty: data.difficulty,
           page: pagination.page,
           size: pagination.size,
-          sort_by: pagination.sortBy ?? 'id',
+          sortBy: pagination.sortBy,
         },
       },
     );
   }
 
   loadRandomWords(difficulty: IWordDifficultyData): Observable<IApiResponse<IWordData[]>> {
-    return this.http.get<IApiResponse<IWordData[]>>(`${this.BASE_URL}/word/get-random-words`, {
+    return this.http.get<IApiResponse<IWordData[]>>(`${this.BASE_URL}/word/get-random-list`, {
       params: {
         difficulty: difficulty.difficulty,
         quantity: difficulty.maxQuantityWords,

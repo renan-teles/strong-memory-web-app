@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { WordDifficultService } from '../../../../../core/services/word-difficult/word-difficult.service';
+import { WordDifficultyService } from '../../../../../core/services/word-difficulty/word-difficulty.service';
 import { IWordDifficultyData } from '../../../../../shared/models/word-difficulty-data.interface';
 
 @Injectable({
@@ -12,9 +12,9 @@ export class TimerFacade {
 
   decreaseTime = this._time.asReadonly();
 
-  private readonly difficultyService: WordDifficultService = inject(WordDifficultService);
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
   get currentDifficulty(): IWordDifficultyData {
-    return this.difficultyService.currentDifficulty;
+    return this.difficultyService.currentDifficulty!;
   }
 
   setTimeToDisplayTimerWords(): void {
@@ -28,6 +28,7 @@ export class TimerFacade {
   updateTimes(): void {
     const increaseDisplayTime = this.currentDifficulty.increaseDisplayTimeSeconds;
     const increaseTypingTime = this.currentDifficulty.increaseTypingTimeSeconds;
+
     this.displayTimeWords.update((t) => t + increaseDisplayTime);
     this.answerTime.update((t) => t + increaseTypingTime);
   }

@@ -1,13 +1,13 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
-import { WordDifficultService } from '../../core/services/word-difficult/word-difficult.service';
+import { WordDifficultyService } from '../../core/services/word-difficulty/word-difficulty.service';
 import { IWordDifficultyData } from '../models/word-difficulty-data.interface';
 
 @Pipe({
-  name: 'translateDifficulty',
+  name: 'translatedifficulty',
   standalone: true,
 })
 export class TranslateDifficultyPipe implements PipeTransform {
-  private readonly difficultyService: WordDifficultService = inject(WordDifficultService);
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
 
   transform(value: string): string {
     const difficulty: IWordDifficultyData | undefined =

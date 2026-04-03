@@ -23,21 +23,16 @@ export class LoadWordsPaginationUiFacade {
 
   paginationState: Signal<IPaginationState<IWordData>> = this._paginationState.asReadonly();
 
-  readonly pages: Signal<number[]> = computed(() => {
-    return generatePages(this._paginationState().totalPages);
-  });
+  readonly pages: Signal<number[]> = computed(() =>
+    generatePages(this._paginationState().totalPages),
+  );
+  readonly words: Signal<IWordData[]> = computed(() => this._paginationState().content);
+  readonly isLoading: Signal<boolean> = computed(() => this._paginationState().isLoading);
+  readonly success: Signal<boolean> = computed(() => this._paginationState().success);
 
-  readonly words: Signal<IWordData[]> = computed(() => {
-    return this._paginationState().content;
-  });
-
-  readonly isLoading: Signal<boolean> = computed(() => {
-    return this._paginationState().isLoading;
-  });
-
-  readonly success: Signal<boolean> = computed(() => {
-    return this._paginationState().success;
-  });
+  findWordById(wordId: number): IWordData | undefined {
+    return this.words().find((w) => w.id! === wordId);
+  }
 
   loadByDifficulty(data: IWordDifficultyFormData, page: number): void {
     clearPaginationStateSignal(this._paginationState, true);

@@ -36,6 +36,15 @@ export class ToastService {
     });
   }
 
+  showWarning(title: string, messages: string[]): void {
+    this.show({
+      title,
+      messages,
+      icon: 'bi-star-fill',
+      classname: 'text-warning',
+    });
+  }
+
   clear(): void {
     clearTimeout(this.timeout);
     this._toasts.set([]);

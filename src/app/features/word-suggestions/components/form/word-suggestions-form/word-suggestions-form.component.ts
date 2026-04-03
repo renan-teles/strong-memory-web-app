@@ -4,7 +4,7 @@ import { IWordSuggestionData } from '../../../models/word-suggestion-data.interf
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CrudWordSuggestionsUiFacade } from '../../../facades/ui/crud/crud-word-suggestions-ui.facade';
 import { SpinnerBorderComponent } from '../../../../../shared/components/spinner-border/spinner-border.component';
-import { WordDifficultService } from '../../../../../core/services/word-difficult/word-difficult.service';
+import { WordDifficultyService } from '../../../../../core/services/word-difficulty/word-difficulty.service';
 import { IWordDifficultyData } from '../../../../../shared/models/word-difficulty-data.interface';
 import { TitleCasePipe } from '@angular/common';
 
@@ -19,7 +19,7 @@ export class WordSuggestionsFormComponent implements IFormUtils<IWordSuggestionD
 
   private readonly facade: CrudWordSuggestionsUiFacade = inject(CrudWordSuggestionsUiFacade);
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly difficultyService = inject(WordDifficultService);
+  private readonly difficultyService = inject(WordDifficultyService);
 
   private resetFormEffect: EffectRef = effect(() => {
     if (this.registerSuccess() && !this.isRegisteringWord()) {
@@ -31,9 +31,7 @@ export class WordSuggestionsFormComponent implements IFormUtils<IWordSuggestionD
   isRegisteringWord: Signal<boolean> = this.facade.isRegistering;
   registerSuccess: Signal<boolean> = this.facade.registerSuccess;
 
-  get difficults(): IWordDifficultyData[] {
-    return this.difficultyService.difficults;
-  }
+  difficulties: Signal<IWordDifficultyData[]> = this.difficultyService.difficulties;
 
   form: FormGroup = this.fb.nonNullable.group({
     suggestedWord: ['', [Validators.required, Validators.minLength(2)]],

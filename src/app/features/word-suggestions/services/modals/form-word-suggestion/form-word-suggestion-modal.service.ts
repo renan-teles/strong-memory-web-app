@@ -8,13 +8,15 @@ import { FormWordSuggestionModalComponent } from '../../../components/modals/for
 })
 export class FormWordSuggestionModalService {
   private modal: NgbModal = inject(NgbModal);
-  confirm(title: string, suggestion: IWordSuggestionData | null = null) {
-    console.log('CHEGA AQUI');
+
+  confirm(title: string, suggestion: IWordSuggestionData) {
     const ref = this.modal.open(FormWordSuggestionModalComponent, {
       centered: true,
     });
+
     ref.componentInstance.title = title;
     ref.componentInstance.suggestionWord = suggestion;
+
     return ref.result;
   }
 }

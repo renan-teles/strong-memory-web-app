@@ -1,101 +1,166 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { WordsFacade } from '../../words.facade';
-import { ConfirmModalService } from '../../../../../core/services/modals/confirm/confirm-modal.service';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, tap } from 'rxjs';
 import { AlertService } from '../../../../../core/services/alert/alert.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { LoadWordsPaginationUiFacade } from '../load-words-pagination/load-words-pagination-ui.facade';
-import { WordDifficultService } from '../../../../../core/services/word-difficult/word-difficult.service';
-import { FormWordModalService } from '../../../services/modals/form-word/form-word-modal.service';
+import { WordDifficultyService } from '../../../../../core/services/word-difficulty/word-difficulty.service';
 import { IWordData } from '../../../models/word-data.interface';
 import { IApiResponse } from '../../../../../shared/models/api-response.interface';
+import { IRegisterState } from '../../../../../shared/models/register-state.interface';
+import { IUpdateState } from '../../../../../shared/models/update-state.interface';
+import { IDeleteState } from '../../../../../shared/models/delete-state.interface';
+import { IUpdateWordData } from '../../../models/update-word-data.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CrudWordsUiFacade {
   private readonly facade: WordsFacade = inject(WordsFacade);
-  private readonly confirmService: ConfirmModalService = inject(ConfirmModalService);
-  private readonly formWordModalService: FormWordModalService = inject(FormWordModalService);
   private readonly alertService: AlertService = inject(AlertService);
   private readonly paginationWordsFacade: LoadWordsPaginationUiFacade = inject(
     LoadWordsPaginationUiFacade,
   );
-  private readonly difficultyService: WordDifficultService = inject(WordDifficultService);
-  private readonly loadWordsPagination: LoadWordsPaginationUiFacade = inject(
-    LoadWordsPaginationUiFacade,
-  );
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
 
-  register(): void {
-    this.formWordModalService
-      .confirm('Cadastrar Palavra')
-      .then((data: IWordData) => {
-        this.facade
-          .register(data)
-          .pipe(
-            tap((response: IApiResponse<IWordData>) => {
-              this.alertService.success(response.message);
-              this.realoadWords();
-            }),
-            catchError((error: HttpErrorResponse) => {
-              this.alertService.error(error.error.message);
-              return EMPTY;
-            }),
-          )
-          .subscribe();
-      })
-      .catch(() => {});
+  private readonly _registerState = signal<IRegisterState>({
+    isRegistering: false,
+    success: false,
+  });
+
+  private readonly _updateState = signal<IUpdateState>({
+    isUpdating: false,
+    success: false,
+  });
+
+  private readonly _deleteState = signal<IDeleteState>({
+    isDeleting: false,
+    success: false,
+  });
+
+  readonly isRegistering: Signal<boolean> = computed(() => this._registerState().isRegistering);
+  readonly registerSuccess: Signal<boolean> = computed(() => this._registerState().success);
+
+  readonly isUpdating: Signal<boolean> = computed(() => this._updateState().isUpdating);
+  readonly updateSuccess: Signal<boolean> = computed(() => this._updateState().success);
+
+  readonly isDeleting: Signal<boolean> = computed(() => this._deleteState().isDeleting);
+  readonly deleteSuccess: Signal<boolean> = computed(() => this._deleteState().success);
+
+  register(data: IWordData): void {
+    this._registerState.update((s) => ({
+      ...s,
+      isRegistering: true,
+      success: false,
+    }));
+
+    this.facade
+      .register(data)
+      .pipe(
+        tap((response: IApiResponse<IWordData>) => {
+          this._registerState.update((s) => ({
+            ...s,
+            success: true,
+          }));
+
+          this.alertService.success(response.message);
+          this.realoadWords();
+        }),
+
+        catchError(() => {
+          this._registerState.update((s) => ({
+            ...s,
+            success: false,
+          }));
+          return EMPTY;
+        }),
+
+        finalize(() => {
+          this._registerState.update((s) => ({
+            ...s,
+            isRegistering: false,
+          }));
+        }),
+      )
+      .subscribe();
   }
 
-  update(wordId: number): void {
-    const word: IWordData | null | undefined = this.loadWordsPagination
-      .words()
-      .find((w) => w.id! === wordId);
+  update(wordId: number, word: IUpdateWordData): void {
+    this._updateState.update((s) => ({
+      ...s,
+      isUpdating: true,
+      success: false,
+    }));
 
-    if (!word) return;
+    this.facade
+      .update(wordId, word)
+      .pipe(
+        tap(() => {
+          this._updateState.update((s) => ({
+            ...s,
+            success: true,
+          }));
 
-    this.formWordModalService
-      .confirm('Editar Palavra', word)
-      .then((data: IWordData) => {
-        this.facade
-          .update(wordId, data)
-          .pipe(
-            tap(() => {
-              this.alertService.success('Palavra editada com sucesso.');
-              this.realoadWords();
-            }),
-            catchError((error: HttpErrorResponse) => {
-              this.alertService.error(error.error.message);
-              return EMPTY;
-            }),
-          )
-          .subscribe();
-      })
-      .catch(() => {});
+          this.alertService.success('Palavra atualizada com sucesso.');
+          this.realoadWords();
+        }),
+
+        catchError(() => {
+          this._updateState.update((s) => ({
+            ...s,
+            success: false,
+          }));
+          return EMPTY;
+        }),
+
+        finalize(() => {
+          this._updateState.update((s) => ({
+            ...s,
+            isUpdating: false,
+          }));
+        }),
+      )
+      .subscribe();
   }
 
   delete(wordId: number): void {
-    this.confirmService
-      .confirm('Excluir Palavra', 'Tem certeza que deseja deletar?', 'btn-danger')
-      .then(() => {
-        this.facade
-          .delete(wordId)
-          .pipe(
-            tap(() => {
-              this.alertService.success('Palavra deletada com sucesso.');
-              this.realoadWords();
-            }),
-            catchError((error: HttpErrorResponse) => {
-              this.alertService.success(error.error.message);
-              return EMPTY;
-            }),
-          )
-          .subscribe();
-      })
-      .catch(() => {});
+    this._deleteState.update((s) => ({
+      ...s,
+      isDeleting: true,
+      success: false,
+    }));
+
+    this.facade
+      .delete(wordId)
+      .pipe(
+        tap(() => {
+          this._deleteState.update((s) => ({
+            ...s,
+            success: true,
+          }));
+
+          this.alertService.success('Palavra deletada com sucesso.');
+          this.realoadWords();
+        }),
+
+        catchError(() => {
+          this._deleteState.update((s) => ({
+            ...s,
+            success: false,
+          }));
+          return EMPTY;
+        }),
+
+        finalize(() => {
+          this._deleteState.update((s) => ({
+            ...s,
+            isDeleting: false,
+          }));
+        }),
+      )
+      .subscribe();
   }
 
   private realoadWords(): void {
-    this.paginationWordsFacade.loadByDifficulty(this.difficultyService.currentDifficulty, 0);
+    this.paginationWordsFacade.loadByDifficulty(this.difficultyService.currentDifficulty!, 0);
   }
 }

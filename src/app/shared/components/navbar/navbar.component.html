@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row row-cols-2 row-cols-lg-1 gap-lg-1">
         <div class="col text-start text-lg-center">
-          <a class="navbar-brand" routerLink="/game/start">
+          <a class="navbar-brand" routerLink="/app/game/start">
             <app-strong-memory-brand></app-strong-memory-brand>
           </a>
         </div>
@@ -38,35 +38,15 @@
             </li>
           }
 
-          <li class="nav-item text-end mt-2 mt-lg-0">
-            <button (click)="onLogout()" type="button" class="btn btn-outline-danger">
-              <i class="bi-arrow-bar-left me-1"></i>Sair
-            </button>
-          </li>
+          @if (links.length > 0) {
+            <li class="nav-item text-end mt-2 mt-lg-0">
+              <button (click)="onLogout()" type="button" class="btn btn-outline-danger">
+                <i class="bi-arrow-bar-left me-1"></i>Sair
+              </button>
+            </li>
+          }
         </ul>
       </div>
     </div>
   </div>
 </nav>
-
-<!-- <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active-route" routerLink="/words/registered"
-              >Palavras</a
-            >
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active-route" routerLink="/words/suggestion"
-              >Sugerir Palavras</a
-            >
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active-route" routerLink="/game/about">Sobre</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active-route" routerLink="/player/panel"
-              >Meu Painel</a
-            >
-          </li> -->
