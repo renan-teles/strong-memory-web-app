@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, Output, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IFormUtils } from '../../../../../shared/models/form-utils.interface';
 import { IFilterWordSuggestionFormData } from '../../../models/filter-word-suggestion-form-data.interface';
-import { LoadWordSuggestionsFacade } from '../../../facades/ui/load-word-suggestions/load-word-suggestions-ui.facade';
+import { LoadWordSuggestionsUiFacade } from '../../../facades/ui/load-word-suggestions/load-word-suggestions-ui.facade';
 
 @Component({
   selector: 'app-filter-word-suggestions-form',
@@ -14,7 +14,7 @@ export class FilterWordSuggestionsFormComponent implements IFormUtils<IFilterWor
   @Output() submitteData = new EventEmitter<IFilterWordSuggestionFormData>();
 
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly facade: LoadWordSuggestionsFacade = inject(LoadWordSuggestionsFacade);
+  private readonly facade: LoadWordSuggestionsUiFacade = inject(LoadWordSuggestionsUiFacade);
 
   isLoadingSuggestions: Signal<boolean> = this.facade.isLoading;
 

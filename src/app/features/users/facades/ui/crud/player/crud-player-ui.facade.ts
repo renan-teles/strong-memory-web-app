@@ -3,7 +3,6 @@ import { IApiResponse } from '../../../../../../shared/models/api-response.inter
 import { IUserData } from '../../../../models/user-data.interface';
 import { ICreatedUser } from '../../../../models/created-user.interface';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 import { IUpdatePasswordData } from '../../../../models/update-password-data.interface';
 import { AbstractCrudUsersUiFacade } from '../abstract-crud-users-ui.facade';
 import { IUpdateState } from '../../../../../../shared/models/update-state.interface';
@@ -46,21 +45,18 @@ export class CrudPlayerUiFacade extends AbstractCrudUsersUiFacade {
           }));
 
           this.alert.success(response.message);
-          this.redirectTo('/player/login');
+          this.router.navigate(['/auth/player/login']);
         }),
 
-        catchError((error: HttpErrorResponse) => {
+        catchError(() => {
           this._registerState.update((s) => ({
             ...s,
             success: false,
           }));
-          this.alert.error(error.error.message);
           return EMPTY;
         }),
 
         finalize(() => {
-          console.log('Finalizando registro');
-
           this._registerState.update((s) => ({
             ...s,
             isRegistering: false,
@@ -74,6 +70,7 @@ export class CrudPlayerUiFacade extends AbstractCrudUsersUiFacade {
     this._updatePasswordState.update((s) => ({
       ...s,
       isUpdating: true,
+      success: false,
     }));
 
     this.facade
@@ -84,17 +81,17 @@ export class CrudPlayerUiFacade extends AbstractCrudUsersUiFacade {
             ...s,
             success: true,
           }));
-
           this.alert.success('Senha atualizada com sucesso.');
         }),
+
         catchError(() => {
           this._updatePasswordState.update((s) => ({
             ...s,
             success: false,
           }));
-          this.alert.error('Erro ao atualizar senha.');
           return EMPTY;
         }),
+
         finalize(() => {
           this._updatePasswordState.update((s) => ({
             ...s,

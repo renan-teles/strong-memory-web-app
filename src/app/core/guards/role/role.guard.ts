@@ -7,9 +7,10 @@ export const roleGuard: CanActivateFn = (route, state) => {
   const authStorage = inject(AuthStorageService);
 
   const userRole = authStorage.getUserRole();
+  const path = '/not-authorized';
 
   if (!userRole) {
-    router.createUrlTree(['/not-authorized']);
+    router.navigate([path]);
     return false;
   }
 
@@ -18,6 +19,6 @@ export const roleGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  router.createUrlTree(['/not-authozied']);
+  router.navigate([path]);
   return false;
 };

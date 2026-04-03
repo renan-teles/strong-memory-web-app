@@ -1,14 +1,14 @@
 <main class="col card bg-white rounded shadow-sm p-3 p-lg-4 gap-4 page-content-animation">
-  <section class="row row-cols-3 align-items-center">
+  <section class="row row-cols-2 row-cols-lg-3 align-items-center">
     <div class="col text-start">
-      <h5>{{ currentDifficulty.translation }}</h5>
+      <h5>{{ currentDifficulty.translation | titlecase }}</h5>
     </div>
 
-    <div class="col text-center">
+    <div class="col text-end text-lg-center">
       <h5>Pontuação: {{ score() }}</h5>
     </div>
 
-    <div class="col text-end">
+    <div class="col-12 col-sm text-end">
       @if (isCorrect()) {
         <button (click)="reloadGame()" type="button" class="btn text-danger">
           <i class="bi-arrow-repeat me-2"></i>Reiniciar
@@ -50,7 +50,7 @@
 
   @if (!isCorrect() && showResult()) {
     <section class="col-12 text-end mt-3">
-      <button class="btn-gradient-purple-orange" (click)="resetGame()">Reiniciar</button>
+      <button class="btn-scale btn-gradient-purple-orange" (click)="resetGame()">Reiniciar</button>
     </section>
   }
 </main>

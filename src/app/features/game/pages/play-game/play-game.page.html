@@ -1,10 +1,10 @@
-@if (loadingWords()) {
-  <app-loading-random-words></app-loading-random-words>
-} @else if (!loadingWordsSuccess()) {
-  <app-error-game
-    [errorTitle]="'Erro ao Carregar Palavras. Pedimos Desculpas.'"
-    [errorMessage]="'Falha ao carregar palavras.'"
-  ></app-error-game>
+@if (loadingGame()) {
+  <app-loading-content [message]="'Carregando palavras...'"></app-loading-content>
+} @else if (!loadingGameSuccess()) {
+  <app-error
+    [errorTitle]="'Erro ao Iniciar Jogo. Pedimos Desculpas.'"
+    [errorMessage]="'Falha ao inicializar jogo.'"
+  ></app-error>
 } @else {
   @switch (gameState()) {
     @case ('show-game') {
@@ -17,10 +17,10 @@
       <app-no-time-left (gameState)="setState($event)"></app-no-time-left>
     }
     @case ('error') {
-      <app-error-game
+      <app-error
         [errorTitle]="'Erro na Execução. Pedimos Desculpas.'"
         [errorMessage]="'Falha na execução do mini-game.'"
-      ></app-error-game>
+      ></app-error>
     }
   }
 }

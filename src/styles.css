@@ -167,6 +167,21 @@ body {
   font-weight: 700;
 }
 
+.btn-gradient-purple-orange:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Navs e Links*/
+.page-link {
+  color: var(--purple) !important;
+}
+
+.active-link-pagination {
+  color: white !important;
+  background: var(--purple-orange-gradient) !important;
+}
+
 /* Animations */
 .page-content-animation {
   animation: fadeIn 0.7s ease;
@@ -193,13 +208,4 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.page-link {
-  color: var(--purple) !important;
-}
-
-.active-link-pagination {
-  color: white !important;
-  background: var(--purple-orange-gradient) !important;
 }

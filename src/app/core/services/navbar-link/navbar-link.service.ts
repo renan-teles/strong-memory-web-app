@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { INavbarLink } from '../../../shared/models/nvabar-link.interface';
+import { UserRole } from '../../../features/users/domain/enum/user-role.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -8,54 +9,54 @@ export class NavbarLinkService {
   private readonly navLinks: INavbarLink[] = [
     {
       text: 'Jogar',
-      accessRole: 'ROLE_PLAYER',
-      path: '/game/start',
+      accessRole: UserRole.PLAYER,
+      path: '/app/game/start',
     },
     {
       text: 'Palavras',
       accessRole: 'ALL',
-      path: '/words/registered',
+      path: '/app/words/list',
     },
     {
-      text: 'Sugerir de Palavras',
-      accessRole: 'ROLE_PLAYER',
-      path: '/words/suggestion',
+      text: 'Sugerir Palavra',
+      accessRole: UserRole.PLAYER,
+      path: '/app/suggestions/suggest',
     },
     {
       text: 'Sobre',
-      accessRole: 'ROLE_PLAYER',
-      path: '/game/about',
+      accessRole: UserRole.PLAYER,
+      path: '/app/game/about',
     },
     {
       text: 'Meu Painel',
-      accessRole: 'ROLE_PLAYER',
-      path: '/player/panel',
+      accessRole: UserRole.PLAYER,
+      path: '/app/player/panel',
     },
     {
       text: 'Sugestão de Palavras',
-      accessRole: 'ROLE_ADMINISTRATOR',
-      path: '/words/view-suggestions/',
+      accessRole: UserRole.ADM,
+      path: '/app/suggestions/list',
     },
   ];
 
   getPlayerLinks(): INavbarLink[] {
     return this.navLinks.filter((l) => {
-      return l.accessRole == 'ROLE_PLAYER' || l.accessRole == 'ALL';
+      return l.accessRole == UserRole.PLAYER || l.accessRole == 'ALL';
     });
   }
 
   getAdministratorLinks(): INavbarLink[] {
     return this.navLinks.filter((l) => {
-      return l.accessRole === 'ROLE_ADMINISTRATOR' || l.accessRole === 'ALL';
+      return l.accessRole === UserRole.ADM || l.accessRole === 'ALL';
     });
   }
 
   getLinksByRole(role: string): INavbarLink[] {
     switch (role) {
-      case 'ROLE_ADMINISTRATOR':
+      case UserRole.ADM:
         return this.getAdministratorLinks();
 
-      case 'ROLE_PLAYER':
+      case UserRole.PLAYER:
         return this.getPlayerLinks();
 
       default:

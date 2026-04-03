@@ -8,16 +8,12 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      let message = 'Erro inesperado.';
-      let setError = true;
+      let message: string = 'Erro inesperado.';
+      let setError: boolean = true;
 
       switch (error.status) {
-        case 400:
-          message = 'Dados inválidos.';
-          break;
-
         case 500:
-          message = 'Erro interno do servidor.';
+          message = 'Falha ao executar ação.';
           break;
 
         case 0:
@@ -30,6 +26,8 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       if (setError) alert.error(message);
+      else if (error.error?.message) alert.error(error.error.message);
+
       return throwError(() => error);
     }),
   );

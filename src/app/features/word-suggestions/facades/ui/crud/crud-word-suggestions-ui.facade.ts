@@ -5,11 +5,9 @@ import { WordSuggestionsFacade } from '../../word-suggestions.facade.ts';
 import { IRegisterState } from '../../../../../shared/models/register-state.interface';
 import { IApiResponse } from '../../../../../shared/models/api-response.interface';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 import { IFilterWordSuggestionFormData } from '../../../models/filter-word-suggestion-form-data.interface';
-import { LoadWordSuggestionsFacade } from '../load-word-suggestions/load-word-suggestions-ui.facade';
-import { ConfirmModalService } from '../../../../../core/services/modals/confirm/confirm-modal.service';
-import { FormWordSuggestionModalService } from '../../../services/modals/form-word-suggestion/form-word-suggestion-modal.service';
+import { LoadWordSuggestionsUiFacade } from '../load-word-suggestions/load-word-suggestions-ui.facade';
+import { IDeleteState } from '../../../../../shared/models/delete-state.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +15,8 @@ import { FormWordSuggestionModalService } from '../../../services/modals/form-wo
 export class CrudWordSuggestionsUiFacade {
   private readonly facade: WordSuggestionsFacade = inject(WordSuggestionsFacade);
   private readonly alert: AlertService = inject(AlertService);
-  private readonly loadWordSuggestions: LoadWordSuggestionsFacade =
-    inject(LoadWordSuggestionsFacade);
-  private readonly confirmService = inject(ConfirmModalService);
-  private readonly formWordSuggestionModalService: FormWordSuggestionModalService = inject(
-    FormWordSuggestionModalService,
+  private readonly loadWordSuggestions: LoadWordSuggestionsUiFacade = inject(
+    LoadWordSuggestionsUiFacade,
   );
 
   private readonly _registerState = signal<IRegisterState>({
@@ -29,42 +24,18 @@ export class CrudWordSuggestionsUiFacade {
     success: false,
   });
 
-  readonly isRegistering: Signal<boolean> = computed(() => {
-    return this._registerState().isRegistering;
+  private readonly _deleteState = signal<IDeleteState>({
+    isDeleting: false,
+    success: false,
   });
 
-  readonly registerSuccess: Signal<boolean> = computed(() => {
-    return this._registerState().success;
-  });
+  readonly isRegistering: Signal<boolean> = computed(() => this._registerState().isRegistering);
+  readonly registerSuccess: Signal<boolean> = computed(() => this._registerState().success);
 
-  register(
-    data: IWordSuggestionData | null = null,
-    filter: IFilterWordSuggestionFormData | null = null,
-    suggestioId: number | null = null,
-  ): void {
-    if ((!filter || !suggestioId) && data) {
-      this.registerPrivate(data, null);
-      return;
-    }
+  readonly isDeleting: Signal<boolean> = computed(() => this._deleteState().isDeleting);
+  readonly deleteSuccess: Signal<boolean> = computed(() => this._deleteState().success);
 
-    const suggestion: IWordSuggestionData | null | undefined = this.loadWordSuggestions
-      .wordsSuggestions()
-      .find((s) => s.id! === suggestioId);
-
-    if (!suggestion) return;
-
-    this.formWordSuggestionModalService
-      .confirm('Cadastrar Palavra', suggestion)
-      .then((data: IWordSuggestionData) => {
-        // this.registerPrivate(data, filter);
-      })
-      .catch(() => {});
-  }
-
-  private registerPrivate(
-    data: IWordSuggestionData,
-    filter: IFilterWordSuggestionFormData | null = null,
-  ): void {
+  register(data: IWordSuggestionData): void {
     this._registerState.update((s) => ({
       ...s,
       isRegistering: true,
@@ -81,17 +52,13 @@ export class CrudWordSuggestionsUiFacade {
           }));
 
           this.alert.success(response.message);
-          if (!filter) return;
-
-          this.realoadSuggestions(filter);
         }),
 
-        catchError((error: HttpErrorResponse) => {
+        catchError(() => {
           this._registerState.update((s) => ({
             ...s,
             success: false,
           }));
-          this.alert.error(error.error.message);
           return EMPTY;
         }),
 
@@ -113,25 +80,43 @@ export class CrudWordSuggestionsUiFacade {
     }));
   }
 
-  delete(suggestionId: number, filter: IFilterWordSuggestionFormData | null = null): void {
-    this.confirmService
-      .confirm('Deletar Sugestão de Palavra', 'Tem certeza que deseja deletar?', 'btn-danger')
-      .then(() => {
-        this.facade
-          .delete(suggestionId)
-          .pipe(
-            tap(() => {
-              this.alert.success('Sucesso ao deletar sugestão de palavra.');
-              this.realoadSuggestions(filter);
-            }),
-            catchError(() => {
-              this.alert.error('Erro ao deletar sugestão de palavra.');
-              return EMPTY;
-            }),
-          )
-          .subscribe();
-      })
-      .catch(() => {});
+  delete(suggestionId: number, filter: IFilterWordSuggestionFormData | null): void {
+    this._deleteState.update((s) => ({
+      ...s,
+      isDeleting: true,
+      success: false,
+    }));
+
+    this.facade
+      .delete(suggestionId)
+      .pipe(
+        tap(() => {
+          this._deleteState.update((s) => ({
+            ...s,
+            success: true,
+          }));
+
+          this.alert.success('Sucesso ao deletar sugestão de palavra.');
+          this.realoadSuggestions(filter);
+        }),
+
+        catchError(() => {
+          this._deleteState.update((s) => ({
+            ...s,
+            success: false,
+          }));
+
+          return EMPTY;
+        }),
+
+        finalize(() => {
+          this._deleteState.update((s) => ({
+            ...s,
+            isDeleting: false,
+          }));
+        }),
+      )
+      .subscribe();
   }
 
   private realoadSuggestions(filter: IFilterWordSuggestionFormData | null = null) {

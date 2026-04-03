@@ -19,6 +19,7 @@ export class WordsListComponent implements IWordsComparator {
   compare: Signal<boolean> = this.facade.showResult;
 
   isEqualsWords(index: number): boolean {
+    if (!this.compare()) return false;
     return this.service.compareCurrentWordsAndUserWordsByIndex(index);
   }
 }

@@ -1,7 +1,16 @@
-import { Component, effect, EventEmitter, inject, input, Input, Output } from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  inject,
+  input,
+  Input,
+  Output,
+  Signal,
+} from '@angular/core';
 import { IWordSuggestionData } from '../../../models/word-suggestion-data.interface';
 import { IFormModalComponentOutput } from '../../../../../shared/models/form-modal-component-output.interface';
-import { WordDifficultService } from '../../../../../core/services/word-difficult/word-difficult.service';
+import { WordDifficultyService } from '../../../../../core/services/word-difficulty/word-difficulty.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IWordDifficultyData } from '../../../../../shared/models/word-difficulty-data.interface';
 import { TitleCasePipe } from '@angular/common';
@@ -19,7 +28,7 @@ export class WordSuggestionsModalFormComponent {
   @Output() submittedData = new EventEmitter<IFormModalComponentOutput<IWordSuggestionData>>();
 
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly difficultyService: WordDifficultService = inject(WordDifficultService);
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
 
   form: FormGroup = this.fb.nonNullable.group({
     suggestedWord: ['', [Validators.required]],
@@ -29,7 +38,6 @@ export class WordSuggestionsModalFormComponent {
   constructor() {
     effect(() => {
       const suggestion = this.wordSuggestion();
-      console.log(suggestion);
       if (!suggestion) return;
 
       this.form.patchValue({
@@ -39,9 +47,7 @@ export class WordSuggestionsModalFormComponent {
     });
   }
 
-  get difficults(): IWordDifficultyData[] {
-    return this.difficultyService.difficults;
-  }
+  difficulties: Signal<IWordDifficultyData[]> = this.difficultyService.difficulties;
 
   getInput(name: keyof IWordSuggestionData): any {
     return this.form.get(name);

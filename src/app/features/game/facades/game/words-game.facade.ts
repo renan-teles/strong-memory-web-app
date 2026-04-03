@@ -1,14 +1,15 @@
 import { computed, EventEmitter, inject, Injectable, Signal, signal } from '@angular/core';
 import { WordsGameService } from '../../services/words-game/words-game.service';
 import { TimerFacade } from './timer/timer.facade';
-import { UserFacade } from './user/user.facade';
+import { GameUserFacade } from './user/game-user.facade';
 import { ScoreFacade } from './score/score.facade';
 import { IWordData } from '../../../words/models/word-data.interface';
 import { ToastService } from '../../../../core/services/toast/toast.service';
 import { RoundGameState } from '../../types/round-game-state.type';
 import { GameState } from '../../types/game-state.type';
-import { WordDifficultService } from '../../../../core/services/word-difficult/word-difficult.service';
+import { WordDifficultyService } from '../../../../core/services/word-difficulty/word-difficulty.service';
 import { IWordDifficultyData } from '../../../../shared/models/word-difficulty-data.interface';
+import { GameUserState } from '../../types/game-user-state.type';
 
 @Injectable({
   providedIn: 'root',
@@ -18,29 +19,29 @@ export class WordsGameFacade {
 
   private readonly wordsGameService: WordsGameService = inject(WordsGameService);
   private readonly toastService: ToastService = inject(ToastService);
-
-  private readonly difficultyService: WordDifficultService = inject(WordDifficultService);
-  get currentDifficulty(): IWordDifficultyData {
-    return this.difficultyService.currentDifficulty;
-  }
-
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
   private readonly timerFacade: TimerFacade = inject(TimerFacade);
-  private readonly userFacade: UserFacade = inject(UserFacade);
+  private readonly userFacade: GameUserFacade = inject(GameUserFacade);
   private readonly scoreFacade: ScoreFacade = inject(ScoreFacade);
 
   private readonly roundState = signal<RoundGameState>('show-words');
+
   readonly answer: Signal<boolean> = computed(() => this.roundState() === 'answer');
   readonly showResult: Signal<boolean> = computed(() => this.roundState() === 'show-result');
 
   decreaseTime: Signal<number> = this.timerFacade.decreaseTime;
   isCorrect: Signal<boolean> = this.userFacade.isCorrect;
-  userState: Signal<any> = this.userFacade.userState;
+  userState: Signal<GameUserState> = this.userFacade.userState;
   hasUserState: Signal<boolean> = this.userFacade.hasUserState;
   score: Signal<number> = this.scoreFacade.score;
 
   private timeToNextRoundIntervalId: number = 0;
   private readonly _timeToNextAction = signal<number>(3);
   timeToNextAction = this._timeToNextAction.asReadonly();
+
+  get currentDifficulty(): IWordDifficultyData {
+    return this.difficultyService.currentDifficulty!;
+  }
 
   init(words: IWordData[]): void {
     this.wordsGameService.setWords(words);
@@ -68,27 +69,10 @@ export class WordsGameFacade {
       this.wordsGameService.setUserWords(userWords);
       this.roundState.set('show-result');
 
-      if (!this.wordsGameService.isCorrect()) {
-        this.toastService.showError('Ops..Você Errou.', ['Tente novamente']);
-        this.userFacade.setToWrong();
-        this.timerFacade.resetTimer();
-        return;
-      }
+      if (this.incorrect()) return;
+      this.correct();
 
-      this.toastService.showSuccess('Parabéns Você acertou!', [
-        `1 Ponto`,
-        `${this.currentDifficulty.increaseDisplayTimeSeconds} segundos de tempo de exibição`,
-        `${this.currentDifficulty.increaseTypingTimeSeconds} sedundos de tempo de digitação`,
-      ]);
-      this.userFacade.setToCorrect();
-      this.scoreFacade.updateScore();
-
-      if (this.wordsGameService.isInEnd()) {
-        this.timerFacade.resetTimer();
-        this.gameState.emit('end');
-        return;
-      }
-
+      if (this.inEnd()) return;
       this.startTimeToNextRound();
     } catch (error) {
       console.error(error);
@@ -120,6 +104,35 @@ export class WordsGameFacade {
       console.error(error);
       this.gameState.emit('error');
     }
+  }
+
+  private correct(): void {
+    this.toastService.showSuccess('Parabéns Você acertou!', [
+      `1 Ponto`,
+      `${this.currentDifficulty.increaseDisplayTimeSeconds} segundos de tempo de exibição`,
+      `${this.currentDifficulty.increaseTypingTimeSeconds} sedundos de tempo de digitação`,
+    ]);
+    this.userFacade.setToCorrect();
+    this.scoreFacade.updateScore();
+  }
+
+  private incorrect(): boolean {
+    if (this.wordsGameService.isCorrect()) return false;
+
+    this.scoreFacade.saveHighestScore();
+    this.toastService.showError('Ops..Você Errou.', ['Tente novamente']);
+    this.userFacade.setToWrong();
+    this.timerFacade.resetTimer();
+    return true;
+  }
+
+  private inEnd(): boolean {
+    if (!this.wordsGameService.isInEnd()) return false;
+
+    this.scoreFacade.saveHighestScore();
+    this.timerFacade.resetTimer();
+    this.gameState.emit('end');
+    return true;
   }
 
   private startTimeToNextRound(): void {

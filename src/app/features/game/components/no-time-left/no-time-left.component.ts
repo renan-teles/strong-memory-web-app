@@ -1,5 +1,4 @@
-import { Component, inject, Output } from '@angular/core';
-import { WordsGameFacade } from '../../facades/game/words-game.facade';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-no-time-left',
@@ -8,11 +7,7 @@ import { WordsGameFacade } from '../../facades/game/words-game.facade';
   styleUrl: './no-time-left.component.css',
 })
 export class NoTimeLeftComponent {
-  private readonly facade: WordsGameFacade = inject(WordsGameFacade);
-
-  @Output() gameState = this.facade.gameState;
-
-  restartGame(): void {
-    this.facade.resetGame();
+  reloadGame(): void {
+    location.reload();
   }
 }

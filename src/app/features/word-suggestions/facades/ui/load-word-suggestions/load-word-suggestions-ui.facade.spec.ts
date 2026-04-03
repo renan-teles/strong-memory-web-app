@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LoadWordSuggestionsFacade } from './load-word-suggestions-ui.facade';
+import { LoadWordSuggestionsUiFacade } from './load-word-suggestions-ui.facade';
 
-describe('LoadWordSuggestionsFacade', () => {
-  let service: LoadWordSuggestionsFacade;
+describe('LoadWordSuggestionsUiFacade', () => {
+  let service: LoadWordSuggestionsUiFacade;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LoadWordSuggestionsFacade);
+    service = TestBed.inject(LoadWordSuggestionsUiFacade);
   });
 
   it('should be created', () => {

@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, EMPTY } from 'rxjs';
 import { AuthStorageService } from '../../services/auth-storage/auth-storage.service';
-import { SKIP_AUTH } from '../../../features/users/services/user-api/users-api.service';
+import { SKIP_AUTH } from '../../../features/auth/skip-auth.context';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
@@ -28,7 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         authStorage.clearAll();
-        router.navigate(['/player/login']);
+        router.navigate(['/auth/player/login']);
       }
       return EMPTY;
     }),

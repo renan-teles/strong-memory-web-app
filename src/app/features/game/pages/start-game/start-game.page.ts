@@ -13,7 +13,7 @@ export class StartGamePage {
   private readonly router: Router = inject(Router);
 
   redirectToPlayGame(data: IWordDifficultyFormData): void {
-    this.router.navigate([`/game/play`], {
+    this.router.navigate([`/app/game/play`], {
       queryParams: { difficulty: data.difficulty },
     });
   }

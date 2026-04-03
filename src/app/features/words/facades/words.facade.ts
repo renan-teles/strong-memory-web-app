@@ -6,6 +6,7 @@ import { IPaginationResponse } from '../../../shared/models/pagination-response.
 import { IWordData } from '../models/word-data.interface';
 import { IWordDifficultyFormData } from '../../../shared/models/word-difficulty-form-data.interface';
 import { IWordDifficultyData } from '../../../shared/models/word-difficulty-data.interface';
+import { IUpdateWordData } from '../models/update-word-data.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class WordsFacade {
     });
   }
 
-  loadRandomWords(data: IWordDifficultyData) {
+  loadRandomWords(data: IWordDifficultyData): Observable<IApiResponse<IWordData[]>> {
     return this.api.loadRandomWords(data);
   }
 
@@ -36,7 +37,7 @@ export class WordsFacade {
     return this.api.delete(wordId);
   }
 
-  update(wordId: number, data: IWordData): Observable<void> {
+  update(wordId: number, data: IUpdateWordData): Observable<void> {
     return this.api.update(wordId, data);
   }
 }
