@@ -1,0 +1,62 @@
+# -------------------------
+# Node / Angular
+# -------------------------
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+
+# build local (será gerado dentro do container)
+dist
+.out
+.angular
+
+# cache
+.cache
+.tmp
+.temp
+
+# -------------------------
+# IDE / Sistema
+# -------------------------
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Git
+# -------------------------
+.git
+.gitignore
+
+# -------------------------
+# Docker (evita conflitos)
+# -------------------------
+Dockerfile*
+docker-compose*.yml
+
+# -------------------------
+# Testes (não usados no build)
+# -------------------------
+**/*.spec.ts
+**/*.test.ts
+
+# -------------------------
+# Logs
+# -------------------------
+logs
+*.log
+
+# -------------------------
+# Ambiente local
+# -------------------------
+.env
+.env.local
+.env.*.local
+
+# -------------------------
+# Arquivos desnecessários
+# -------------------------
+README.md
+*.md
