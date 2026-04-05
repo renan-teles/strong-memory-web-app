@@ -214,8 +214,7 @@ Este projeto foi desenvolvido com foco em:
 - Aplicação de boas práticas de frontend
 - Simulação de um produto real com foco em experiência do usuário
 
-## <!--
-
+<!--
 💡 _Projeto ideal para demonstrar habilidades em Angular, arquitetura frontend, consumo de APIs e construção de aplicações interativas._
 -->
 
