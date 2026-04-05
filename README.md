@@ -10,17 +10,17 @@ A aplicação consome uma API REST e oferece ao usuário uma dinâmica baseada n
 
 O **Strong Memory (SM)** é uma aplicação web interativa que utiliza um mini-game para estimular habilidades cognitivas como:
 
-* Memória
-* Concentração
-* Precisão
-* Tempo de reação
+- Memória
+- Concentração
+- Precisão
+- Tempo de reação
 
 A interface foi projetada com foco em:
 
-* Experiência do usuário (UX)
-* Responsividade
-* Fluidez na interação
-* Feedback visual imediato
+- Experiência do usuário (UX)
+- Responsividade
+- Fluidez na interação
+- Feedback visual imediato
 
 <br />
 
@@ -28,49 +28,54 @@ A interface foi projetada com foco em:
 
 ### 🧠 Mini-Game (Core da Aplicação)
 
-* Exibição sequencial de palavras com tempo controlado
-* Campo para digitação da sequência memorizada
-* Feedback imediato (acerto/erro)
-* Controle de tempo para resposta
-* Sistema de níveis de dificuldade
-* Reinício rápido da partida
+- Exibição sequencial de palavras com tempo controlado
+- Campo para digitação da sequência memorizada
+- Feedback imediato (acerto/erro)
+- Controle de tempo para resposta
+- Sistema de níveis de dificuldade
+- Reinício rápido da partida
 
 ### 📊 Dashboard do Usuário
 
-* Visualização da maior pontuação por dificuldade
-* Informações da conta do usuário
-* Acompanhamento de desempenho
+- Visualização da maior pontuação por dificuldade
+- Informações da conta do usuário
+- Acompanhamento de desempenho
 
 ### 🔐 Autenticação e Sessão
 
-* Login e cadastro de usuários
-* Armazenamento de token JWT
-* Controle de sessão
-* Logout seguro
+- Login e cadastro de usuários
+- Armazenamento de token JWT
+- Controle de sessão
+- Logout seguro
 
 ### 📝 Gerenciamento de Palavras
 
-* Listagem de palavras por dificuldade
-* Paginação e ordenação
-* Consumo de listas aleatórias para o mini-game
-
+- Listagem de palavras por dificuldade
+- Paginação e ordenação
+- Consumo de listas aleatórias para o mini-game
 
 ### 💡 Sugestão de Palavras
 
-* Envio de sugestões pelo usuário
-* Interface simples e intuitiva para contribuição
+- Envio de sugestões pelo usuário
+- Interface simples e intuitiva para contribuição
+
+<br/>
+
+## 🎥 Demonstração do Mini-Game
+
+![Demo do Strong Memory](./docs/images/strong-memory-demo.gif)
 
 <br/>
 
 ## 🛠️ Tecnologias Utilizadas
 
-* Angular 21
-* TypeScript
-* RxJS
-* Angular Router
-* Angular Forms
-* Bootstrap / CSS
-* JWT (integração com backend)
+- Angular 21
+- TypeScript
+- RxJS
+- Angular Router
+- Angular Forms
+- Bootstrap / CSS
+- JWT (integração com backend)
 
 <br/>
 
@@ -92,11 +97,11 @@ src/app/
 
 ### Boas práticas aplicadas:
 
-* Separação por responsabilidade
-* Lazy loading de módulos
-* Uso de interceptors para autenticação
-* Guards para proteção de rotas
-* Componentização reutilizável
+- Separação por responsabilidade
+- Lazy loading de módulos
+- Uso de interceptors para autenticação
+- Guards para proteção de rotas
+- Componentização reutilizável
 
 <br/>
 
@@ -106,10 +111,10 @@ A aplicação consome uma API REST desenvolvida com Spring Boot.
 
 Principais integrações:
 
-* Autenticação via JWT
-* Consumo de palavras aleatórias para o mini-game
-* Persistência de pontuação
-* Gestão de usuários
+- Autenticação via JWT
+- Consumo de palavras aleatórias para o mini-game
+- Persistência de pontuação
+- Gestão de usuários
 
 <br/>
 
@@ -195,7 +200,7 @@ export const environment = {
 
 **Renan Lopes Lima Teles**
 
-* GitHub: https://github.com/renan-teles
+- GitHub: https://github.com/renan-teles
 <!-- * LinkedIn: https://linkedin.com/in/seu-perfil -->
 
 <br/>
@@ -204,15 +209,14 @@ export const environment = {
 
 Este projeto foi desenvolvido com foco em:
 
-* Construção de interfaces modernas com Angular
-* Integração eficiente com APIs REST
-* Aplicação de boas práticas de frontend
-* Simulação de um produto real com foco em experiência do usuário
+- Construção de interfaces modernas com Angular
+- Integração eficiente com APIs REST
+- Aplicação de boas práticas de frontend
+- Simulação de um produto real com foco em experiência do usuário
 
-<!--
----
+## <!--
 
-💡 *Projeto ideal para demonstrar habilidades em Angular, arquitetura frontend, consumo de APIs e construção de aplicações interativas.*
+💡 _Projeto ideal para demonstrar habilidades em Angular, arquitetura frontend, consumo de APIs e construção de aplicações interativas._
 -->
 
 <!--
