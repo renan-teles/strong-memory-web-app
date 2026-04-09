@@ -8,7 +8,7 @@ A aplicação consome uma API REST e oferece ao usuário uma dinâmica baseada n
 
 ## 🧠 Sobre o Projeto
 
-O **Strong Memory (SM)** é uma aplicação web interativa que utiliza um mini-game para estimular habilidades cognitivas como:
+O **SM** é uma aplicação web interativa que utiliza um mini-game para estimular habilidades cognitivas como:
 
 - Memória
 - Concentração
