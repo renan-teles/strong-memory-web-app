@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { authGuard } from '../../core/guards/auth/auth.guard';
 import { roleGuard } from '../../core/guards/role/role.guard';
 import { UserRole } from '../users/domain/enum/user-role.enum';
 
@@ -9,14 +8,14 @@ export const wordSuggestionsRoutes: Routes = [
     children: [
       {
         path: 'suggest',
-        canActivate: [authGuard, roleGuard],
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./pages/suggest-word/suggest-word.page').then((m) => m.SuggestWordsPage),
         data: { roles: [UserRole.PLAYER] },
       },
       {
         path: 'list',
-        canActivate: [authGuard, roleGuard],
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./pages/list-suggestions/list-word-suggestions.page').then(
             (m) => m.ListWordSuggestionsPage,

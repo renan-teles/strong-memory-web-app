@@ -2,11 +2,13 @@ import { Routes } from '@angular/router';
 import { MainPageLayoutComponent } from './core/layouts/main-page/main-page-layout.component';
 import { NotFoundPage } from './shared/pages/not-found/not-found.page';
 import { NotAuthorizedPage } from './shared/pages/not-authorized/not-authorized.page';
+import { authGuard } from './core/guards/auth/auth.guard';
 
 export const routes: Routes = [
   /* MAIN APP */
   {
     path: 'app',
+    canActivate: [authGuard],
     component: MainPageLayoutComponent,
     children: [
       {
