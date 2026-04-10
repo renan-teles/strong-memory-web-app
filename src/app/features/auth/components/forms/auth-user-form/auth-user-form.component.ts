@@ -59,11 +59,11 @@ export class AuthUserFormComponent implements OnInit, IFormUtils<IUserData> {
       case 'register-administrator':
         return {
           text: 'Já tem conta de administrador? Entre com ela aqui',
-          redirectPath: '/auth/administrator/login',
+          redirectPath: '/auth/administrator',
         };
 
       case 'register-player':
-        return { text: 'Já tem conta? Entre com ela aqui.', redirectPath: '/auth/player/login' };
+        return { text: 'Já tem conta? Entre com ela aqui.', redirectPath: '/auth/player' };
 
       default:
         return null;
@@ -77,11 +77,11 @@ export class AuthUserFormComponent implements OnInit, IFormUtils<IUserData> {
       case 'auth-administrator':
         return {
           text: 'Entrar como jogador',
-          redirectPath: '/auth/player/login',
+          redirectPath: '/auth/player',
         };
 
       case 'auth-player':
-        return { text: 'Entrar como administrador', redirectPath: '/auth/administrator/login' };
+        return { text: 'Entrar como administrador', redirectPath: '/auth/administrator' };
 
       case 'register-administrator':
         return {

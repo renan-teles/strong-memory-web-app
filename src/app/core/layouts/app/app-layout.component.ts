@@ -17,10 +17,10 @@ import { ErrorComponent } from '../../../shared/components/error/error.component
     LoadingContentComponent,
     ErrorComponent,
   ],
-  templateUrl: './main-page-layout.component.html',
-  styleUrl: './main-page-layout.component.css',
+  templateUrl: './app-layout.component.html',
+  styleUrl: './app-layout.component.css',
 })
-export class MainPageLayoutComponent implements OnInit {
+export class AppLayoutComponent implements OnInit {
   private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
 
   isLoadingDifficulties = this.difficultyService.isLoading;

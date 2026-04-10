@@ -5,12 +5,12 @@ import { AuthenticateAdministratorPage } from './pages/administrator/authenticat
 
 export const authRoutes: Routes = [
   {
-    path: 'player/login',
+    path: 'player',
     component: AuthenticatePlayerPage,
     canActivate: [guestGuard],
   },
   {
-    path: 'administrator/login',
+    path: 'administrator',
     component: AuthenticateAdministratorPage,
     canActivate: [guestGuard],
   },

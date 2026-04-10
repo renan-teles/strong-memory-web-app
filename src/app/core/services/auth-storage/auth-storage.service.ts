@@ -44,7 +44,7 @@ export class AuthStorageService {
   }
 
   isAuthenticated(): boolean {
-    return (this.getToken() != '' && this.getUserRole() != '' && this.getUserId() != '');
+    return this.getToken() != '' && this.getUserRole() != '' && this.getUserId() != '';
   }
 
   isPlayer(): boolean {
