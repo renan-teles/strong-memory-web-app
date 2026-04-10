@@ -45,7 +45,7 @@ export class CrudPlayerUiFacade extends AbstractCrudUsersUiFacade {
           }));
 
           this.alert.success(response.message);
-          this.router.navigate(['/auth/player/login']);
+          this.router.navigate(['/auth/player']);
         }),
 
         catchError(() => {

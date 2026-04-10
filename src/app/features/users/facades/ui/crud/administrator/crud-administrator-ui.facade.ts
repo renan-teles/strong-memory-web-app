@@ -26,7 +26,7 @@ export class CrudAdministratorUiFacade extends AbstractCrudUsersUiFacade {
           }));
 
           this.alert.success(response.message);
-          this.router.navigate(['/auth/administrator/login']);
+          this.router.navigate(['/auth/administrator']);
         }),
 
         catchError(() => {

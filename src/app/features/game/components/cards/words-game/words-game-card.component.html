@@ -50,7 +50,17 @@
 
   @if (!isCorrect() && showResult()) {
     <section class="col-12 text-end mt-3">
-      <button class="btn-scale btn-gradient-purple-orange" (click)="resetGame()">Reiniciar</button>
+      <button
+        class="btn-scale btn-gradient-purple-orange"
+        [disabled]="isUpdatingScore()"
+        (click)="resetGame()"
+      >
+        @if (isUpdatingScore()) {
+          <app-loading-content [message]="'Salvando pontuação...'"></app-loading-content>
+        } @else {
+          Reiniciar
+        }
+      </button>
     </section>
   }
 </main>

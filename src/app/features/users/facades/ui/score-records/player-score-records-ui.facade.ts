@@ -48,6 +48,8 @@ export class PlayerScoreRecordsUiFacade {
   readonly isLoadingScore: Signal<boolean> = computed(() => this._loadScoreRecordState().isLoading);
   readonly loadSuccessScore: Signal<boolean> = computed(() => this._loadScoreRecordState().success);
 
+  readonly updatingScoreRecord: Signal<boolean> = computed(() => this._updateState().isUpdating);
+
   loadScoreRecords(): void {
     this._loadScoreRecordsState.update((s) => ({
       ...s,
