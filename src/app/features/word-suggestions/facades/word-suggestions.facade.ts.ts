@@ -34,7 +34,6 @@ export class WordSuggestionsFacade {
     filter: IFilterWordSuggestionFormData,
     page: number = 0,
   ): Observable<IApiResponse<IPaginationResponse<IWordSuggestionData>>> {
-    console.log(filter);
     return this.api.loadByPeriod(filter, {
       page,
       size: 10,

@@ -18,6 +18,10 @@ export class NavbarComponent {
   private readonly linksService: NavbarLinkService = inject(NavbarLinkService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
+  get brandLink(): string {
+    return this.authStorage.isPlayer() ? '/app/game/start' : '/app/words/list';
+  }
+
   get links(): INavbarLink[] {
     return this.linksService.getLinksByRole(this.authStorage.getUserRole());
   }

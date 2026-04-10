@@ -8,10 +8,18 @@ import { IWordDifficultyData } from '../../../../../shared/models/word-difficult
 import { LoadRandomWordsUiFacade } from '../../../../words/facades/ui/load-random-words/load-random-words-ui.facade';
 import { ToastService } from '../../../../../core/services/toast/toast.service';
 import { TitleCasePipe } from '@angular/common';
+import { PlayerScoreRecordsUiFacade } from '../../../../users/facades/ui/score-records/player-score-records-ui.facade';
+import { LoadingContentComponent } from '../../../../../shared/components/loading-content/loading-content.component';
 
 @Component({
   selector: 'app-words-game-card',
-  imports: [TimebarComponent, TypingWordsFormComponent, WordsListComponent, TitleCasePipe],
+  imports: [
+    TimebarComponent,
+    TypingWordsFormComponent,
+    WordsListComponent,
+    TitleCasePipe,
+    LoadingContentComponent,
+  ],
   templateUrl: './words-game-card.component.html',
   styleUrl: './words-game-card.component.css',
 })
@@ -20,9 +28,13 @@ export class WordsGameCardComponent implements OnInit, OnDestroy {
   private readonly facade: LoadRandomWordsUiFacade = inject(LoadRandomWordsUiFacade);
   private readonly wordsGameFacade: WordsGameFacade = inject(WordsGameFacade);
   private readonly toastService: ToastService = inject(ToastService);
+  private readonly scoreRecordService: PlayerScoreRecordsUiFacade = inject(
+    PlayerScoreRecordsUiFacade,
+  );
 
   @Output() gameState = this.wordsGameFacade.gameState;
 
+  isUpdatingScore: Signal<boolean> = this.scoreRecordService.updatingScoreRecord;
   answer: Signal<boolean> = this.wordsGameFacade.answer;
   showResult: Signal<boolean> = this.wordsGameFacade.showResult;
   time: Signal<number> = this.wordsGameFacade.decreaseTime;
@@ -40,7 +52,7 @@ export class WordsGameCardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.wordsGameFacade.onDestroy();
-    this.toastService.clear();
+    if (!this.isUpdatingScore()) this.toastService.clear();
   }
 
   onTimerFinished(): void {

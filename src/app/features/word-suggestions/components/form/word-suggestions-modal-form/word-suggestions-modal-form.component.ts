@@ -14,6 +14,7 @@ import { WordDifficultyService } from '../../../../../core/services/word-difficu
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IWordDifficultyData } from '../../../../../shared/models/word-difficulty-data.interface';
 import { TitleCasePipe } from '@angular/common';
+import { capitalizeWords } from '../../../../../shared/utils/string-format.utils';
 
 @Component({
   selector: 'app-word-suggestions-modal-form',
@@ -41,7 +42,7 @@ export class WordSuggestionsModalFormComponent {
       if (!suggestion) return;
 
       this.form.patchValue({
-        suggestedWord: suggestion.suggestedWord!,
+        suggestedWord: capitalizeWords(suggestion.suggestedWord!),
         suggestedDifficulty: suggestion.suggestedDifficulty!,
       });
     });

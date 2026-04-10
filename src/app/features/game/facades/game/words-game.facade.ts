@@ -57,6 +57,7 @@ export class WordsGameFacade {
 
   onTimerFinished(): void {
     if (this.answer()) {
+      this.scoreFacade.saveHighestScore();
       this.gameState.emit('no-time-left');
       return;
     }

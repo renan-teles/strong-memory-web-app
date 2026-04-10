@@ -4,6 +4,7 @@ import { IUpdateWordData } from '../../../models/update-word-data.interface';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IFormModalComponentOutput } from '../../../../../shared/models/form-modal-component-output.interface';
 import { IWordData } from '../../../models/word-data.interface';
+import { capitalizeWords } from '../../../../../shared/utils/string-format.utils';
 
 @Component({
   selector: 'app-update-word-modal-form',
@@ -29,7 +30,7 @@ export class UpdateWordModalFormComponent implements IFormUtils<IUpdateWordData>
       if (!word) return;
 
       this.form.patchValue({
-        word: word.word!,
+        word: capitalizeWords(word.word!),
       });
     });
   }
