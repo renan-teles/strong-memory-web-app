@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { roleGuard } from '../../core/guards/role/role.guard';
 import { UserRole } from '../users/domain/enum/user-role.enum';
+import { authGuard } from '../../core/guards/auth/auth.guard';
 
 export const wordsRoutes: Routes = [
   {
@@ -8,7 +9,8 @@ export const wordsRoutes: Routes = [
     children: [
       {
         path: 'list',
-        canActivate: [roleGuard],
+        title: 'SM - Palavras',
+        canActivate: [authGuard, roleGuard],
         loadComponent: () =>
           import('./pages/list-words/list-words.page').then((m) => m.ListWordsPage),
         data: { roles: [UserRole.PLAYER, UserRole.ADM] },

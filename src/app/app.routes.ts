@@ -1,15 +1,16 @@
 import { Routes } from '@angular/router';
-import { MainPageLayoutComponent } from './core/layouts/main-page/main-page-layout.component';
 import { NotFoundPage } from './shared/pages/not-found/not-found.page';
 import { NotAuthorizedPage } from './shared/pages/not-authorized/not-authorized.page';
 import { authGuard } from './core/guards/auth/auth.guard';
+import { AppLayoutComponent } from './core/layouts/app/app-layout.component';
+import { UserMessageLayoutComponent } from './core/layouts/user-message/user-message-layout.component';
 
 export const routes: Routes = [
   /* MAIN APP */
   {
     path: 'app',
     canActivate: [authGuard],
-    component: MainPageLayoutComponent,
+    component: AppLayoutComponent,
     children: [
       {
         path: 'game',
@@ -36,10 +37,12 @@ export const routes: Routes = [
   /* AUTH */
   {
     path: 'auth',
+    title: 'SM - Autenticação de Usuário',
     loadChildren: () => import('./features/auth/auth-users.routes').then((m) => m.authRoutes),
   },
   {
     path: 'register-user',
+    title: 'SM - Cadastro de Usuário',
     loadChildren: () =>
       import('./features/users/register-users.routes').then((m) => m.registerUserRoutes),
   },
@@ -47,12 +50,17 @@ export const routes: Routes = [
   /* DEFAULTS */
   {
     path: '',
-    component: MainPageLayoutComponent,
+    component: UserMessageLayoutComponent,
     children: [
-      { path: '', redirectTo: 'app/game/start', pathMatch: 'full' },
-      { path: 'not-authorized', component: NotAuthorizedPage },
-      { path: 'not-found', component: NotFoundPage },
+      {
+        path: 'not-authorized',
+        title: 'SM - Nível de Acesso Inválido',
+        component: NotAuthorizedPage,
+      },
+      { path: 'not-found', title: 'SM - Página não Encontrada', component: NotFoundPage },
+
       { path: '**', redirectTo: 'not-found' },
+      { path: '', redirectTo: 'app/game/start', pathMatch: 'full' },
     ],
   },
 ];

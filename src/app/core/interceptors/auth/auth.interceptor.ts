@@ -28,7 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         authStorage.clearAll();
-        router.navigate(['/auth/player/login']);
+        router.navigate(['/auth/player']);
       }
       return EMPTY;
     }),
