@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { ApiResponse } from '../../../shared/types/api/api-response.interface';
+import { AuthResponse } from '../../../features/auth/data/dto/response/auth-response';
+import { UserRole } from '../../../features/users/domain/enums/user-role.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -6,12 +9,10 @@ import { Injectable } from '@angular/core';
 export class AuthStorageService {
   private readonly BASE_NAME: string = 'strong_memory_';
   private readonly tokenName!: string;
-  private readonly userIdName!: string;
   private readonly userRoleName!: string;
 
   constructor() {
     this.tokenName = `${this.BASE_NAME}user_token`;
-    this.userIdName = `${this.BASE_NAME}user_id`;
     this.userRoleName = `${this.BASE_NAME}user_role`;
   }
 
@@ -19,24 +20,26 @@ export class AuthStorageService {
     localStorage.setItem(this.tokenName, token);
   }
 
-  saveUserId(id: string) {
-    localStorage.setItem(this.userIdName, id);
-  }
-
   saveUserRole(role: string) {
     localStorage.setItem(this.userRoleName, role);
+  }
+
+  saveAuthData(data: ApiResponse<AuthResponse>) {
+    this.saveToken(data.data!.token);
+    this.saveUserRole(data.data!.role);
   }
 
   getToken(): string {
     return localStorage.getItem(this.tokenName) ?? '';
   }
 
-  getUserRole(): string {
-    return localStorage.getItem(this.userRoleName) ?? '';
-  }
+  getUserRole(): UserRole | null {
+    const role = localStorage.getItem(this.userRoleName) ?? '';
 
-  getUserId(): string {
-    return localStorage.getItem(this.userIdName) ?? '';
+    if (!role) return null;
+
+    if (role == UserRole.ADM) return UserRole.ADM;
+    return UserRole.PLAYER;
   }
 
   clearAll(): void {
@@ -44,10 +47,10 @@ export class AuthStorageService {
   }
 
   isAuthenticated(): boolean {
-    return this.getToken() != '' && this.getUserRole() != '' && this.getUserId() != '';
+    return this.getToken() !== '' && this.getUserRole() !== null;
   }
 
   isPlayer(): boolean {
-    return this.isAuthenticated() && this.getUserRole() === 'ROLE_PLAYER';
+    return this.isAuthenticated() && this.getUserRole() === UserRole.PLAYER;
   }
 }

@@ -1,6 +1,6 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { StrongMemoryBrandComponent } from '../../components/strong-memory-brand/strong-memory-brand.component';
+import { StrongMemoryBrandComponent } from '../../ui/components/strong-memory-brand/strong-memory-brand.component';
 import { AuthStorageService } from '../../../core/services/auth-storage/auth-storage.service';
 
 @Component({

@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+  <div class="w-100">
+    <div class="container-fluid">
+      <div class="row row-cols-2 row-cols-lg-1 gap-lg-2">
+        <div class="col text-start text-lg-center">
+          <a class="navbar-brand" routerLink="{{ brandLink }}">
+            <app-strong-memory-brand></app-strong-memory-brand>
+          </a>
+        </div>
+
+        <div class="col">
+          <div class="text-end">
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="collapse navbar-collapse d-lg-flex justify-content-lg-center mt-3 mt-lg-1 text-center"
+        id="navbarNav"
+      >
+        <ul class="navbar-nav gap-3">
+          @for (l of links; track $index) {
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active-route" routerLink="{{ l.path }}">{{
+                l.text
+              }}</a>
+            </li>
+          }
+
+          <li class="nav-item mt-2 mt-lg-0 d-flex align-items-center justify-content-end">
+            @if (isAuthenticated) {
+              <button (click)="onLogout()" type="button" class="btn btn-outline-danger">
+                <i class="bi-arrow-bar-left me-1"></i>Sair
+              </button>
+            } @else {
+              <a class="nav-link active-route pulse-button" routerLink="/auth/player"
+                ><i class="bi-arrow-bar-right me-1"></i>Entrar</a
+              >
+            }
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

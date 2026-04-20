@@ -1,15 +1,12 @@
 import { signal, WritableSignal } from '@angular/core';
-import { IPaginationState } from '../models/pagination-state.interface';
+import { PaginationState } from '../types/pagination/pagination-state.interface';
 
 export function createPaginationStateSignal<T>() {
-  return signal<IPaginationState<T>>(getInitialPaginationState<T>());
+  return signal<PaginationState<T>>(getInitialPaginationState<T>());
 }
 
-export function clearPaginationStateSignal<T>(
-  state: WritableSignal<IPaginationState<T>>,
-  isLoading: boolean = false,
-) {
-  state.set(getInitialPaginationState<T>(isLoading));
+export function clearPaginationStateSignal<T>(state: WritableSignal<PaginationState<T>>) {
+  state.set(getInitialPaginationState<T>());
 }
 
 export function generatePages(total: number): number[] {
@@ -20,7 +17,7 @@ export function isValidPage(currentPage: number, totalPages: number) {
   return currentPage >= 0 && currentPage <= totalPages;
 }
 
-function getInitialPaginationState<T>(isLoading: boolean = false): IPaginationState<T> {
+function getInitialPaginationState<T>(): PaginationState<T> {
   return {
     content: [],
     totalElements: 0,
@@ -31,7 +28,7 @@ function getInitialPaginationState<T>(isLoading: boolean = false): IPaginationSt
     last: true,
     numberOfElements: 0,
     empty: true,
-    isLoading,
+    isLoading: false,
     success: false,
   };
 }

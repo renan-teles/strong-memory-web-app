@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { guestGuard } from '../../core/guards/guest/guest.guard';
-import { AuthenticatePlayerPage } from './pages/player/authenticate/authenticate-player.page';
-import { AuthenticateAdministratorPage } from './pages/administrator/authenticate/authenticate-administrator.page';
+import { AuthenticatePlayerPage } from './presentation/pages/player/auth/authenticate-player.page';
+import { AuthenticateAdministratorPage } from './presentation/pages/administrator/auth/authenticate-administrator.page';
 
 export const authRoutes: Routes = [
   {

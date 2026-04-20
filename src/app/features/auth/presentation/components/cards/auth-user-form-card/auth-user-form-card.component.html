@@ -1,0 +1,20 @@
+<section class="card shadow-sm rounded bg-white p-4">
+  <div class="text-center">
+    <a style="text-decoration: none" routerLink="/app/game/start"
+      ><app-strong-memory-brand></app-strong-memory-brand
+    ></a>
+  </div>
+
+  <div class="text-center mt-2">
+    <span class="fs-5">
+      {{ title }}
+    </span>
+  </div>
+  <hr />
+
+  <app-auth-user-form
+    (userData)="submittedFormData($event)"
+    [formRole]="formRole"
+    [isRegisterRole]="isRegisterRole"
+  ></app-auth-user-form>
+</section>

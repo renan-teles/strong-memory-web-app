@@ -85,14 +85,15 @@ O projeto segue uma organização baseada em **features (modularização por dom
 
 ```
 src/app/
- ├── core/           # Serviços globais (auth, interceptors, guards)
- ├── shared/         # Componentes reutilizáveis
+ ├── core/        # Serviços globais (auth, interceptors, guards)
+ ├── shared/      # Componentes reutilizáveis
  ├── features/
- │    ├── auth/      # Autenticação de Usuários
- │    ├── game/      # Lógica do mini-game
- │    ├── users/     # Gestão Usuários
- │    └── word-suggestions/ # Gestão de sugestões de palavras
- │    ├── words/     # Gestão de palavras
+ │    ├── auth/   # Autenticação de usuários
+ │    ├── game/   # Lógica e ui do mini-game
+ │    ├── users/  # Gestão de usuários
+ │    ├── word-difficulties/ # Gestão de sugestões de dificuldades
+ │    ├── word-suggestions/  # Gestão de sugestões de palavras
+ │    └── words/  # Gestão de palavras
 ```
 
 ### Boas práticas aplicadas:
@@ -195,6 +196,7 @@ export const environment = {
 
 ---
 -->
+
 ## 🐳 Executar o Projeto Completo
 
 Este repositório representa apenas uma parte do sistema Strong Memory.

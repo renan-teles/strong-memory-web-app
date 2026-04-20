@@ -1,0 +1,21 @@
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  @for (toast of toasts(); track $index) {
+    <div class="toast show" role="alert">
+      <div class="toast-header">
+        <i class="me-2 fs-5" [class]="`${toast.icon} ${toast.classname}`"></i>
+
+        <strong class="me-auto fs-5" [class]="toast.classname">
+          {{ toast.title }}
+        </strong>
+
+        <button type="button" class="btn-close" (click)="closeToasts()"></button>
+      </div>
+
+      <div class="toast-body" [class]="toast.classname">
+        @for (msg of toast.messages; track $index) {
+          <p class="fs-6">{{ msg }}</p>
+        }
+      </div>
+    </div>
+  }
+</div>
