@@ -91,7 +91,7 @@ src/app/
  │    ├── auth/   # Autenticação de usuários
  │    ├── game/   # Lógica e ui do mini-game
  │    ├── users/  # Gestão de usuários
- │    ├── word-difficulties/ # Gestão de sugestões de dificuldades
+ │    ├── word-difficulties/ # Gestão de dificuldades
  │    ├── word-suggestions/  # Gestão de sugestões de palavras
  │    └── words/  # Gestão de palavras
 ```
