@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthStorageService } from '../../services/auth-storage/auth-storage.service';
-import { UserRole } from '../../../features/users/domain/enum/user-role.enum';
+import { UserRole } from '../../../features/users/domain/enums/user-role.enum';
 
 export const guestGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);

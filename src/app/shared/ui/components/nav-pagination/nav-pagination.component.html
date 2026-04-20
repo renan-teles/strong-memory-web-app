@@ -1,0 +1,29 @@
+<nav>
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="paginationState().first">
+      <button type="button" class="page-link" [disabled]="paginationState().first" (click)="back()">
+        &laquo;
+      </button>
+    </li>
+
+    @for (page of pages(); track $index) {
+      <li class="page-item">
+        <button
+          type="button"
+          class="page-link"
+          [disabled]="page === paginationState().number"
+          [class.active-link-pagination]="page === paginationState().number"
+          (click)="move(page)"
+        >
+          {{ page + 1 }}
+        </button>
+      </li>
+    }
+
+    <li class="page-item" [class.disabled]="paginationState().last">
+      <button type="button" class="page-link" [disabled]="paginationState().last" (click)="next()">
+        &raquo;
+      </button>
+    </li>
+  </ul>
+</nav>

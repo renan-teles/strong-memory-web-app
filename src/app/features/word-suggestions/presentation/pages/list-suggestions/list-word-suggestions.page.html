@@ -1,0 +1,96 @@
+<main class="page-content-animation row row-cols-1 gap-3 page-content-animation">
+  <section class="col">
+    <div class="col row row-cols-2">
+      <div class="col">
+        <div class="purple-border-start">
+          <h3 class="ms-2">Sugestões de Palavras</h3>
+        </div>
+      </div>
+
+      <div class="col text-end px-2">
+        <button
+          [disabled]="isLoadingSuggestions()"
+          class="btn-gradient-purple-orange"
+          (click)="loadAll()"
+        >
+          Pegar Todas
+        </button>
+      </div>
+    </div>
+
+    <div class="col-12 mt-3">
+      <app-filter-word-suggestions-form
+        (submitteData)="loadByPeriod($event)"
+      ></app-filter-word-suggestions-form>
+    </div>
+
+    <div class="col-12">
+      <hr class="text-orange" />
+    </div>
+  </section>
+
+  <section class="col">
+    <section class="row row-cols-1 gap-3">
+      <div class="col">
+        @if (isLoadingSuggestions()) {
+          <app-spinner-border
+            [text]="'Carregando palavras...'"
+            [classText]="'text-purple'"
+          ></app-spinner-border>
+        } @else if (!wordsSuggestions() || wordsSuggestions().length === 0) {
+          <p>Nenhuma sugestão de palavra encontrada.</p>
+        } @else if (!loadSuggestionsSuccess()) {
+          <p class="text-danger">
+            <i class="bi-x-circle-fill"></i>Falha ao buscar sugestões de palavras.
+          </p>
+        } @else {
+          <div class="row row-cols-1 row-cols-md-2 page-content-animation">
+            @for (word of wordsSuggestions(); track word.id!; let i = $index) {
+              <div class="col px-4">
+                <div class="row my-3">
+                  <div class="col">
+                    <span class="fs-5"> {{ word.suggestedWord | titlecase }} </span><br />
+                    <span class="fs-6">
+                      {{ word.suggestedDifficulty | translatedifficulty | titlecase }}</span
+                    >
+                  </div>
+
+                  <div class="col text-end gap-3">
+                    <button
+                      [disabled]="isRegistingWord()"
+                      (click)="registerSuggestionInWords(word.id!)"
+                      class="btn btn-sm btn-success me-2"
+                    >
+                      <i class="bi-floppy-fill"></i>
+                    </button>
+                    <button
+                      [disabled]="isDeletingSuggestion()"
+                      (click)="deleteSuggestion(word.id!)"
+                      class="btn btn-sm btn-danger"
+                    >
+                      <i class="bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      @if (loadSuggestionsSuccess()) {
+        <div class="col-12">
+          <hr class="text-orange" />
+        </div>
+
+        <div class="col d-flex justify-content-center">
+          <app-nav-pagination
+            [paginationState]="paginationState()"
+            [pages]="pages()"
+            (action)="onPagination($event)"
+          ></app-nav-pagination>
+        </div>
+      }
+    </section>
+  </section>
+</main>

@@ -172,6 +172,11 @@ body {
   cursor: not-allowed;
 }
 
+.pulse-button {
+  transition: transform 0.2s ease;
+  animation: doublePulse 7s infinite;
+}
+
 /* Navs e Links*/
 .page-link {
   color: var(--purple) !important;
@@ -207,5 +212,47 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  10% {
+    transform: scale(1.1);
+  }
+
+  20% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes doublePulse {
+  0% {
+    transform: scale(1);
+  }
+
+  5% {
+    transform: scale(1.12);
+  }
+  10% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.12);
+  }
+  20% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
