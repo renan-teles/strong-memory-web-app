@@ -35,18 +35,21 @@ A interface foi projetada com foco em:
 - Sistema de níveis de dificuldade
 - Reinício rápido da partida
 
-### 📊 Dashboard do Usuário
+### 📊 Dashboards
 
-- Visualização da maior pontuação por dificuldade
-- Informações da conta do usuário
 - Acompanhamento de desempenho
+- Informações da conta do usuário
 
 ### 🔐 Autenticação e Sessão
 
 - Login e cadastro de usuários
-- Armazenamento de token JWT
+- Autenticação com JWT
 - Controle de sessão
-- Logout seguro
+- Sistema de Access Token e Refresh Token
+- Renovação automática de sessão
+- Expiração e invalidação segura de tokens
+- Logout seguro com revogação de refresh token
+- Proteção de rotas autenticadas
 
 ### 📝 Gerenciamento de Palavras
 
@@ -85,12 +88,14 @@ O projeto segue uma organização baseada em **features (modularização por dom
 
 ```
 src/app/
- ├── core/        # Serviços globais (auth, interceptors, guards)
- ├── shared/      # Componentes reutilizáveis
+ ├── core/            # Serviços globais (auth, interceptors, guards)
+ ├── shared/          # Componentes reutilizáveis
  ├── features/
- │    ├── auth/   # Autenticação de usuários
- │    ├── game/   # Lógica e ui do mini-game
- │    ├── users/  # Gestão de usuários
+ │    ├── auth/       # Autenticação de usuários
+ │    ├── dashboards/ # Dashboards de acompanhamento de desempenho
+ │    ├── game/       # Lógica e ui do mini-game
+ │    ├── public/     # Features públicas
+ │    ├── users/      # Gestão de usuários
  │    ├── word-difficulties/ # Gestão de dificuldades
  │    ├── word-suggestions/  # Gestão de sugestões de palavras
  │    └── words/  # Gestão de palavras
@@ -178,9 +183,12 @@ export const environment = {
 ### 🔐 Fluxo de Autenticação
 
 1. Usuário realiza login
-2. Token JWT é armazenado
-3. Interceptor adiciona token nas requisições
-4. Guards protegem rotas autenticadas
+2. Access Token e Refresh Token são gerados
+3. Token JWT é armazenado no cliente
+4. Interceptor adiciona o Access Token nas requisições autenticadas
+5. Guards protegem rotas privadas da aplicação
+6. Quando o Access Token expira, o Refresh Token é utilizado para renovação automática da sessão
+7. Logout invalida o Refresh Token e encerra a sessão do usuário
 
 <br/>
 
@@ -226,6 +234,8 @@ Este projeto foi desenvolvido com foco em:
 - Integração eficiente com APIs REST
 - Aplicação de boas práticas de frontend
 - Simulação de um produto real com foco em experiência do usuário
+
+<br/>
 
 <!--
 💡 _Projeto ideal para demonstrar habilidades em Angular, arquitetura frontend, consumo de APIs e construção de aplicações interativas._

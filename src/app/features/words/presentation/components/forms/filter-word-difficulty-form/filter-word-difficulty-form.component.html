@@ -1,20 +1,16 @@
 <form [formGroup]="form" (submit)="onSubmit()">
   <div class="col-12 d-flex justify-content-end align-items-center gap-2">
     <select formControlName="difficulty" id="select-difficulty" class="form-select">
-      @for (diff of difficulties(); track $index) {
-        <option [value]="diff.difficulty">{{ diff.translation | titlecase }}</option>
+      @for (diff of difficulties; track $index) {
+        <option [value]="diff.name">{{ diff.name | titlecase }}</option>
       }
     </select>
 
-    <button
-      [disabled]="isLoadingWords()"
-      type="submit"
-      class="btn-scale btn-gradient-purple-orange"
-    >
+    <button [disabled]="isLoadingWords()" type="submit" class="btn-purple-orange-gradient">
       @if (isLoadingWords()) {
         <app-spinner-border [text]="''"></app-spinner-border>
       } @else {
-        <i class="bi-search ccd dme-2"></i>
+        <i class="bi-search"></i>
       }
     </button>
   </div>

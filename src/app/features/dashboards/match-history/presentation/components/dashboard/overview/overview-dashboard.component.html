@@ -1,0 +1,65 @@
+<div class="card shadow-sm p-4 p-lg-5 page-content-animation">
+  <div class="col-12 mb-3">
+    <h3><i class="bi-eye-fill me-2 text-purple"></i>Visão Geral</h3>
+    <hr />
+  </div>
+
+  <div class="row g-5">
+    <div class="col-12 col-md-6 col-xl-3">
+      <app-kpi-card
+        [title]="'Total de Partidas'"
+        [value]="data.totalMatches | compactNumber"
+      ></app-kpi-card>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-3">
+      <app-kpi-card
+        [title]="'Precisão Geral'"
+        [value]="data.overallAccuracyPercentage | percentage"
+      ></app-kpi-card>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-3">
+      <app-kpi-card
+        [title]="'Média de Acertos'"
+        [value]="data.averageCorrectAnswersPerMatch | compactNumber"
+      ></app-kpi-card>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-3">
+      <app-kpi-card
+        [title]="'Média de Erros'"
+        [value]="data.averageErrorsPerMatch | compactNumber"
+      ></app-kpi-card>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <app-answers-chart
+        [totalCorrectAnswers]="data.totalErrors"
+        [totalErrors]="data.totalCorrectAnswers"
+      ></app-answers-chart>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <app-time-chart
+        [averageResponseTimeMS]="data.averageResponseTimeMS"
+        [averageMatchDurationMS]="data.averageMatchDurationMS"
+      ></app-time-chart>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <app-accuracy-chart
+        [accuracyPercentage]="data.overallAccuracyPercentage"
+      ></app-accuracy-chart>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <app-match-result-chart
+        [completedPercentage]="data.completedPercentage"
+        [gameOverPercentage]="data.gameOverPercentage"
+        [timeoutPercentage]="data.timeoutPercentage"
+        [gaveUpPercentage]="data.gaveUpPercentage"
+      ></app-match-result-chart>
+    </div>
+  </div>
+</div>

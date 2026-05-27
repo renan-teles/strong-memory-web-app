@@ -5,11 +5,13 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/http/interceptors/auth/auth.interceptor';
 import { httpErrorInterceptor } from './core/http/interceptors/http-error/http-error.interceptor';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor, httpErrorInterceptor])),
+    provideCharts(withDefaultRegisterables()),
   ],
 };

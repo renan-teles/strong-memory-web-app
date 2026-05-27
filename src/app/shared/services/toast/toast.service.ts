@@ -6,7 +6,7 @@ import { ToastMessage } from '../../types/ui/toast/toast-message.interface';
 })
 export class ToastService {
   private readonly _toasts = signal<ToastMessage[]>([]);
-  readonly toasts: Signal<ToastMessage[]> = this._toasts.asReadonly();
+  toasts: Signal<ToastMessage[]> = this._toasts.asReadonly();
 
   private timeout: number = 0;
 
@@ -15,7 +15,7 @@ export class ToastService {
 
     this.timeout = setTimeout(() => {
       this._toasts.update((current) => current.slice(1));
-    }, 3000);
+    }, 2500);
   }
 
   showError(title: string, messages: string[]): void {

@@ -11,7 +11,7 @@ export const wordsRoutes: Routes = [
         path: 'list',
         title: 'SM - Palavras',
         canActivate: [authGuard, roleGuard],
-        data: { roles: [UserRole.PLAYER, UserRole.ADM] },
+        data: { roles: [UserRole.PLAYER, UserRole.ADMIN] },
         loadComponent: () =>
           import('./presentation/pages/list-words/list-words.page').then((m) => m.ListWordsPage),
       },

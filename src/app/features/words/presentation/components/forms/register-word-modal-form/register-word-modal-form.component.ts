@@ -5,9 +5,9 @@ import { TitleCasePipe } from '@angular/common';
 import { WordRequest } from '../../../../data/dto/request/word-request';
 import { WordDifficultyResponse } from '../../../../../word-difficulties/data/dto/response/word-difficulty-response';
 import { FormModalComponentOutput } from '../../../../../../shared/types/ui/forms/form-modal-component-output.interface';
-import { WordDifficultyFacade } from '../../../../../word-difficulties/presentation/state/word-difficulty.facade';
 import { WordForm } from './word-form.type';
 import { ModalFormUtils } from '../../../../../../shared/types/ui/forms/modal-form-utils.interface';
+import { WordDifficultyService } from '../../../../../word-difficulties/presentation/services/word-difficulty/word-difficulty.service';
 
 @Component({
   selector: 'app-register-word-modal-form',
@@ -20,14 +20,18 @@ export class RegisterWordModalFormComponent implements FormUtils<WordRequest>, M
   @Output() submittedData = new EventEmitter<FormModalComponentOutput<WordRequest>>();
 
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly difficultyFacade = inject(WordDifficultyFacade);
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
 
   form: FormGroup = this.fb.nonNullable.group<WordForm>({
     word: this.fb.nonNullable.control('', [Validators.required]),
-    difficulty: this.fb.nonNullable.control('easy', [Validators.required]),
+    difficulty: this.fb.nonNullable.control(WordDifficultyService.INITIAL_DIFFICULTY_NAME, [
+      Validators.required,
+    ]),
   });
 
-  difficulties: Signal<WordDifficultyResponse[]> = this.difficultyFacade.difficulties;
+  get difficulties(): WordDifficultyResponse[] {
+    return this.difficultyService.difficulties;
+  }
 
   getInput(name: keyof WordRequest): any {
     return this.form.get(name);

@@ -1,13 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-no-time-left',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './no-time-left.component.html',
   styleUrl: './no-time-left.component.css',
 })
 export class NoTimeLeftComponent {
-  reloadGame(): void {
-    location.reload();
-  }
+  @Input({ required: true }) score!: number;
 }

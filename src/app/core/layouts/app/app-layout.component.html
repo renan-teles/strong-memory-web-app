@@ -1,21 +1,22 @@
 <app-navbar></app-navbar>
 
-<div class="py-5">
-  <div class="my-4">
-    <div class="container-fluid container-md">
-      @if (isLoadingDifficulties()) {
-        <app-loading-content></app-loading-content>
-      } @else if (loadingDifficultiesSuccess()) {
-        <router-outlet></router-outlet>
-        <app-back-to-top-btn></app-back-to-top-btn>
-      } @else {
-        <app-error
-          [errorTitle]="'Erro ao carregar aplicação. Pedimos Desculpas.'"
-          [errorMessage]="'Falha ao carregar dados iniciais da aplicação.'"
-        ></app-error>
-      }
-    </div>
-  </div>
-</div>
+<div class="d-flex flex-column flex-grow-1 min-vh-100">
+  <app-toast></app-toast>
 
-<app-toast></app-toast>
+  <main class="main-content">
+    @if (isLoadingDifficulties()) {
+      <app-loading-content></app-loading-content>
+    } @else if (loadingDifficultiesSuccess()) {
+      <router-outlet></router-outlet>
+
+      <app-back-to-top-btn></app-back-to-top-btn>
+    } @else {
+      <app-error
+        [errorTitle]="'Falha ao Carregar Aplicação.'"
+        [errorMessage]="'Falha ao carregar dados iniciais da aplicação.'"
+      ></app-error>
+    }
+  </main>
+
+  <app-footer></app-footer>
+</div>

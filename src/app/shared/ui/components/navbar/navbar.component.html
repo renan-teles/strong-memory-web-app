@@ -1,56 +1,82 @@
-<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
-  <div class="w-100">
-    <div class="container-fluid">
-      <div class="row row-cols-2 row-cols-lg-1 gap-lg-2">
-        <div class="col text-start text-lg-center">
-          <a class="navbar-brand" routerLink="{{ brandLink }}">
-            <app-strong-memory-brand></app-strong-memory-brand>
-          </a>
-        </div>
+<nav class="navbar navbar-expand-lg bg-white shadow-sm fixed-top">
+  <div class="container-fluid container-lg">
+    <div class="col text-start">
+      <app-strong-memory-brand></app-strong-memory-brand>
+    </div>
 
-        <div class="col">
-          <div class="text-end">
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          </div>
-        </div>
+    <div class="col">
+      <div class="text-end">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
       </div>
+    </div>
 
-      <div
-        class="collapse navbar-collapse d-lg-flex justify-content-lg-center mt-3 mt-lg-1 text-center"
-        id="navbarNav"
-      >
-        <ul class="navbar-nav gap-3">
-          @for (l of links; track $index) {
+    <div
+      class="collapse navbar-collapse text-center d-lg-flex justify-content-lg-end mt-4 mt-lg-1"
+      id="navbarNav"
+    >
+      <ul class="navbar-nav gap-2 gap-lg-3">
+        @for (l of links; track $index) {
+          @if (l.childrens) {
+            <li class="nav-item dropdown">
+              <a
+                type="button"
+                class="nav-link fs-6 dropdown-toggle"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ l.text }}
+              </a>
+              <ul class="dropdown-menu">
+                <div class="d-flex flex-column px-2 gap-2">
+                  @for (c of l.childrens; track $index) {
+                    <li>
+                      <a
+                        class="dropdown-item fs-6"
+                        routerLinkActive="active-route"
+                        routerLink="{{ l.path }}{{ c.path }}"
+                        >{{ c.text }}</a
+                      >
+                    </li>
+                  }
+                </div>
+              </ul>
+            </li>
+          } @else {
             <li class="nav-item">
-              <a class="nav-link" routerLinkActive="active-route" routerLink="{{ l.path }}">{{
+              <a class="nav-link fs-6" routerLinkActive="active-route" routerLink="{{ l.path }}">{{
                 l.text
               }}</a>
             </li>
           }
+        }
 
-          <li class="nav-item mt-2 mt-lg-0 d-flex align-items-center justify-content-end">
-            @if (isAuthenticated) {
-              <button (click)="onLogout()" type="button" class="btn btn-outline-danger">
-                <i class="bi-arrow-bar-left me-1"></i>Sair
-              </button>
-            } @else {
-              <a class="nav-link active-route pulse-button" routerLink="/auth/player"
-                ><i class="bi-arrow-bar-right me-1"></i>Entrar</a
-              >
-            }
-          </li>
-        </ul>
-      </div>
+        <li class="nav-item mt-1 mt-lg-0 d-flex align-items-center justify-content-end">
+          @if (isAuthenticated) {
+            <button (click)="onLogout()" type="button" class="btn btn-outline-danger">
+              <i class="bi-arrow-bar-left me-2"></i>Sair
+            </button>
+          } @else {
+            <a
+              class="nav-link btn btn-login pulse-button me-3 me-lg-2 my-2 my-lg-0"
+              routerLink="/login"
+              ><i class="bi-arrow-bar-right me-2"></i>Entrar</a
+            >
+          }
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
+
+<div class="bottom-margin"></div>

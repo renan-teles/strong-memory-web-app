@@ -8,7 +8,6 @@ import { WordDifficultyResponse } from '../../../../word-difficulties/data/dto/r
 import { UpdateWordRequest } from '../../dto/request/update-word-request';
 import { WordRequest } from '../../dto/request/word-request';
 import { WordResponse } from '../../dto/response/word-response';
-import { WordDifficultyRequest } from '../../../../word-difficulties/data/dto/request/word-difficulty-request';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +17,13 @@ export class WordsApiService extends AbstractApiService {
     super();
   }
 
-  register(data: WordRequest): Observable<ApiResponse<WordResponse>> {
-    return this.http.post<ApiResponse<WordResponse>>(`${this.BASE_URL}/word`, data);
+  register(
+    data: WordRequest,
+    suggestionOrigin: boolean = false,
+  ): Observable<ApiResponse<WordResponse>> {
+    return this.http.post<ApiResponse<WordResponse>>(`${this.BASE_URL}/word`, data, {
+      params: { suggestionOrigin },
+    });
   }
 
   delete(wordId: number): Observable<void> {
@@ -27,26 +31,17 @@ export class WordsApiService extends AbstractApiService {
   }
 
   update(wordId: number, data: UpdateWordRequest): Observable<void> {
-    return this.http.put<void>(`${this.BASE_URL}/word/${wordId}`, data);
+    return this.http.patch<void>(`${this.BASE_URL}/word/${wordId}`, data);
   }
 
   loadByDifficulty(
-    data: WordDifficultyRequest,
+    data: WordDifficultyResponse,
     pagination: PagePagination,
   ): Observable<ApiResponse<PaginationResponse<WordResponse>>> {
     return this.http.get<ApiResponse<PaginationResponse<WordResponse>>>(`${this.BASE_URL}/word`, {
       params: {
-        difficulty: data.difficulty,
+        difficulty: data.name,
         ...pagination,
-      },
-    });
-  }
-
-  loadRandomWords(difficulty: WordDifficultyResponse): Observable<ApiResponse<WordResponse[]>> {
-    return this.http.get<ApiResponse<WordResponse[]>>(`${this.BASE_URL}/word/random-list`, {
-      params: {
-        difficulty: difficulty.difficulty,
-        quantity: difficulty.maxQuantityWords,
       },
     });
   }

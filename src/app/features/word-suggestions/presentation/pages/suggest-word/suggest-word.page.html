@@ -1,24 +1,40 @@
-<main class="row row-cols-1 gap-3 page-content-animation">
-  <section class="col">
-    <div class="purple-border-start">
-      <h3 class="ms-2">Sugestão de Palavras</h3>
+<div class="h-100 bg-white">
+  <div class="bg-purple-orange-gradient">
+    <div class="container-fluid container-lg">
+      <div class="col-12 text-light py-4 py-lg-5">
+        <div class="white-border-start">
+          <h3 class="ms-2">Sugestão de Palavras</h3>
+        </div>
+        <hr class="text-light" />
+
+        <p>
+          Você pode nos ajudar a tornar nossa aplicação cada vez mais completa sugerindo novas
+          palavras que ainda não estejam cadastradas em nosso sistema. Para isso, basta enviar uma
+          palavra acompanhada de sua respectiva dificuldade (por exemplo: fácil, média ou difícil).
+          Suas sugestões são muito importantes, pois contribuem diretamente para o enriquecimento do
+          conteúdo da plataforma, permitindo que outros usuários tenham acesso a um vocabulário cada
+          vez mais amplo e diversificado. Dessa forma, colaborativamente, conseguimos melhorar a
+          qualidade da aplicação e oferecer uma experiência de aprendizado mais rica e eficiente
+          para todos.
+        </p>
+      </div>
     </div>
-    <hr class="text-orange" />
+  </div>
 
-    <p>
-      Você pode nos ajudar a tornar nossa aplicação cada vez mais completa sugerindo novas palavras
-      que ainda não estejam cadastradas em nosso sistema. Para isso, basta enviar uma palavra
-      acompanhada de sua respectiva dificuldade (por exemplo: fácil, média ou difícil). Suas
-      sugestões são muito importantes, pois contribuem diretamente para o enriquecimento do conteúdo
-      da plataforma, permitindo que outros usuários tenham acesso a um vocabulário cada vez mais
-      amplo e diversificado. Dessa forma, colaborativamente, conseguimos melhorar a qualidade da
-      aplicação e oferecer uma experiência de aprendizado mais rica e eficiente para todos.
-    </p>
-  </section>
-
-  <section class="col">
-    <app-word-suggestions-form
-      (suggestionsData)="registerSuggestion($event)"
-    ></app-word-suggestions-form>
-  </section>
-</main>
+  <div class="container-fluid container-lg py-5">
+    <section class="d-flex justify-content-center text-center">
+      <div class="col col-lg-7 col-xl-6">
+        <div class="d-flex justify-content-center w-100 mb-3">
+          <h3 class="orange-highlighted-title">Realizar Sugestão</h3>
+        </div>
+        <div>
+          <section class="col">
+            <app-word-suggestions-form
+              (suggestionsData)="registerSuggestion($event)"
+            ></app-word-suggestions-form>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

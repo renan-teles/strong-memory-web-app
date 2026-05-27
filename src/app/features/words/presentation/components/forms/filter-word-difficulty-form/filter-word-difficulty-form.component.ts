@@ -4,9 +4,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TitleCasePipe } from '@angular/common';
 import { WordDifficultyResponse } from '../../../../../word-difficulties/data/dto/response/word-difficulty-response';
 import { SpinnerBorderComponent } from '../../../../../../shared/ui/components/spinner-border/spinner-border.component';
-import { LoadWordsPaginationFacade } from '../../../state/load-words-pagination/load-words-pagination.facade';
-import { WordDifficultyFacade } from '../../../../../word-difficulties/presentation/state/word-difficulty.facade';
+import { LoadWordsPaginationApiFacade } from '../../../state/api/load-words-pagination-api.facade';
 import { WordDifficultyRequest } from '../../../../../word-difficulties/data/dto/request/word-difficulty-request';
+import { WordDifficultyService } from '../../../../../word-difficulties/presentation/services/word-difficulty/word-difficulty.service';
 
 @Component({
   selector: 'app-filter-word-difficulty-form',
@@ -18,15 +18,19 @@ export class FilterWordDifficultyFormComponent implements FormUtils<WordDifficul
   @Output() selectedDifficulty = new EventEmitter<WordDifficultyRequest>();
 
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly paginationFacade: LoadWordsPaginationFacade = inject(LoadWordsPaginationFacade);
-  private readonly difficultyFacade: WordDifficultyFacade = inject(WordDifficultyFacade);
+  private readonly paginationFacade: LoadWordsPaginationApiFacade = inject(
+    LoadWordsPaginationApiFacade,
+  );
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
 
   isLoadingWords: Signal<boolean> = this.paginationFacade.isLoading;
 
-  difficulties: Signal<WordDifficultyResponse[]> = this.difficultyFacade.difficulties;
+  get difficulties(): WordDifficultyResponse[] {
+    return this.difficultyService.difficulties;
+  }
 
   form: FormGroup = this.fb.nonNullable.group({
-    difficulty: ['easy', [Validators.required]],
+    difficulty: [WordDifficultyService.INITIAL_DIFFICULTY_NAME, [Validators.required]],
   });
 
   getInput(name: 'difficulty'): any {
@@ -35,6 +39,7 @@ export class FilterWordDifficultyFormComponent implements FormUtils<WordDifficul
 
   onSubmit(): void {
     if (this.form.invalid) return;
+
     this.selectedDifficulty.emit({
       difficulty: this.form.value.difficulty!,
     });

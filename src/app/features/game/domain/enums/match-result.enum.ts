@@ -1,0 +1,7 @@
+export enum MatchResult {
+  GAVE_UP = 'GAVE_UP',
+  COMPLETED = 'COMPLETED',
+  NOT_COMPLETED = 'NOT_COMPLETED',
+  TIMEOUT = 'TIMEOUT',
+  GAME_OVER = 'GAME_OVER',
+}

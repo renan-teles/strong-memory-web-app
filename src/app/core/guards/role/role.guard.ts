@@ -1,13 +1,14 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthStorageService } from '../../services/auth-storage/auth-storage.service';
+import { AuthStateService } from '../../services/auth/auth-state.service';
+import { UserRole } from '../../../features/users/domain/enums/user-role.enum';
 
 export const roleGuard: CanActivateFn = (route, state) => {
-  const router = inject(Router);
-  const authStorage = inject(AuthStorageService);
+  const router: Router = inject(Router);
+  const authState: AuthStateService = inject(AuthStateService);
 
-  const userRole = authStorage.getUserRole();
-  const path = '/not-authorized';
+  const userRole: UserRole | null = authState.getUserRole();
+  const path: string = '/not-authorized';
 
   if (!userRole) {
     router.navigate([path]);

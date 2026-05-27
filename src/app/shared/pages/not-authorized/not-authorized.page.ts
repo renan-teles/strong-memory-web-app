@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AuthStorageService } from '../../../core/services/auth-storage/auth-storage.service';
+import { AuthStateService } from '../../../core/services/auth/auth-state.service';
 
 @Component({
   selector: 'app-not-authorized',
@@ -9,9 +9,9 @@ import { AuthStorageService } from '../../../core/services/auth-storage/auth-sto
   styleUrl: './not-authorized.page.css',
 })
 export class NotAuthorizedPage {
-  private readonly authStorage: AuthStorageService = inject(AuthStorageService);
+  private readonly authState: AuthStateService = inject(AuthStateService);
 
   get linkText(): string {
-    return this.authStorage.isAuthenticated() ? 'Voltar ao Início' : 'Ir para Login';
+    return this.authState.isAuthenticated() ? 'Voltar ao Início' : 'Ir para Login';
   }
 }

@@ -1,0 +1,53 @@
+<div class="h-100 bg-white">
+  <div class="bg-purple-orange-gradient">
+    <div class="container-fluid container-lg">
+      <div class="col-12 text-light py-4 py-lg-5">
+        <div class="white-border-start">
+          <h3 class="ms-2">Treine Sua Memória de Forma Divertida</h3>
+        </div>
+        <hr class="text-light" />
+        <p>
+          O Strong Memory é uma aplicação web interativa desenvolvida para o treinamento da memória
+          muscular e cognitiva por meio de uma dinâmica gamificada. A plataforma utiliza um
+          mini-game baseado na visualização e posterior digitação sequencial de palavras,
+          estimulando a retenção, a concentração e a precisão do usuário durante a execução das
+          atividades propostas.
+        </p>
+        <p>
+          O objetivo principal do mini-game é permitir que o usuário complete integralmente a
+          sequência correspondente ao nível escolhido, exigindo gerenciamento eficiente do tempo e
+          alto grau de precisão na digitação. Dessa forma, o mini-game promove o desenvolvimento
+          contínuo das capacidades cognitivas e motoras em um ambiente web dinâmico e progressivo.
+        </p>
+
+        <div class="d-flex gap-2">
+          <a class="btn btn-light" routerLink="/about"
+            ><i class="bi-info-circle me-2"></i>Saber Mais</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid container-lg py-5">
+    <section class="d-flex justify-content-center text-center">
+      <div class="col col-lg-7 col-xl-6">
+        <div class="d-flex justify-content-center w-100 mb-3">
+          <h3 class="orange-highlighted-title">Iniciar Partida</h3>
+        </div>
+        <div>
+          <div class="mb-4">
+            <p>
+              A cada rodada concluída com sucesso, o nível de complexidade é ajustado
+              automaticamente, variando parâmetros como tempo de exibição, tempo de resposta e
+              tamanho da sequência, de acordo com a dificuldade selecionada.
+            </p>
+          </div>
+          <app-match-difficulty-form
+            (selectedDifficulty)="redirectToPlayGame($event)"
+          ></app-match-difficulty-form>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

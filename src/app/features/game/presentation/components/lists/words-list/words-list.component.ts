@@ -1,9 +1,9 @@
 import { Component, inject, Signal } from '@angular/core';
-import { WordsGameService } from '../../../services/words-game/words-game.service';
-import { WordsGameFacade } from '../../../state/game/words-game.facade';
 import { WordComparatorDirective } from '../../../../../../shared/ui/directives/word-comparator.directive';
+import { DrawnWordResponse } from '../../../../data/dto/response/drawn-word-response';
+import { GameFacade } from '../../../state/game/game.facade';
+import { GameMatchService } from '../../../../domain/services/game-match.service';
 import { WordsComparator } from '../../../../domain/interfaces/words-comparator.interface';
-import { WordResponse } from '../../../../../words/data/dto/response/word-response';
 
 @Component({
   selector: 'app-words-list',
@@ -12,14 +12,17 @@ import { WordResponse } from '../../../../../words/data/dto/response/word-respon
   styleUrl: './words-list.component.css',
 })
 export class WordsListComponent implements WordsComparator {
-  private readonly service: WordsGameService = inject(WordsGameService);
-  private readonly facade: WordsGameFacade = inject(WordsGameFacade);
+  private readonly service: GameMatchService = inject(GameMatchService);
+  private readonly facade: GameFacade = inject(GameFacade);
 
-  words: Signal<WordResponse[]> = this.service.currentWords;
   compare: Signal<boolean> = this.facade.showResult;
+
+  get words(): DrawnWordResponse[] {
+    return this.service.getViewWords();
+  }
 
   isEqualsWords(index: number): boolean {
     if (!this.compare()) return false;
-    return this.service.compareCurrentWordsAndUserWordsByIndex(index);
+    return this.service.isCorrectByIndex(index);
   }
 }

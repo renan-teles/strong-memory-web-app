@@ -6,5 +6,9 @@ declare global {
 
 export const environment = {
   production: true,
-  apiUrl: window.__env?.API_URL || 'http://localhost:8080',
+
+  /*
+   * valor injetado no deploy
+   */
+  apiUrl: window.__env?.API_URL || '/api',
 };

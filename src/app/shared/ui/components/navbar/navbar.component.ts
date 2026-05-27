@@ -2,9 +2,10 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { StrongMemoryBrandComponent } from '../strong-memory-brand/strong-memory-brand.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AuthStorageService } from '../../../../core/services/auth-storage/auth-storage.service';
 import { NavbarLink } from '../../../types/ui/navbar/navbar-link.interface';
 import { NavbarLinkService } from '../../../services/navbar-link/navbar-link.service';
+import { AuthStateService } from '../../../../core/services/auth/auth-state.service';
+import { LoginApiFacade } from '../../../../features/auth/presentation/state/login/api/login-api.facade';
 
 @Component({
   selector: 'app-navbar',
@@ -14,28 +15,23 @@ import { NavbarLinkService } from '../../../services/navbar-link/navbar-link.ser
 })
 export class NavbarComponent {
   private readonly router: Router = inject(Router);
-  private readonly authStorage: AuthStorageService = inject(AuthStorageService);
+  private readonly authState: AuthStateService = inject(AuthStateService);
   private readonly linksService: NavbarLinkService = inject(NavbarLinkService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
-
-  get brandLink(): string {
-    return !this.isAuthenticated || this.authStorage.isPlayer()
-      ? '/app/game/start'
-      : '/app/words/list';
-  }
+  private readonly loginFacade: LoginApiFacade = inject(LoginApiFacade);
 
   get isAuthenticated(): boolean {
-    return this.authStorage.isAuthenticated();
+    return this.authState.isAuthenticated();
   }
 
   get isPlayer(): boolean {
-    return this.authStorage.isPlayer();
+    return this.authState.isPlayer();
   }
 
   get links(): NavbarLink[] {
     return !this.isAuthenticated
       ? this.linksService.getOpenLinks()
-      : this.linksService.getLinksByUserRole(this.authStorage.getUserRole()!, this.isPlayer);
+      : this.linksService.getByUserRole(this.authState.getUserRole()!, this.isPlayer);
   }
 
   constructor() {
@@ -50,7 +46,6 @@ export class NavbarComponent {
   }
 
   onLogout(): void {
-    this.authStorage.clearAll();
-    this.router.navigate(['/auth/player']);
+    this.loginFacade.logout();
   }
 }

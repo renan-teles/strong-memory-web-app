@@ -1,18 +1,17 @@
-import { Component, computed, DestroyRef, inject, OnInit, signal, Signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, Signal, signal } from '@angular/core';
 import { WordsGameCardComponent } from '../../components/cards/words-game/words-game-card.component';
 import { NoTimeLeftComponent } from '../../components/no-time-left/no-time-left.component';
 import { EndGameComponent } from '../../components/end-game/end-game.component';
-import { GameState } from '../../state/game/game-state.type';
-import { ActivatedRoute } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { WordDifficultyResponse } from '../../../../word-difficulties/data/dto/response/word-difficulty-response';
-import { WordDifficultyService } from '../../../../word-difficulties/presentation/services/word-difficulty/word-difficulty.service';
 import { ErrorComponent } from '../../../../../shared/ui/components/error/error.component';
 import { LoadingContentComponent } from '../../../../../shared/ui/components/loading-content/loading-content.component';
-import { LoadRandomWordsFacade } from '../../../../words/presentation/state/load-random-words/load-random-words.facade';
-import { ScoreRecordFacade } from '../../../../users/presentation/state/player/score-record/score-record.facade';
-import { AuthStorageService } from '../../../../../core/services/auth-storage/auth-storage.service';
+import { GameApiFacade } from '../../state/game/api/game-api.facade';
+import { CanComponentDeactivate } from '../../../../../core/guards/confirm-exit/confirm-exit-guard';
+import { PlayGamePageFacade } from '../../state/pages/play-game-page.facade';
+import { GameMatchService } from '../../../domain/services/game-match.service';
+import { GameStatus } from '../../state/game/game-status.interface';
+import { GameState } from '../../state/game/game-state.type';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
+import { AuthStateService } from '../../../../../core/services/auth/auth-state.service';
 
 @Component({
   selector: 'app-play-game',
@@ -26,79 +25,47 @@ import { ToastService } from '../../../../../shared/services/toast/toast.service
   templateUrl: './play-game.page.html',
   styleUrl: './play-game.page.css',
 })
-export class PlayGamePage implements OnInit {
-  private readonly scoreFacade: ScoreRecordFacade = inject(ScoreRecordFacade);
-  private readonly randomWordsFacade: LoadRandomWordsFacade = inject(LoadRandomWordsFacade);
-  private readonly currentRoute: ActivatedRoute = inject(ActivatedRoute);
-  private readonly destroyRef: DestroyRef = inject(DestroyRef);
-  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
-  private readonly authStorage: AuthStorageService = inject(AuthStorageService);
+export class PlayGamePage implements OnInit, OnDestroy, CanComponentDeactivate {
+  private readonly pageFacade: PlayGamePageFacade = inject(PlayGamePageFacade);
+  private readonly gameApi: GameApiFacade = inject(GameApiFacade);
+  private readonly gameServie: GameMatchService = inject(GameMatchService);
   private readonly toastService: ToastService = inject(ToastService);
+  private readonly authState: AuthStateService = inject(AuthStateService);
 
-  private readonly isValidParam = signal<boolean>(true);
+  private readonly gameStatus = signal<GameStatus>({ state: 'show-game', scoreAchieved: 0 });
 
-  readonly gameState = signal<GameState>('show-game');
+  isValidParam = this.pageFacade.isValidParam;
 
-  loadingGame: Signal<boolean> = computed(
-    () => this.randomWordsFacade.isLoading() || this.scoreFacade.isLoadingScore(),
-  );
+  gameState: Signal<GameState> = computed(() => this.gameStatus().state);
+  scoreAchieved: Signal<number> = computed(() => this.gameStatus().scoreAchieved);
 
-  loadingGameSuccess: Signal<boolean> = computed(
-    () =>
-      this.isValidParam() ||
-      this.randomWordsFacade.success() ||
-      this.scoreFacade.loadSuccessScore(),
-  );
+  isStartingGame: Signal<boolean> = this.gameApi.isStarting;
+  startingGameSuccess: Signal<boolean> = this.gameApi.startingSuccess;
 
   ngOnInit(): void {
-    this.prepareGame();
+    this.pageFacade.loadGameData();
+  }
+
+  ngOnDestroy(): void {
+    this.toastService.clear();
   }
 
   setState(state: any): void {
-    this.gameState.set(state);
+    this.gameStatus.set(state);
   }
 
-  prepareGame(): void {
-    this.currentRoute.queryParamMap
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((params) => {
-        const difficulty: WordDifficultyResponse | null = this.getDifficultyByParam(
-          params.get('difficulty'),
-        );
-        if (!difficulty) return;
-        this.loadGameData(difficulty);
-      });
-  }
-
-  private loadGameData(difficulty: WordDifficultyResponse): void {
-    this.randomWordsFacade.loadRandom(difficulty);
-
-    if (this.authStorage.isPlayer()) {
-      this.scoreFacade.loadScoreRecord(difficulty.difficulty);
-      return;
+  async canDeactivate(): Promise<boolean> {
+    try {
+      if (
+        this.gameStatus().state === 'show-game' &&
+        !this.gameServie.isGameOver() &&
+        this.authState.isAuthenticated()
+      ) {
+        return await this.pageFacade.confirmLeave();
+      }
+      return true;
+    } catch (error) {
+      return false;
     }
-    this.toastService.showWarning('Atenção', [
-      'Entre com sua conta para salvar as pontuações alcançadas.',
-    ]);
-  }
-
-  private getDifficultyByParam(param: string | null): WordDifficultyResponse | null {
-    if (!param) {
-      this.isValidParam.set(false);
-      return null;
-    }
-
-    const difficulty: WordDifficultyResponse | undefined =
-      this.difficultyService.getDifficultByName(param);
-
-    if (!difficulty) {
-      this.isValidParam.set(false);
-      return null;
-    }
-
-    this.isValidParam.set(true);
-    this.difficultyService.setCurrentDifficulty(difficulty);
-
-    return difficulty;
   }
 }

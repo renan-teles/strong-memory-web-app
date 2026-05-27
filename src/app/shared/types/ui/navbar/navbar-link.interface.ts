@@ -1,7 +1,10 @@
-import { UserRole } from '../../../../features/users/domain/enums/user-role.enum';
+import { AccessRoleNavbarLink } from './access-role-navbar-link.type';
 
 export interface NavbarLink {
   text: string;
-  accessRole: UserRole.PLAYER | UserRole.ADM | 'ALL' | 'OPEN';
+  accessRole: AccessRoleNavbarLink;
+  needsAuth: boolean;
   path: string;
+  order: number;
+  childrens?: NavbarLink[];
 }

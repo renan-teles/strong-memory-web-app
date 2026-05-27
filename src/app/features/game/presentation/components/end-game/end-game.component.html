@@ -1,12 +1,14 @@
-<div class="card row p-5 text-center">
-  <div class="col-12">
-    <span class="h1">🏆</span>
-    <h4 class="mt-2">Parabéns! Você chegou ao final</h4>
-  </div>
-  <div class="col-12">
-    <h5>Pontuação Total: {{ score() }}</h5>
-    <div class="mt-4">
-      <a class="btn-gradient-purple-orange" routerLink="/app/game/start">Voltar ao início </a>
+<div class="container-fluid container-lg mt-5">
+  <div class="card row p-5 text-center">
+    <div class="col-12">
+      <span class="h1">🏆</span>
+      <h4 class="mt-2">Parabéns! Você chegou ao final</h4>
+    </div>
+    <div class="col-12">
+      <h5>Pontuação Total: {{ score }}</h5>
+      <div class="mt-4">
+        <a class="btn-purple-orange-gradient" routerLink="/home">Voltar ao início </a>
+      </div>
     </div>
   </div>
 </div>

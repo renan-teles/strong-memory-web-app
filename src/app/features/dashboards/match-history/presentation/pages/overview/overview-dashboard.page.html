@@ -1,0 +1,12 @@
+<div class="container-fluid container-lg my-5">
+  @if (isLoadingOverviewData()) {
+    <app-loading-content [message]="'Carregando dados...'"></app-loading-content>
+  } @else if (!loadingOverviewDataSuccess()) {
+    <p class="text-danger">
+      <i class="bi-x-circle-fill"></i>
+      Falha ao buscar dados.
+    </p>
+  } @else {
+    <app-overview-dashboard [data]="data()!"></app-overview-dashboard>
+  }
+</div>

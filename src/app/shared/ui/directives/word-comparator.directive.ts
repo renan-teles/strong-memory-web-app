@@ -6,15 +6,15 @@ import { Directive, HostBinding, Input } from '@angular/core';
 })
 export class WordComparatorDirective {
   @Input() compare = false;
-  @Input() isEquals = false;
+  @Input() isCorrect = false;
 
   @HostBinding('class.game-app-input-success')
   get valid() {
-    return this.compare && this.isEquals;
+    return this.compare && this.isCorrect;
   }
 
   @HostBinding('class.game-app-input-error')
   get invalid() {
-    return this.compare && !this.isEquals;
+    return this.compare && !this.isCorrect;
   }
 }

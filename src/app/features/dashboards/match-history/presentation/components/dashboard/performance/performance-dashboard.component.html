@@ -1,0 +1,18 @@
+<div class="card shadow-sm p-4 p-lg-5 page-content-animation">
+  <div class="col-12 mb-3">
+    <h3><i class="bi-bar-chart-fill me-2 text-purple"></i>Performance</h3>
+    <hr />
+  </div>
+
+  <div class="row g-5">
+    <div class="col-12 col-xl-6" style="min-height: 350px">
+      <app-accuracy-timeline-chart [data]="accuracyTimelineData"></app-accuracy-timeline-chart>
+    </div>
+
+    <div class="col-12 col-xl-6" style="min-height: 350px">
+      <app-accuracy-stacked-area-chart
+        [data]="accuracyTimelineData"
+      ></app-accuracy-stacked-area-chart>
+    </div>
+  </div>
+</div>

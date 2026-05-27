@@ -27,19 +27,6 @@ export class WordSuggestionsApiService extends AbstractApiService {
     return this.http.delete<void>(`${this.BASE_URL}/word-suggestion/${suggestionId}`);
   }
 
-  loadAll(
-    pagination: PagePagination,
-  ): Observable<ApiResponse<PaginationResponse<WordSuggestionResponse>>> {
-    return this.http.get<ApiResponse<PaginationResponse<WordSuggestionResponse>>>(
-      `${this.BASE_URL}/word-suggestion`,
-      {
-        params: {
-          ...pagination,
-        },
-      },
-    );
-  }
-
   loadByPeriod(
     filter: FilterWordSuggestionRequest,
     pagination: PagePagination,

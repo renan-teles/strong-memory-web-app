@@ -22,16 +22,19 @@ FROM nginx:alpine
 # copia build gerado
 COPY --from=build /app/dist/strong-memory-web-app/browser /usr/share/nginx/html
 
-# remove config default (opcional, mas recomendado)
+# remove config default
 RUN rm /etc/nginx/conf.d/default.conf
 
-# config custom do nginx (SPA Angular)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# config custom do nginx
+COPY nginx.conf.template \
+/etc/nginx/conf.d/nginx.conf.template
 
 # script que injeta variáveis
 COPY ./docker-entrypoint.sh /entrypoint.sh
-RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+
+RUN sed -i 's/\r$//' /entrypoint.sh \
+ && chmod +x /entrypoint.sh
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]
 
-EXPOSE 4200
+EXPOSE 80

@@ -1,5 +1,5 @@
-<form [formGroup]="form" (submit)="onSubmit()" class="row row-cols-1 gap-3">
-  @if (isRegisterRole) {
+<form [formGroup]="form" (submit)="onSubmit()" class="row row-cols-1 gap-4">
+  @if (!isLoginRole) {
     <div class="col">
       <label for="input-username" class="form-label">Username:</label>
       <input
@@ -64,32 +64,19 @@
   <div class="col text-end">
     <button
       [disabled]="isRegisteringUser() || isAuthenticatingUser()"
-      class="btn-scale btn-gradient-purple-orange"
+      class="btn-purple-orange-gradient shadow-sm"
     >
       @if (isRegisteringUser()) {
         <app-spinner-border [text]="'Cadastrando...'"></app-spinner-border>
       } @else if (isAuthenticatingUser()) {
         <app-spinner-border [text]="'Entrando...'"></app-spinner-border>
       } @else {
-        @if (isRegisterRole) {
-          Me Cadastrar
-        } @else {
+        @if (isLoginRole) {
           Entrar
+        } @else {
+          Me Cadastrar
         }
       }
     </button>
-  </div>
-
-  <div class="col text-start">
-    @if (link()) {
-      <a routerLink="{{ link()!.redirectPath }}" class="text-purple">{{ link()!.text }}</a>
-    }
-  </div>
-  <div class="col text-start">
-    @if (linkInversorRole()) {
-      <a routerLink="{{ linkInversorRole()!.redirectPath }}" class="text-purple">{{
-        linkInversorRole()!.text
-      }}</a>
-    }
   </div>
 </form>
