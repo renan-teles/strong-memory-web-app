@@ -15,7 +15,7 @@ import { FormUtils } from '../../../../../../shared/types/ui/forms/form-utils.in
 import { passwordMatchValidator } from '../../../../../../shared/ui/validators/password-math.validator';
 import { UpdatePasswordRequest } from '../../../../data/dto/request/update-password-request';
 import { SpinnerBorderComponent } from '../../../../../../shared/ui/components/spinner-border/spinner-border.component';
-import { CrudPlayerFacade } from '../../../state/player/crud/crud-player.facade';
+import { CrudPlayerApiFacade } from '../../../state/player/api/crud-player-api.facade';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -29,17 +29,17 @@ export class UpdatePasswordFormComponent implements OnInit, FormUtils<UpdatePass
 
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly crudFacade: CrudPlayerFacade = inject(CrudPlayerFacade);
+  private readonly crudApi: CrudPlayerApiFacade = inject(CrudPlayerApiFacade);
 
   private readonly resetFormEffect: EffectRef = effect(() => {
     if (this.updatePasswordSuccess() && !this.isUpdatingPassword()) {
       this.form.reset();
-      this.crudFacade.resetUpdatePasswordState();
+      this.crudApi.resetUpdatePasswordState();
     }
   });
 
-  isUpdatingPassword: Signal<boolean> = this.crudFacade.isUpdatingPassword;
-  updatePasswordSuccess: Signal<boolean> = this.crudFacade.updatePasswordSuccess;
+  isUpdatingPassword: Signal<boolean> = this.crudApi.isUpdatingPassword;
+  updatePasswordSuccess: Signal<boolean> = this.crudApi.updatePasswordSuccess;
 
   form = this.fb.nonNullable.group<UpdatePasswordForm>({
     currentPassword: this.fb.nonNullable.control('', [

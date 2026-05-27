@@ -6,5 +6,9 @@ declare global {
 
 export const environment = {
   production: false,
-  apiUrl: window.__env?.API_URL || 'http://localhost:8080',
+
+  /*
+   * usa proxy Angular
+   */
+  apiUrl: '/api',
 };

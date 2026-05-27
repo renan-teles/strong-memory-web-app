@@ -21,7 +21,7 @@ export const wordSuggestionsRoutes: Routes = [
         path: 'list',
         title: 'SM - Sugestões de Palavras',
         canActivate: [authGuard, roleGuard],
-        data: { roles: [UserRole.ADM] },
+        data: { roles: [UserRole.ADMIN] },
         loadComponent: () =>
           import('./presentation/pages/list-suggestions/list-word-suggestions.page').then(
             (m) => m.ListWordSuggestionsPage,

@@ -1,36 +1,29 @@
-<main class="page-content-animation row row-cols-1 gap-3 page-content-animation">
-  <section class="col">
-    <div class="col row row-cols-2">
-      <div class="col">
-        <div class="purple-border-start">
-          <h3 class="ms-2">Sugestões de Palavras</h3>
+<div class="container-fluid container-lg my-5">
+  <div
+    class="col-12 card bg-white rounded shadow-sm p-3 p-lg-4 d-flex flex-column"
+    style="min-height: 630px"
+  >
+    <section>
+      <div class="row row-cols-sm-1 gap-3">
+        <div class="col">
+          <div class="purple-border-start">
+            <h3 class="ms-2">Sugestões de Palavras</h3>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <app-filter-word-suggestions-form
+            (submitteData)="onLoadByPeriod($event)"
+          ></app-filter-word-suggestions-form>
         </div>
       </div>
-
-      <div class="col text-end px-2">
-        <button
-          [disabled]="isLoadingSuggestions()"
-          class="btn-gradient-purple-orange"
-          (click)="loadAll()"
-        >
-          Pegar Todas
-        </button>
-      </div>
-    </div>
-
-    <div class="col-12 mt-3">
-      <app-filter-word-suggestions-form
-        (submitteData)="loadByPeriod($event)"
-      ></app-filter-word-suggestions-form>
-    </div>
+    </section>
 
     <div class="col-12">
       <hr class="text-orange" />
     </div>
-  </section>
 
-  <section class="col">
-    <section class="row row-cols-1 gap-3">
+    <section class="col row row-cols-1 gap-3 flex-grow-1">
       <div class="col">
         @if (isLoadingSuggestions()) {
           <app-spinner-border
@@ -44,53 +37,75 @@
             <i class="bi-x-circle-fill"></i>Falha ao buscar sugestões de palavras.
           </p>
         } @else {
-          <div class="row row-cols-1 row-cols-md-2 page-content-animation">
-            @for (word of wordsSuggestions(); track word.id!; let i = $index) {
-              <div class="col px-4">
-                <div class="row my-3">
-                  <div class="col">
-                    <span class="fs-5"> {{ word.suggestedWord | titlecase }} </span><br />
-                    <span class="fs-6">
-                      {{ word.suggestedDifficulty | translatedifficulty | titlecase }}</span
-                    >
-                  </div>
+          <div class="table-responsive">
+            <table class="table table-sm table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Palavra</th>
+                  <th>Dificuldade</th>
+                  <th>Sugerida em:</th>
+                  <th>Sugerida por:</th>
+                  <th class="text-end">Ações</th>
+                </tr>
+              </thead>
 
-                  <div class="col text-end gap-3">
-                    <button
-                      [disabled]="isRegistingWord()"
-                      (click)="registerSuggestionInWords(word.id!)"
-                      class="btn btn-sm btn-success me-2"
-                    >
-                      <i class="bi-floppy-fill"></i>
-                    </button>
-                    <button
-                      [disabled]="isDeletingSuggestion()"
-                      (click)="deleteSuggestion(word.id!)"
-                      class="btn btn-sm btn-danger"
-                    >
-                      <i class="bi-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            }
+              <tbody>
+                @for (word of wordsSuggestions(); track word.id!) {
+                  <tr>
+                    <td>
+                      {{ word.word | titlecase }}
+                    </td>
+                    <td>
+                      {{ word.difficulty | titlecase }}
+                    </td>
+                    <td>
+                      {{ word.suggestedAt | date: 'dd/MM/yyyy HH:mm' }}
+                    </td>
+                    <td>
+                      {{ word.userEmail }}
+                    </td>
+                    <td>
+                      <div class="d-flex justify-content-end">
+                        <button
+                          [disabled]="isRegistingWord()"
+                          (click)="onRegisterSuggestionInWords(word.id!)"
+                          class="btn btn-sm btn-success me-2"
+                        >
+                          <i class="bi-floppy-fill"></i>
+                        </button>
+
+                        <button
+                          [disabled]="isDeletingSuggestion()"
+                          (click)="onDeleteSuggestion(word.id!)"
+                          class="btn btn-sm btn-danger"
+                        >
+                          <i class="bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
           </div>
         }
       </div>
 
       @if (loadSuggestionsSuccess()) {
-        <div class="col-12">
-          <hr class="text-orange" />
-        </div>
+        <div class="d-flex flex-column mt-auto">
+          <div class="col-12">
+            <hr class="text-orange" />
+          </div>
 
-        <div class="col d-flex justify-content-center">
-          <app-nav-pagination
-            [paginationState]="paginationState()"
-            [pages]="pages()"
-            (action)="onPagination($event)"
-          ></app-nav-pagination>
+          <div class="col d-flex justify-content-center">
+            <app-nav-pagination
+              [paginationState]="paginationState()"
+              [pages]="pages()"
+              (action)="onPagination($event)"
+            ></app-nav-pagination>
+          </div>
         </div>
       }
     </section>
-  </section>
-</main>
+  </div>
+</div>

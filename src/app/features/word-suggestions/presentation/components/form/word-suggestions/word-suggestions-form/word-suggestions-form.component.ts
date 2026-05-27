@@ -5,9 +5,9 @@ import { WordSuggestionsForm } from '../word-suggestions-form.type';
 import { FormUtils } from '../../../../../../../shared/types/ui/forms/form-utils.interface';
 import { SpinnerBorderComponent } from '../../../../../../../shared/ui/components/spinner-border/spinner-border.component';
 import { WordDifficultyResponse } from '../../../../../../word-difficulties/data/dto/response/word-difficulty-response';
-import { WordDifficultyFacade } from '../../../../../../word-difficulties/presentation/state/word-difficulty.facade';
 import { WordSuggestionRequest } from '../../../../../data/dto/request/word-suggestion-request';
-import { CrudWordSuggestionsFacade } from '../../../../state/crud/crud-word-suggestions.facade';
+import { CrudWordSuggestionsApiFacade } from '../../../../state/api/crud-word-suggestions-api.facade';
+import { WordDifficultyService } from '../../../../../../word-difficulties/presentation/services/word-difficulty/word-difficulty.service';
 
 @Component({
   selector: 'app-word-suggestions-form',
@@ -18,9 +18,9 @@ import { CrudWordSuggestionsFacade } from '../../../../state/crud/crud-word-sugg
 export class WordSuggestionsFormComponent implements FormUtils<WordSuggestionsForm> {
   @Output() suggestionsData = new EventEmitter<WordSuggestionRequest>();
 
-  private readonly facade: CrudWordSuggestionsFacade = inject(CrudWordSuggestionsFacade);
+  private readonly facade: CrudWordSuggestionsApiFacade = inject(CrudWordSuggestionsApiFacade);
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly difficultyFacade = inject(WordDifficultyFacade);
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
 
   private readonly resetFormEffect: EffectRef = effect(() => {
     if (this.registerSuccess() && !this.isRegisteringWord()) {
@@ -32,11 +32,16 @@ export class WordSuggestionsFormComponent implements FormUtils<WordSuggestionsFo
   isRegisteringWord: Signal<boolean> = this.facade.isRegistering;
   registerSuccess: Signal<boolean> = this.facade.registerSuccess;
 
-  difficulties: Signal<WordDifficultyResponse[]> = this.difficultyFacade.difficulties;
+  get difficulties(): WordDifficultyResponse[] {
+    return this.difficultyService.difficulties;
+  }
 
   form: FormGroup = this.fb.nonNullable.group({
     suggestedWord: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(2)]),
-    suggestedDifficulty: this.fb.nonNullable.control('easy', [Validators.required]),
+    suggestedDifficulty: this.fb.nonNullable.control(
+      WordDifficultyService.INITIAL_DIFFICULTY_NAME,
+      [Validators.required],
+    ),
   });
 
   getInput(name: keyof WordSuggestionsForm): any {
@@ -50,8 +55,8 @@ export class WordSuggestionsFormComponent implements FormUtils<WordSuggestionsFo
     }
 
     this.suggestionsData.emit({
-      suggestedDifficulty: this.form.value.suggestedDifficulty!,
-      suggestedWord: this.form.value.suggestedWord!,
+      difficulty: this.form.value.suggestedDifficulty!,
+      word: this.form.value.suggestedWord!,
     });
   }
 }

@@ -1,24 +1,24 @@
-@if (loadingGame()) {
+@if (isStartingGame()) {
   <app-loading-content [message]="'Carregando palavras...'"></app-loading-content>
-} @else if (!loadingGameSuccess()) {
+} @else if (!startingGameSuccess() || !isValidParam()) {
   <app-error
-    [errorTitle]="'Erro ao Iniciar Jogo. Pedimos Desculpas.'"
+    [errorTitle]="'Falha ao Iniciar Jogo.'"
     [errorMessage]="'Falha ao inicializar jogo.'"
   ></app-error>
 } @else {
   @switch (gameState()) {
     @case ('show-game') {
-      <app-words-game-card (gameState)="setState($event)"></app-words-game-card>
+      <app-words-game-card (gameStatus)="setState($event)"></app-words-game-card>
     }
     @case ('end') {
-      <app-end-game></app-end-game>
+      <app-end-game [score]="scoreAchieved()"></app-end-game>
     }
     @case ('no-time-left') {
-      <app-no-time-left (gameState)="setState($event)"></app-no-time-left>
+      <app-no-time-left [score]="scoreAchieved()"></app-no-time-left>
     }
     @case ('error') {
       <app-error
-        [errorTitle]="'Erro na Execução. Pedimos Desculpas.'"
+        [errorTitle]="'Falha na Execução.'"
         [errorMessage]="'Falha na execução do mini-game.'"
       ></app-error>
     }

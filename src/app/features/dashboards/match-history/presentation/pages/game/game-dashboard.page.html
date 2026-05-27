@@ -1,0 +1,15 @@
+<div class="container-fluid container-lg my-5">
+  @if (isLoading()) {
+    <app-loading-content [message]="'Carregando dados...'"></app-loading-content>
+  } @else if (!success()) {
+    <p class="text-danger">
+      <i class="bi-x-circle-fill"></i>
+      Falha ao buscar dados.
+    </p>
+  } @else {
+    <app-game-dashboard
+      [gameModeData]="gameModeData()"
+      [highestScores]="highestScoresData()"
+    ></app-game-dashboard>
+  }
+</div>

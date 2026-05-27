@@ -13,6 +13,6 @@ export class WordDifficultyApiService extends AbstractApiService {
   }
 
   loadAll(): Observable<ApiResponse<WordDifficultyResponse[]>> {
-    return this.http.get<ApiResponse<WordDifficultyResponse[]>>(`${this.BASE_URL}/difficulty`);
+    return this.http.get<ApiResponse<WordDifficultyResponse[]>>(`${this.BASE_URL}/difficulty/all`);
   }
 }

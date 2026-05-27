@@ -9,6 +9,7 @@ import { AuthResponse } from '../../dto/response/auth-response';
 import { PathUser } from '../../../../../shared/types/api/path-user.type';
 import { RegisterUserRequest } from '../../../../users/data/dto/request/register-user-request';
 import { CreatedUserResponse } from '../../../../users/data/dto/response/created-user-response';
+import { UserRole } from '../../../../users/domain/enums/user-role.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -19,31 +20,46 @@ export class AuthApiService extends AbstractApiService {
   }
 
   loginPlayer(data: LoginRequest): Observable<ApiResponse<AuthResponse>> {
-    return this.loginUser(data, 'player');
+    return this.loginUser(data, UserRole.PLAYER);
+  }
+
+  loginAdmin(data: LoginRequest): Observable<ApiResponse<AuthResponse>> {
+    return this.loginUser(data, UserRole.ADMIN);
   }
 
   registerPlayer(data: RegisterUserRequest): Observable<ApiResponse<CreatedUserResponse>> {
     return this.registerUser(data, 'player');
   }
 
-  loginAdministrator(data: LoginRequest): Observable<ApiResponse<AuthResponse>> {
-    return this.loginUser(data, 'administrator');
+  registerAdmin(data: RegisterUserRequest): Observable<ApiResponse<CreatedUserResponse>> {
+    return this.registerUser(data, 'admin');
   }
 
-  registerAdministrator(data: RegisterUserRequest): Observable<ApiResponse<CreatedUserResponse>> {
-    return this.registerUser(data, 'administrator');
-  }
-
-  private loginUser(
-    data: LoginRequest,
-    pathUser: 'player' | 'administrator',
-  ): Observable<ApiResponse<AuthResponse>> {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.BASE_URL}/${pathUser}/auth`, data, {
+  refreshToken(): Observable<ApiResponse<AuthResponse>> {
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.BASE_URL}/auth/refresh`, null, {
+      withCredentials: true,
       context: new HttpContext().set(SKIP_AUTH, true),
     });
   }
 
-  protected registerUser(
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.BASE_URL}/auth/logout`, null, {
+      withCredentials: true,
+      context: new HttpContext().set(SKIP_AUTH, true),
+    });
+  }
+
+  private loginUser(data: LoginRequest, roleUser: UserRole): Observable<ApiResponse<AuthResponse>> {
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.BASE_URL}/auth`, data, {
+      params: {
+        role: roleUser,
+      },
+      withCredentials: true,
+      context: new HttpContext().set(SKIP_AUTH, true),
+    });
+  }
+
+  private registerUser(
     data: RegisterUserRequest,
     pathUser: PathUser,
   ): Observable<ApiResponse<CreatedUserResponse>> {

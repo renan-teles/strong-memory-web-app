@@ -1,4 +1,4 @@
 export interface WordSuggestionRequest {
-  suggestedWord: string;
-  suggestedDifficulty: string;
+  word: string;
+  difficulty: string;
 }

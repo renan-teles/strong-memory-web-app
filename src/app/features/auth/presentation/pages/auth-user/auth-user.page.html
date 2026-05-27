@@ -1,0 +1,93 @@
+<main class="container-fluid min-vh-100 bg-gray">
+  <div class="row min-vh-100">
+    <div
+      class="col-12 col-lg-4 d-flex align-items-center px-4 px-xl-5 py-5 bg-purple-orange-gradient shadow-sm"
+    >
+      <section class="text-light w-100 d-flex flex-column gap-3">
+        <div class="white-border-start">
+          <h2 class="ms-3 fw-bold">Fortaleça Sua Memória de Forma Divertida</h2>
+        </div>
+
+        <div>
+          <p class="fs-6 fs-lg-5">
+            O Strong Memory é uma aplicação web interativa desenvolvida para o treinamento da
+            memória muscular e cognitiva por meio de uma dinâmica gamificada.
+          </p>
+        </div>
+
+        <div class="d-flex flex-column gap-3">
+          <button
+            (click)="toggleLoginRole()"
+            class="btn"
+            [class]="isLoginRole() ? 'btn-light' : 'btn-outline-light'"
+          >
+            Login
+          </button>
+
+          <button
+            (click)="toggleLoginRole()"
+            class="btn"
+            [class]="!isLoginRole() ? 'btn-light' : 'btn-outline-light'"
+          >
+            Registrar-se
+          </button>
+
+          <div class="form-check form-switch purple-form-switch">
+            <input
+              (change)="togglePlayerRole()"
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="switchCheckUserRole"
+            />
+            <label class="form-check-label" for="switchCheckUserRole">
+              @if (isLoginRole()) {
+                Entrar como Administrador
+              } @else {
+                Registrar-se como Administrador
+              }
+            </label>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-12 col-lg-8 d-flex justify-content-center align-items-center py-5">
+      <section class="col-12 col-lg-8 col-xl-7">
+        @if (isLoginRole()) {
+          @if (isAdminRole()) {
+            <app-auth-user-form-card
+              (userData)="loginAdmin($event)"
+              [isLoginRole]="isLoginRole()"
+              [isAdminRole]="isAdminRole()"
+              [title]="'Login de Administrador'"
+            ></app-auth-user-form-card>
+          } @else {
+            <app-auth-user-form-card
+              (userData)="loginPlayer($event)"
+              [title]="'Login de Jogador'"
+              [isLoginRole]="isLoginRole()"
+              [isAdminRole]="isAdminRole()"
+            ></app-auth-user-form-card>
+          }
+        } @else {
+          @if (isAdminRole()) {
+            <app-auth-user-form-card
+              (userData)="registerAdmin($event)"
+              [title]="'Cadastro de Administrador'"
+              [isLoginRole]="isLoginRole()"
+              [isAdminRole]="isAdminRole()"
+            ></app-auth-user-form-card>
+          } @else {
+            <app-auth-user-form-card
+              (userData)="registerPlayer($event)"
+              [title]="'Cadastro de Jogador'"
+              [isLoginRole]="isLoginRole()"
+              [isAdminRole]="isAdminRole()"
+            ></app-auth-user-form-card>
+          }
+        }
+      </section>
+    </div>
+  </div>
+</main>

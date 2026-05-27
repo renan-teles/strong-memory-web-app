@@ -8,6 +8,7 @@
         formControlName="suggestedWord"
         class="app-input"
         type="text"
+        [disabled]="true"
       />
       @if (getInput('suggestedWord')?.touched && getInput('suggestedWord')?.errors) {
         <small class="text-danger">
@@ -21,8 +22,8 @@
     <div class="col">
       <label for="select-difficulty" class="form-label">Sugestão de Dificuldade:</label>
       <select formControlName="suggestedDifficulty" id="select-difficulty" class="form-select">
-        @for (diff of difficulties(); track $index) {
-          <option [value]="diff.difficulty">{{ diff.translation | titlecase }}</option>
+        @for (diff of difficulties; track $index) {
+          <option [value]="diff.name">{{ diff.name | titlecase }}</option>
         }
       </select>
     </div>

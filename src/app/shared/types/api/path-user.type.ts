@@ -1,3 +1,3 @@
 export type PathUser = 
     |'player' 
-    | 'administrator';
+    | 'admin';

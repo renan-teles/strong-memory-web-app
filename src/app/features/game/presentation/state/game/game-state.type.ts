@@ -1,5 +1,1 @@
-export type GameState = 
-    |'show-game' 
-    | 'end' 
-    | 'no-time-left' 
-    | 'error';
+export type GameState = 'show-game' | 'end' | 'no-time-left' | 'error';

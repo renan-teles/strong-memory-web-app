@@ -2,31 +2,35 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import { inject } from '@angular/core';
 import { AlertService } from '../../../../shared/services/alert/alert.service';
+import {
+  isRefreshTokenErrorContext,
+  isTokenErrorContext,
+} from '../../../../shared/types/api/error-response.utils';
+import { ErrorCode } from '../../../../shared/types/api/error-code.enum';
 
 export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
-  const alert = inject(AlertService);
+  const alert: AlertService = inject(AlertService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      let message: string = 'Erro inesperado.';
-      let setError: boolean = true;
+      const statusMessages: Record<number, string> = {
+        500: 'Falha interna ao executar ação.',
+        0: 'Erro de conexão com o servidor.',
+      };
 
-      switch (error.status) {
-        case 500:
-          message = 'Falha ao executar ação.';
-          break;
-
-        case 0:
-          message = 'Erro de conexão com o servidor.';
-          break;
-
-        default:
-          setError = false;
-          break;
+      const statusMessage: string = statusMessages[error.status];
+      if (statusMessage) {
+        alert.error(statusMessage);
+        return throwError(() => error);
       }
 
-      if (setError) alert.error(message);
-      else if (error.error?.message) alert.error(error.error.message);
+      const code: ErrorCode = error.error.data.code;
+      const message: string = error.error.message;
+
+      const isAuthError: boolean = isTokenErrorContext(code) || isRefreshTokenErrorContext(code);
+      if (!isAuthError) {
+        alert.error(message);
+      }
 
       return throwError(() => error);
     }),

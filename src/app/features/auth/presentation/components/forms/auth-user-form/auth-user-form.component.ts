@@ -1,55 +1,28 @@
-import {
-  Component,
-  computed,
-  EventEmitter,
-  inject,
-  Input,
-  OnInit,
-  Output,
-  Signal,
-} from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, Signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { FormUtils } from '../../../../../../shared/types/ui/forms/form-utils.interface';
 import { UserRequest } from '../../../../../users/data/dto/request/user-request';
 import { SpinnerBorderComponent } from '../../../../../../shared/ui/components/spinner-border/spinner-border.component';
-import { LoginFacade } from '../../../state/login/login.facade';
-import { RegisterFacade } from '../../../state/register/register.facade';
-import { AUTH_FORM_CONFIG } from './auth-form.config';
 import { AuthForm } from './auth-form.type';
-import { AuthFormRole } from './auth-form-role.type';
-import { RedirectFormLink } from '../../../../../../shared/types/ui/forms/redirect-form-link.interface';
+import { LoginApiFacade } from '../../../state/login/api/login-api.facade';
+import { RegisterApiFacade } from '../../../state/register/register-api.facade';
 
 @Component({
   selector: 'app-auth-user-form',
-  imports: [RouterLink, ReactiveFormsModule, SpinnerBorderComponent],
+  imports: [ReactiveFormsModule, SpinnerBorderComponent],
   templateUrl: './auth-user-form.component.html',
   styleUrl: './auth-user-form.component.css',
 })
 export class AuthUserFormComponent implements OnInit, FormUtils<AuthForm> {
-  @Input({ required: true }) formRole: AuthFormRole = 'register-player';
-  @Input({ required: true }) isRegisterRole: boolean = true;
+  @Input({ required: true }) isAdminRole: boolean = false;
+  @Input({ required: true }) isLoginRole: boolean = true;
 
   @Output() userData = new EventEmitter<UserRequest>();
 
   private readonly fb: FormBuilder = inject(FormBuilder);
 
-  private readonly registerFacade: RegisterFacade = inject(RegisterFacade);
-  private readonly loginFacade: LoginFacade = inject(LoginFacade);
-
-  readonly showLinks: Signal<boolean> = computed(
-    () => !(this.isRegisteringUser() || this.isAuthenticatingUser()),
-  );
-
-  readonly link: Signal<RedirectFormLink | null> = computed(() => {
-    if (!this.showLinks()) return null;
-    return AUTH_FORM_CONFIG[this.formRole]?.link ?? null;
-  });
-
-  readonly linkInversorRole: Signal<RedirectFormLink | null> = computed(() => {
-    if (!this.showLinks()) return null;
-    return AUTH_FORM_CONFIG[this.formRole]?.inverseLink ?? null;
-  });
+  private readonly registerFacade: RegisterApiFacade = inject(RegisterApiFacade);
+  private readonly loginFacade: LoginApiFacade = inject(LoginApiFacade);
 
   isRegisteringUser: Signal<boolean> = this.registerFacade.isRegistering;
   isAuthenticatingUser: Signal<boolean> = this.loginFacade.isAuthenticating;
@@ -63,10 +36,10 @@ export class AuthUserFormComponent implements OnInit, FormUtils<AuthForm> {
   ngOnInit(): void {
     const usernameControl = this.form.controls.username;
 
-    if (this.isRegisterRole) {
-      usernameControl.setValidators([Validators.required]);
-    } else {
+    if (this.isLoginRole) {
       usernameControl.clearValidators();
+    } else {
+      usernameControl.setValidators([Validators.required]);
     }
 
     usernameControl.updateValueAndValidity();
@@ -84,7 +57,7 @@ export class AuthUserFormComponent implements OnInit, FormUtils<AuthForm> {
 
     const { username, email, password } = this.form.getRawValue();
     const data: UserRequest = {
-      username: this.isRegisterRole ? username : undefined,
+      username: this.isLoginRole ? undefined : username,
       email,
       password,
     };

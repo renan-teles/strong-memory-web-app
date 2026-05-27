@@ -1,15 +1,14 @@
-import { Component, inject, OnDestroy, OnInit, Output, Signal } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, Output, Signal } from '@angular/core';
 import { TimebarComponent } from '../../timebar/timebar.component';
-import { TypingWordsFormComponent } from '../../forms/typing-words-form/typing-words-form.component';
+import { TypingWordsFormComponent } from '../../forms/typing-words/typing-words-form.component';
 import { WordsListComponent } from '../../lists/words-list/words-list.component';
-import { WordsGameFacade } from '../../../state/game/words-game.facade';
-import { ToastService } from '../../../../../../shared/services/toast/toast.service';
 import { TitleCasePipe } from '@angular/common';
+import { GameFacade } from '../../../state/game/game.facade';
 import { WordDifficultyResponse } from '../../../../../word-difficulties/data/dto/response/word-difficulty-response';
-import { WordDifficultyService } from '../../../../../word-difficulties/presentation/services/word-difficulty/word-difficulty.service';
-import { LoadingContentComponent } from '../../../../../../shared/ui/components/loading-content/loading-content.component';
-import { LoadRandomWordsFacade } from '../../../../../words/presentation/state/load-random-words/load-random-words.facade';
-import { ScoreRecordFacade } from '../../../../../users/presentation/state/player/score-record/score-record.facade';
+import { GameApiFacade } from '../../../state/game/api/game-api.facade';
+import { RouterLink } from '@angular/router';
+import { GameMatchResponse } from '../../../../data/dto/response/game-match-response';
+import { GameMatchService } from '../../../../domain/services/game-match.service';
 
 @Component({
   selector: 'app-words-game-card',
@@ -18,54 +17,50 @@ import { ScoreRecordFacade } from '../../../../../users/presentation/state/playe
     TypingWordsFormComponent,
     WordsListComponent,
     TitleCasePipe,
-    LoadingContentComponent,
+    RouterLink,
   ],
   templateUrl: './words-game-card.component.html',
   styleUrl: './words-game-card.component.css',
 })
 export class WordsGameCardComponent implements OnInit, OnDestroy {
-  private readonly difficultyService = inject(WordDifficultyService);
-  private readonly facade: LoadRandomWordsFacade = inject(LoadRandomWordsFacade);
-  private readonly wordsGameFacade: WordsGameFacade = inject(WordsGameFacade);
-  private readonly toastService: ToastService = inject(ToastService);
-  private readonly scoreRecordService: ScoreRecordFacade = inject(ScoreRecordFacade);
+  private readonly gameApi: GameApiFacade = inject(GameApiFacade);
+  private readonly facade: GameFacade = inject(GameFacade);
 
-  @Output() gameState = this.wordsGameFacade.gameState;
+  @Output() gameStatus = this.facade.gameStatus;
 
-  isUpdatingScore: Signal<boolean> = this.scoreRecordService.isUpdatingScoreRecord;
-  answer: Signal<boolean> = this.wordsGameFacade.answer;
-  showResult: Signal<boolean> = this.wordsGameFacade.showResult;
-  time: Signal<number> = this.wordsGameFacade.decreaseTime;
-  isCorrect: Signal<boolean> = this.wordsGameFacade.isCorrect;
-  timeToNextRound: Signal<number> = this.wordsGameFacade.timeToNextAction;
-  score: Signal<number> = this.wordsGameFacade.score;
+  getMoreWordsLoading: Signal<boolean> = this.gameApi.getMoreWordsLoading;
 
-  get currentDifficulty(): WordDifficultyResponse {
-    return this.difficultyService.currentDifficulty!;
+  answer: Signal<boolean> = this.facade.answer;
+  showResult: Signal<boolean> = this.facade.showResult;
+  time: Signal<number> = this.facade.decreaseTime;
+  isCorrect: Signal<boolean> = this.facade.isCorrect;
+  timeToNextRound: Signal<number> = this.facade.timeToNextAction;
+
+  get score(): number {
+    return this.facade.score;
+  }
+
+  get difficultyName(): string {
+    return this.facade.difficulty.name;
   }
 
   ngOnInit(): void {
-    this.wordsGameFacade.init(this.facade.randomWords());
+    this.facade.init();
   }
 
   ngOnDestroy(): void {
-    this.wordsGameFacade.onDestroy();
-    if (!this.isUpdatingScore()) this.toastService.clear();
+    this.facade.destroy();
   }
 
   onTimerFinished(): void {
-    this.wordsGameFacade.onTimerFinished();
+    this.facade.onTimerFinished();
   }
 
   checkCorrect(submitWords: string[]): void {
-    this.wordsGameFacade.checkCorrect(submitWords);
+    this.facade.checkCorrect(submitWords);
   }
 
-  reloadGame(): void {
-    location.reload();
-  }
-
-  resetGame(): void {
-    this.wordsGameFacade.resetGame();
+  restartGame(): void {
+    this.facade.restartGame();
   }
 }

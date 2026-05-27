@@ -1,44 +1,40 @@
-import { inject, Injectable, Signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { WordDifficultyResponse } from '../../../data/dto/response/word-difficulty-response';
-import { WordDifficultyFacade } from '../../state/word-difficulty.facade';
-import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WordDifficultyService {
-  private readonly difficultyFacade = inject(WordDifficultyFacade);
+  static readonly INITIAL_DIFFICULTY_NAME: string = 'fácil';
 
-  private readonly difficulties: Signal<WordDifficultyResponse[]> =
-    this.difficultyFacade.difficulties;
-
+  difficulties: WordDifficultyResponse[] = [];
   currentDifficulty: WordDifficultyResponse | null = null;
 
-  getDifficultByName(name: string): WordDifficultyResponse | undefined {
-    return this.difficulties().find((d) => d.difficulty === name);
+  hasDifficulties(): boolean {
+    return this.difficulties.length > 0;
+  }
+
+  containsByName(name: string): boolean {
+    return this.difficulties.some((d) => d.name === name);
+  }
+
+  setDifficulties(difficulties: WordDifficultyResponse[]): void {
+    this.difficulties = difficulties;
+    this.setCurrentDifficultyByName(WordDifficultyService.INITIAL_DIFFICULTY_NAME);
   }
 
   setCurrentDifficulty(diff: WordDifficultyResponse): void {
     this.currentDifficulty = diff;
   }
 
-  setCurrentDifficultyByName(difficultyName: string): void {
-    const difficulty: WordDifficultyResponse | undefined = this.getDifficultByName(difficultyName);
-    if (!difficulty) return;
-
-    this.currentDifficulty = difficulty;
+  setCurrentDifficultyByName(name: string): void {
+    this.setCurrentDifficulty(this.getByName(name));
   }
 
-  loadAll(): void {
-    if (this.difficulties().length > 0) return;
+  getByName(name: string): WordDifficultyResponse {
+    const difficulty = this.difficulties.find((d) => d.name === name);
 
-    this.difficultyFacade
-      .loadAll()
-      .pipe(
-        tap(() => {
-          this.setCurrentDifficultyByName('easy');
-        }),
-      )
-      .subscribe();
+    if (!difficulty) throw new Error(`Dificuldade '${name}' não encontrada.`);
+    return difficulty;
   }
 }

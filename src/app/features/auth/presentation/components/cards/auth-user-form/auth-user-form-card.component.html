@@ -1,0 +1,17 @@
+<section class="card rounded bg-white p-4 shadow-sm">
+  <div class="text-center">
+    <app-strong-memory-brand></app-strong-memory-brand>
+  </div>
+
+  <div class="text-center mt-2 mb-4">
+    <span class="fs-5">
+      {{ title }}
+    </span>
+  </div>
+
+  <app-auth-user-form
+    (userData)="submittedFormData($event)"
+    [isAdminRole]="isAdminRole"
+    [isLoginRole]="isLoginRole"
+  ></app-auth-user-form>
+</section>

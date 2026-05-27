@@ -1,5 +1,7 @@
 export interface WordSuggestionResponse {
   id: number;
-  suggestedWord: string;
-  suggestedDifficulty: string;
+  word: string;
+  difficulty: string;
+  suggestedAt: string;
+  userEmail: string;
 }

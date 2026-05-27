@@ -1,23 +1,14 @@
-import {
-  Component,
-  effect,
-  EventEmitter,
-  inject,
-  input,
-  Input,
-  Output,
-  Signal,
-} from '@angular/core';
+import { Component, effect, EventEmitter, inject, input, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TitleCasePipe } from '@angular/common';
 import { capitalizeWords } from '../../../../../../../shared/utils/string-format.utils';
 import { WordSuggestionRequest } from '../../../../../data/dto/request/word-suggestion-request';
 import { WordDifficultyResponse } from '../../../../../../word-difficulties/data/dto/response/word-difficulty-response';
 import { FormModalComponentOutput } from '../../../../../../../shared/types/ui/forms/form-modal-component-output.interface';
-import { WordDifficultyFacade } from '../../../../../../word-difficulties/presentation/state/word-difficulty.facade';
 import { WordSuggestionsForm } from '../word-suggestions-form.type';
 import { FormUtils } from '../../../../../../../shared/types/ui/forms/form-utils.interface';
 import { ModalFormUtils } from '../../../../../../../shared/types/ui/forms/modal-form-utils.interface';
+import { WordDifficultyService } from '../../../../../../word-difficulties/presentation/services/word-difficulty/word-difficulty.service';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-word-suggestions-modal-form',
@@ -33,12 +24,17 @@ export class WordSuggestionsModalFormComponent
 
   @Output() submittedData = new EventEmitter<FormModalComponentOutput<WordSuggestionRequest>>();
 
-  private readonly difficultyFacade = inject(WordDifficultyFacade);
+  private readonly difficultyService: WordDifficultyService = inject(WordDifficultyService);
   private readonly fb: FormBuilder = inject(FormBuilder);
 
   form: FormGroup = this.fb.nonNullable.group<WordSuggestionsForm>({
-    suggestedWord: this.fb.nonNullable.control('', [Validators.required]),
-    suggestedDifficulty: this.fb.nonNullable.control('easy', [Validators.required]),
+    suggestedWord: this.fb.nonNullable.control({ value: '', disabled: true }, [
+      Validators.required,
+    ]),
+    suggestedDifficulty: this.fb.nonNullable.control(
+      WordDifficultyService.INITIAL_DIFFICULTY_NAME,
+      [Validators.required],
+    ),
   });
 
   constructor() {
@@ -47,13 +43,15 @@ export class WordSuggestionsModalFormComponent
       if (!suggestion) return;
 
       this.form.patchValue({
-        suggestedWord: capitalizeWords(suggestion.suggestedWord!),
-        suggestedDifficulty: suggestion.suggestedDifficulty!,
+        suggestedWord: capitalizeWords(suggestion.word!),
+        suggestedDifficulty: suggestion.difficulty!,
       });
     });
   }
 
-  difficulties: Signal<WordDifficultyResponse[]> = this.difficultyFacade.difficulties;
+  get difficulties(): WordDifficultyResponse[] {
+    return this.difficultyService.difficulties;
+  }
 
   getInput(name: keyof WordSuggestionsForm): any {
     return this.form.get(name);
@@ -69,10 +67,13 @@ export class WordSuggestionsModalFormComponent
       return;
     }
 
+    const suggestion = this.wordSuggestion();
     const data: WordSuggestionRequest = {
-      suggestedWord: this.form.value.suggestedWord,
-      suggestedDifficulty: this.form.value.suggestedDifficulty,
+      word: suggestion!.word,
+      difficulty: this.form.value.suggestedDifficulty,
     };
+
+    console.log(data);
 
     this.submittedData.emit({ value: data, cancelAction: false });
   }

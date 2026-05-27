@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { StrongMemoryBrandComponent } from '../../ui/components/strong-memory-brand/strong-memory-brand.component';
-import { AuthStorageService } from '../../../core/services/auth-storage/auth-storage.service';
+import { AuthStateService } from '../../../core/services/auth/auth-state.service';
 
 @Component({
   selector: 'app-not-found',
@@ -10,9 +10,9 @@ import { AuthStorageService } from '../../../core/services/auth-storage/auth-sto
   styleUrl: './not-found.page.css',
 })
 export class NotFoundPage {
-  private readonly authStorage: AuthStorageService = inject(AuthStorageService);
+  private readonly authState: AuthStateService = inject(AuthStateService);
 
   get linkText(): string {
-    return this.authStorage.isAuthenticated() ? 'Voltar ao Início' : 'Ir para Login';
+    return this.authState.isAuthenticated() ? 'Voltar ao Início' : 'Autenticar-se';
   }
 }

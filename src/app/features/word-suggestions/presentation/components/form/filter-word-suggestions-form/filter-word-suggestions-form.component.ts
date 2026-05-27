@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, Output, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from '../../../../../../shared/types/ui/forms/form-utils.interface';
 import { FilterWordSuggestionRequest } from '../../../../data/dto/request/filter-word-suggestion-request';
-import { LoadWordSuggestionsFacade } from '../../../state/load-word-suggestions/load-word-suggestions.facade';
+import { LoadWordSuggestionsApiFacade } from '../../../state/api/load-word-suggestions-api.facade';
 import { FilterWordSuggestionsForm } from './filter-word-suggestions-form.type';
 
 @Component({
@@ -15,7 +15,7 @@ export class FilterWordSuggestionsFormComponent implements FormUtils<FilterWordS
   @Output() submitteData = new EventEmitter<FilterWordSuggestionRequest>();
 
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly facade: LoadWordSuggestionsFacade = inject(LoadWordSuggestionsFacade);
+  private readonly facade: LoadWordSuggestionsApiFacade = inject(LoadWordSuggestionsApiFacade);
 
   isLoadingSuggestions: Signal<boolean> = this.facade.isLoading;
 

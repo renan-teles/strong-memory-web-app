@@ -1,22 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+/* =========================================================
+   GLOBAL STYLES
+========================================================= */
 
-/* Vars */
+/* =========================================================
+   CSS VARIABLES
+========================================================= */
+
 :root {
-  --purple: #9c04fc;
-  --orange: #fc9f28;
-  --purple-orange-gradient: linear-gradient(to right, #9c04fc, #ffab40);
+  --purple: #7b2cff;
+  --orange: #ff7b00;
+  --purple-orange-gradient-a: linear-gradient(to right, #7b2cff, #ff7b00);
+  --purple-orange-gradient-b: linear-gradient(135deg, #6a00ff 0%, #ff7b00 100%);
 }
 
-/* General */
+/* =========================================================
+   GENERAL
+========================================================= */
+
 html,
 body {
-  height: 100vh !important;
+  height: 100% !important;
   margin: 0 !important;
 }
 
-/* Colors and Backgrounds */
+/* =========================================================
+   BACKGROUNDS
+========================================================= */
+
 .radial-gradient-background {
   min-height: 100vh;
+
   background:
     radial-gradient(
       circle at 50% 50%,
@@ -28,6 +41,22 @@ body {
     radial-gradient(circle at 90% 50%, rgba(255, 171, 64, 0.09) 0%, transparent 60%);
 }
 
+.bg-white {
+  background-color: white !important;
+}
+
+.bg-white-smoke {
+  background-color: whitesmoke !important;
+}
+
+.bg-purple-orange-gradient {
+  background: var(--purple-orange-gradient-b) !important;
+}
+
+/* =========================================================
+   TEXT COLORS
+========================================================= */
+
 .text-purple {
   color: var(--purple) !important;
 }
@@ -36,11 +65,10 @@ body {
   color: var(--orange) !important;
 }
 
-.bg-white {
-  background-color: white !important;
-}
+/* =========================================================
+   BORDERS
+========================================================= */
 
-/* Bordes */
 .purple-border-start {
   border-left: 4px solid var(--purple);
 }
@@ -49,22 +77,58 @@ body {
   border-left: 4px solid var(--orange);
 }
 
-/* Form Elments*/
-/* Inputs */
+.white-border-start {
+  border-left: 4px solid white;
+}
+
+/* =========================================================
+   FORM ELEMENTS
+========================================================= */
+
+/* -------------------------
+   SELECTS
+------------------------- */
+
 .form-select {
   outline: none !important;
   box-shadow: none !important;
   border-color: var(--orange) !important;
 }
 
+.form-select:hover {
+  outline: none !important;
+  border: 1px solid var(--orange) !important;
+  box-shadow: 0 0 3px var(--orange) !important;
+}
+
+/* -------------------------
+   INPUTS - BASE
+------------------------- */
+
 .app-input,
-.game-app-input {
+.game-app-input,
+.app-input-success,
+.game-app-input-success,
+.app-input-error,
+.game-app-input-error {
   min-width: 100%;
   padding: 5px 10px;
   border-radius: 5px;
-  border: 1px solid var(--orange);
   box-sizing: border-box;
 }
+
+/* -------------------------
+   INPUTS - DEFAULT
+------------------------- */
+
+.app-input,
+.game-app-input {
+  border: 1px solid var(--orange);
+}
+
+/* -------------------------
+   GAME INPUTS
+------------------------- */
 
 .game-app-input,
 .game-app-input-success,
@@ -74,22 +138,27 @@ body {
   color: black;
 }
 
+/* -------------------------
+   INPUT FOCUS
+------------------------- */
+
 .app-input:focus,
-.game-app-input:focus,
-.form-select:hover {
+.game-app-input:focus {
   outline: none !important;
   border: 1px solid var(--orange) !important;
   box-shadow: 0 0 3px var(--orange) !important;
 }
 
+/* -------------------------
+   SUCCESS INPUTS
+------------------------- */
+
 .app-input-success,
 .game-app-input-success {
-  min-width: 100%;
-  padding: 5px 10px;
-  border-radius: 5px;
   border: 1px solid #198754 !important;
-  box-sizing: border-box;
+
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23198754' viewBox='0 0 16 16'%3e%3cpath d='M16 2L6 12 0 6l2-2 4 4 8-8z'/%3e%3c/svg%3e");
+
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 16px;
@@ -102,23 +171,18 @@ body {
   box-shadow: 0 0 5px rgba(25, 135, 84, 0.5) !important;
 }
 
-.app-input-success:disabled,
-.app-input-error:disabled,
-.game-app-input:disabled,
-.game-app-input-error:disabled,
-.game-app-input-success:disabled {
-  background-color: white !important;
-}
+/* -------------------------
+   ERROR INPUTS
+------------------------- */
 
 .app-input-error,
 .game-app-input-error {
-  min-width: 100%;
-  padding: 5px 10px;
   padding-right: 35px;
-  border-radius: 5px;
+
   border: 1px solid #dc3545 !important;
-  box-sizing: border-box;
+
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='0 0 16 16'%3e%3cpath d='M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm3.536 9.95l-1.414 1.414L8 9.414l-2.121 2.95-1.414-1.414L6.586 8 4.465 5.879l1.414-1.414L8 6.586l2.121-2.121 1.414 1.414L9.414 8l2.122 2.95z'/%3e%3c/svg%3e");
+
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 16px;
@@ -131,7 +195,63 @@ body {
   box-shadow: 0 0 5px rgba(220, 53, 69, 0.5) !important;
 }
 
-/* Buttons */
+/* -------------------------
+   DISABLED INPUTS
+------------------------- */
+
+.app-input-success:disabled,
+.app-input-error:disabled,
+.game-app-input:disabled,
+.game-app-input-error:disabled,
+.game-app-input-success:disabled {
+  background-color: white !important;
+}
+
+/* =========================================================
+   SWITCHES
+========================================================= */
+
+.form-switch .form-check-input {
+  cursor: pointer;
+  background-color: #dcdcdc;
+  border-color: #dcdcdc;
+  transition: 0.2s ease;
+}
+
+.form-switch .form-check-input:hover {
+  filter: brightness(1.05);
+}
+
+/* -------------------------
+   PURPLE SWITCH
+------------------------- */
+
+.purple-form-switch .form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(123, 44, 255, 0.25);
+}
+
+.purple-form-switch .form-check-input:checked {
+  background-color: var(--purple);
+  border-color: var(--purple);
+}
+
+/* -------------------------
+   ORANGE SWITCH
+------------------------- */
+
+.orange-form-switch .form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(255, 146, 44, 0.25);
+}
+
+.orange-form-switch .form-check-input:checked {
+  background-color: var(--orange);
+  border-color: var(--orange);
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
 .btn-scale {
   transition:
     transform 0.25s ease,
@@ -143,28 +263,43 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* -------------------------
+   GRADIENT BUTTONS
+------------------------- */
+
 .btn-gradient-move-purple-orange {
   padding: 10px;
   min-width: 180px;
-  border-radius: 6px;
+
+  border-radius: 30px;
   border: none;
-  background: var(--purple-orange-gradient);
+
+  background: var(--purple-orange-gradient-a);
+
   color: white;
   font-weight: 700;
+
   background-size: 400% 400%;
+
   cursor: pointer;
+
   animation: gradientMove 6s ease infinite;
 }
 
 .btn-gradient-purple-orange {
   text-decoration: none;
+
   padding: 9px;
+
   border-radius: 6px;
   border: none;
-  background: var(--purple-orange-gradient);
+
+  background: var(--purple-orange-gradient-a);
+
   color: white;
-  cursor: pointer;
   font-weight: 700;
+
+  cursor: pointer;
 }
 
 .btn-gradient-purple-orange:disabled {
@@ -172,48 +307,123 @@ body {
   cursor: not-allowed;
 }
 
+.btn-purple-orange-gradient {
+  text-decoration: none;
+
+  padding: 7px 10px;
+
+  border-radius: 10px;
+  border: none;
+
+  background: var(--purple-orange-gradient-b);
+
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  overflow: hidden;
+
+  cursor: pointer;
+}
+
+/* -------------------------
+   PULSE BUTTON
+------------------------- */
+
 .pulse-button {
   transition: transform 0.2s ease;
   animation: doublePulse 7s infinite;
 }
 
-/* Navs e Links*/
-.page-link {
-  color: var(--purple) !important;
+/* =========================================================
+   TITLES
+========================================================= */
+
+.orange-highlighted-title,
+.purple-highlighted-title {
+  padding: 15px !important;
+  border-radius: 30px;
+  color: white;
 }
 
-.active-link-pagination {
-  color: white !important;
-  background: var(--purple-orange-gradient) !important;
+.orange-highlighted-title {
+  background-color: var(--orange) !important;
 }
 
-/* Animations */
+.purple-highlighted-title {
+  background-color: var(--purple) !important;
+}
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard-card {
+  border: none;
+  border-radius: 18px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  transition: 0.2s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: none;
+
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
 .page-content-animation {
   animation: fadeIn 0.7s ease;
 }
+
+/* -------------------------
+   GRADIENT MOVE
+------------------------- */
 
 @keyframes gradientMove {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
 }
+
+/* -------------------------
+   FADE IN
+------------------------- */
 
 @keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
+/* -------------------------
+   PULSE
+------------------------- */
 
 @keyframes pulse {
   0% {
@@ -233,6 +443,10 @@ body {
   }
 }
 
+/* -------------------------
+   DOUBLE PULSE
+------------------------- */
+
 @keyframes doublePulse {
   0% {
     transform: scale(1);
@@ -241,6 +455,7 @@ body {
   5% {
     transform: scale(1.12);
   }
+
   10% {
     transform: scale(1);
   }
@@ -248,6 +463,7 @@ body {
   15% {
     transform: scale(1.12);
   }
+
   20% {
     transform: scale(1);
   }

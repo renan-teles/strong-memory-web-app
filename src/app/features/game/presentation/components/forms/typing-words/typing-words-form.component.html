@@ -1,0 +1,27 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+  <section formArrayName="words" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @for (control of wordsArray.controls; track $index; let i = $index) {
+      <div class="col">
+        <input
+          [formControl]="control"
+          class="game-app-input"
+          type="text"
+          [placeholder]="`Digite a ${i + 1}ª palavra...`"
+          appWordComparator
+          [compare]="compare()"
+          [isCorrect]="isEqualsWords(i)"
+        />
+      </div>
+    }
+  </section>
+
+  <div class="col-12 text-end mt-3">
+    <button
+      [class.d-none]="!showButton || this.form.invalid"
+      type="submit"
+      class="btn-purple-orange-gradient"
+    >
+      Verificar
+    </button>
+  </div>
+</form>

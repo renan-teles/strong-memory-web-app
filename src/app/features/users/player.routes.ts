@@ -11,7 +11,7 @@ export const playerRoutes: Routes = [
     children: [
       {
         path: 'panel',
-        title: 'SM - Meu Painel',
+        title: 'SM • Meu Painel',
         loadComponent: () =>
           import('./presentation/pages/player/panel/player-panel.page').then(
             (m) => m.PlayerPanelPage,

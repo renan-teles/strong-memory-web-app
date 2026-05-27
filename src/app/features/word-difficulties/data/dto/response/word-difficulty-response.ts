@@ -1,8 +1,6 @@
 export interface WordDifficultyResponse {
-  id: number;
-  translation: string;
-  difficulty: string;
-  maxQuantityWords: number;
+  name: string;
+  numberWords: number;
   increaseDisplayTimeSeconds: number;
   increaseTypingTimeSeconds: number;
 }

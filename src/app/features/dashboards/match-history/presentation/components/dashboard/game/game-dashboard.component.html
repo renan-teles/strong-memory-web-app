@@ -1,0 +1,24 @@
+<div class="card shadow-sm p-4 p-lg-5 page-content-animation">
+  <div class="col-12 mb-3">
+    <h3><i class="bi-controller me-2 text-purple"></i>Jogo</h3>
+    <hr />
+  </div>
+
+  <div class="row g-5">
+    <div class="col-12 col-xl-6">
+      <app-highest-score-bar-chart [data]="highestScores"></app-highest-score-bar-chart>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <app-score-history-scatter-chart [data]="highestScores"></app-score-history-scatter-chart>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <app-game-mode-performance-chart [data]="gameModeData"></app-game-mode-performance-chart>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <app-game-mode-radar-chart [data]="gameModeData"></app-game-mode-radar-chart>
+    </div>
+  </div>
+</div>

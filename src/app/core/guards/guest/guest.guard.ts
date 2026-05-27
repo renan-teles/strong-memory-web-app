@@ -1,21 +1,21 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthStorageService } from '../../services/auth-storage/auth-storage.service';
 import { UserRole } from '../../../features/users/domain/enums/user-role.enum';
+import { AuthStateService } from '../../services/auth/auth-state.service';
 
 export const guestGuard: CanActivateFn = (route, state) => {
-  const router = inject(Router);
-  const authStorage = inject(AuthStorageService);
+  const router: Router = inject(Router);
+  const authState: AuthStateService = inject(AuthStateService);
 
-  if (!authStorage.isAuthenticated()) return true;
+  if (!authState.isAuthenticated()) return true;
 
-  switch (authStorage.getUserRole()) {
+  switch (authState.getUserRole()) {
     case UserRole.PLAYER:
-      router.navigate(['/app/game/start']);
+      router.navigate(['/home']);
       break;
 
-    case UserRole.ADM:
-      router.navigate(['/app/words/list']);
+    case UserRole.ADMIN:
+      router.navigate(['/words/list']);
       break;
   }
 

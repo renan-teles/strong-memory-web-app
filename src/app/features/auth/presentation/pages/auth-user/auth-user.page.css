@@ -1,0 +1,9 @@
+@media (max-width: 991px) {
+  .bg-purple-orange-gradient {
+    border-radius: 0 0 30px 30px !important;
+  }
+}
+
+.bg-purple-orange-gradient {
+  border-radius: 0px 30px 30px 0px;
+}

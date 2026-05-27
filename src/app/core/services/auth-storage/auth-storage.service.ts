@@ -1,56 +1,69 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ApiResponse } from '../../../shared/types/api/api-response.interface';
 import { AuthResponse } from '../../../features/auth/data/dto/response/auth-response';
 import { UserRole } from '../../../features/users/domain/enums/user-role.enum';
+import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthStorageService {
-  private readonly BASE_NAME: string = 'strong_memory_';
-  private readonly tokenName!: string;
-  private readonly userRoleName!: string;
+// @Injectable({
+//   providedIn: 'root',
+// })
+// export class AuthStorageService {
+//   private readonly BASE_NAME: string = 'strong_memory';
+//   private readonly ACCESS_TOKEN: string = `${this.BASE_NAME}_user_access_token`;
+//   private readonly REFRESH_TOKEN: string = `${this.BASE_NAME}_refresh_token`;
+//   private readonly USER_ROLE: string = `${this.BASE_NAME}_user_role`;
 
-  constructor() {
-    this.tokenName = `${this.BASE_NAME}user_token`;
-    this.userRoleName = `${this.BASE_NAME}user_role`;
-  }
+//   private readonly router: Router = inject(Router);
 
-  saveToken(token: string) {
-    localStorage.setItem(this.tokenName, token);
-  }
+//   saveAccessToken(token: string): void {
+//     localStorage.setItem(this.ACCESS_TOKEN, token);
+//   }
 
-  saveUserRole(role: string) {
-    localStorage.setItem(this.userRoleName, role);
-  }
+//   saveRefreshToken(refreshToken: string): void {
+//     localStorage.setItem(this.REFRESH_TOKEN, refreshToken);
+//   }
 
-  saveAuthData(data: ApiResponse<AuthResponse>) {
-    this.saveToken(data.data!.token);
-    this.saveUserRole(data.data!.role);
-  }
+//   saveUserRole(role: string): void {
+//     localStorage.setItem(this.USER_ROLE, role);
+//   }
 
-  getToken(): string {
-    return localStorage.getItem(this.tokenName) ?? '';
-  }
+//   saveAuthData(data: ApiResponse<AuthResponse>) {
+//     this.saveRefreshToken(data.data!.refreshToken);
+//     this.saveAccessToken(data.data!.accessToken);
+//     this.saveUserRole(data.data!.role);
+//   }
 
-  getUserRole(): UserRole | null {
-    const role = localStorage.getItem(this.userRoleName) ?? '';
+//   getAccessToken(): string {
+//     return localStorage.getItem(this.ACCESS_TOKEN) ?? '';
+//   }
 
-    if (!role) return null;
+//   getRefreshToken(): string {
+//     return localStorage.getItem(this.REFRESH_TOKEN) ?? '';
+//   }
 
-    if (role == UserRole.ADM) return UserRole.ADM;
-    return UserRole.PLAYER;
-  }
+//   getUserRole(): UserRole | null {
+//     const role = localStorage.getItem(this.USER_ROLE) ?? '';
 
-  clearAll(): void {
-    localStorage.clear();
-  }
+//     if (!role) return null;
 
-  isAuthenticated(): boolean {
-    return this.getToken() !== '' && this.getUserRole() !== null;
-  }
+//     if (role == UserRole.ADMIN) return UserRole.ADMIN;
+//     return UserRole.PLAYER;
+//   }
 
-  isPlayer(): boolean {
-    return this.isAuthenticated() && this.getUserRole() === UserRole.PLAYER;
-  }
-}
+//   clearAll(): void {
+//     localStorage.clear();
+//   }
+
+//   logout(redirectTo: string = '/login') {
+//     this.clearAll();
+//     this.router.navigate([redirectTo]);
+//   }
+
+//   isAuthenticated(): boolean {
+//     return this.getAccessToken() !== '' && this.getUserRole() !== null;
+//   }
+
+//   isPlayer(): boolean {
+//     return this.isAuthenticated() && this.getUserRole() === UserRole.PLAYER;
+//   }
+// }

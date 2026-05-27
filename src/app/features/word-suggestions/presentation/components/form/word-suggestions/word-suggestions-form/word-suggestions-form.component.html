@@ -1,47 +1,43 @@
-<form [formGroup]="form" (submit)="onSubmit()" class="row row-cols-1 row-cols-md-2">
-  <div class="col">
-    <label class="form-label" for="word-suggestion-input">Sugestão de Palavra:</label>
-    <input
-      formControlName="suggestedWord"
-      id="word-suggestion-input"
-      class="app-input"
-      placeholder="Digite sua sugestão de palavra..."
-      type="text"
-    />
-    @if (getInput('suggestedWord')?.touched && getInput('suggestedWord')?.errors) {
-      <small class="text-danger">
-        @if (getInput('suggestedWord')?.hasError('required')) {
-          Palavra sugerida é obrigatória!
-        }
-        @if (getInput('suggestedWord')?.hasError('minlength')) {
-          A palavra sugerida deve conter no mínimo 2 caracteres!
-        }
-      </small>
-    }
-  </div>
-
-  <div class="col mt-4 mt-md-0">
-    <label class="form-label" for="select-difficulty">Seleciona a Dificuldade: </label>
-    <select formControlName="suggestedDifficulty" id="select-difficulty" class="form-select">
-      @for (diff of difficulties(); track $index) {
-        <option [value]="diff.difficulty">{{ diff.translation | titlecase }}</option>
+<form [formGroup]="form" (submit)="onSubmit()">
+  <div class="row row-cols-1 gap-4">
+    <div class="col text-start">
+      <label class="form-label" for="word-suggestion-input">Sugestão de Palavra:</label>
+      <input
+        formControlName="suggestedWord"
+        id="word-suggestion-input"
+        class="app-input"
+        placeholder="Digite sua sugestão de palavra..."
+        type="text"
+      />
+      @if (getInput('suggestedWord')?.touched && getInput('suggestedWord')?.errors) {
+        <small class="text-danger">
+          @if (getInput('suggestedWord')?.hasError('required')) {
+            Palavra sugerida é obrigatória!
+          }
+          @if (getInput('suggestedWord')?.hasError('minlength')) {
+            A palavra sugerida deve conter no mínimo 2 caracteres!
+          }
+        </small>
       }
-    </select>
-  </div>
+    </div>
 
-  <div class="col"></div>
+    <div class="col text-start">
+      <label class="form-label" for="select-difficulty">Seleciona a Dificuldade: </label>
+      <select formControlName="suggestedDifficulty" id="select-difficulty" class="form-select">
+        @for (diff of difficulties; track $index) {
+          <option [value]="diff.name">{{ diff.name | titlecase }}</option>
+        }
+      </select>
+    </div>
 
-  <div class="col text-end mt-4">
-    <button
-      [disabled]="isRegisteringWord()"
-      type="submit"
-      class="btn-gradient-purple-orange btn-scale"
-    >
-      @if (isRegisteringWord()) {
-        <app-spinner-border [text]="'sugerindo...'"></app-spinner-border>
-      } @else {
-        Sugerir
-      }
-    </button>
+    <div class="col text-end">
+      <button [disabled]="isRegisteringWord()" type="submit" class="btn-purple-orange-gradient">
+        @if (isRegisteringWord()) {
+          <app-spinner-border [text]="'sugerindo...'"></app-spinner-border>
+        } @else {
+          Sugerir
+        }
+      </button>
+    </div>
   </div>
 </form>

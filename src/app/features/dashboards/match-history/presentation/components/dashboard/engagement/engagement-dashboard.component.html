@@ -1,0 +1,14 @@
+<div class="card shadow-sm p-4 p-lg-5 page-content-animation">
+  <div class="col-12 mb-3">
+    <h3><i class="bi-calendar3-week-fill me-2 text-purple"></i>Engajamento</h3>
+    <hr />
+  </div>
+  <div class="row g-5" style="min-height: 350px">
+    <div class="col-12 col-xl-6">
+      <app-engagement-stacked-bar-chart [data]="data!"></app-engagement-stacked-bar-chart>
+    </div>
+    <div class="col-12 col-xl-6">
+      <app-engagement-activity-line-chart [data]="data!"></app-engagement-activity-line-chart>
+    </div>
+  </div>
+</div>
